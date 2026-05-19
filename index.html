@@ -12,7 +12,7 @@
     <style>
         :root {
             --primary-color: #4a5568;
-            --bg-color: #f3f4f6;
+            --bg-gradient: linear-gradient(135deg, #f3f4f6 0%, #e2e8f0 100%);
             --card-bg: #ffffff;
             --sticker-color: rgba(203, 213, 224, 0.4);
         }
@@ -21,7 +21,7 @@
 
         body {
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             color: #2d3748;
             margin: 0;
             padding: 15px;
@@ -36,12 +36,14 @@
             max-width: 550px;
             width: 100%;
             background: var(--card-bg);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 35px 30px;
             box-sizing: border-box;
             text-align: center;
-            border: 1px solid #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
         }
 
         /* 【升級】頁面平滑轉場動畫 */
@@ -49,21 +51,22 @@
             animation: fadeInSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes fadeInSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
             color: #1a202c;
-            font-size: 26px;
-            margin-bottom: 12px;
+            font-size: 28px;
+            margin-bottom: 15px;
             letter-spacing: 1px;
+            font-weight: 800;
         }
 
         .subtitle {
-            color: #1a202c;
-            font-size: 14px;
-            line-height: 1.6;
+            color: #4a5568;
+            font-size: 15px;
+            line-height: 1.7;
             margin-bottom: 30px;
             text-align: justify;
             padding: 0 10px;
@@ -75,8 +78,8 @@
         .image-box {
             width: 100%;
             height: 250px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
             overflow: hidden;
             border: 1px solid #e2e8f0;
             background: #f8fafc;
@@ -84,6 +87,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
 
         .image-box img {
@@ -94,6 +98,7 @@
             top: 0;
             left: 0;
             z-index: 2;
+            transition: transform 0.3s ease;
         }
 
         .svg-fallback {
@@ -107,10 +112,10 @@
 
         .name-input {
             width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 14px;
             border: 2px solid #e2e8f0;
-            background: #ffffff;
+            background: #f8fafc;
             color: #1a202c;
             font-size: 16px;
             margin-bottom: 25px;
@@ -121,9 +126,11 @@
         }
         .name-input:focus {
             border-color: #4a5568;
-            box-shadow: 0 0 8px rgba(74, 85, 104, 0.15);
+            background: #ffffff;
+            box-shadow: 0 0 12px rgba(74, 85, 104, 0.15);
+            transform: translateY(-2px);
         }
-        .name-input::placeholder { color: #a0aec0; }
+        .name-input::placeholder { color: #94a3b8; font-weight: normal; }
 
         .identity-container {
             display: flex;
@@ -131,48 +138,48 @@
             justify-content: center;
             gap: 16px;
             margin: 15px 0 25px 0;
-            padding: 20px;
+            padding: 25px 20px;
             background: #fafafa;
-            border-radius: 16px;
-            border: 2px dashed #e2e8f0;
+            border-radius: 20px;
+            border: 2px dashed #cbd5e1;
         }
 
         .sticker-btn {
             padding: 14px 24px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
             font-weight: 800;
             font-size: 15.5px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
             letter-spacing: 0.5px;
             position: relative;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(4px);
         }
 
         .silver { 
-            background: linear-gradient(135deg, rgba(226, 232, 240, 0.8), rgba(203, 213, 224, 0.8));
+            background: linear-gradient(135deg, rgba(226, 232, 240, 0.9), rgba(203, 213, 224, 0.9));
             color: #4a5568; 
             transform: rotate(-3deg);
-            box-shadow: 2px 3px 0px #94a3b8, 4px 6px 10px rgba(0,0,0,0.08);
+            box-shadow: 2px 4px 0px #94a3b8, 4px 8px 15px rgba(0,0,0,0.1);
         }
         .gold { 
-            background: linear-gradient(135deg, rgba(254, 226, 226, 0.85), rgba(254, 240, 138, 0.85));
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.9), rgba(254, 240, 138, 0.9));
             color: #713f12; 
             transform: rotate(2deg);
-            box-shadow: -2px 3px 0px #ca8a04, -4px 6px 10px rgba(0,0,0,0.08);
+            box-shadow: -2px 4px 0px #ca8a04, -4px 8px 15px rgba(0,0,0,0.1);
         }
         .purple { 
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.8), rgba(233, 213, 255, 0.8));
+            background: linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(233, 213, 255, 0.9));
             color: #5b21b6; 
             transform: rotate(-1.5deg);
-            box-shadow: 3px 2px 0px #7c3aed, 5px 5px 10px rgba(0,0,0,0.08);
+            box-shadow: 3px 3px 0px #7c3aed, 5px 8px 15px rgba(0,0,0,0.1);
         }
 
         .sticker-btn:hover {
-            transform: scale(1.05) rotate(0deg);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            transform: scale(1.08) rotate(0deg) translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
             z-index: 10;
         }
 
@@ -180,55 +187,56 @@
 
         /* 【升級】進度條佈局設計 */
         .quiz-header-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .quiz-header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         .progress-text {
-            font-size: 13px;
-            color: #94a3b8;
-            font-weight: bold;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 800;
             letter-spacing: 0.5px;
         }
         .progress-bar-bg {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: #e2e8f0;
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
         .progress-bar-fill {
             height: 100%;
-            background: var(--primary-color);
+            background: linear-gradient(90deg, #4a5568, #1e293b);
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         .back-btn {
             background: #f1f5f9;
             color: #4a5568;
             border: 1px solid #cbd5e1;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .back-btn:hover { background: #e2e8f0; }
+        .back-btn:hover { background: #e2e8f0; transform: translateX(-2px); }
 
         .question-title {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
+            font-weight: 800;
             margin-top: 5px;
             margin-bottom: 25px;
-            color: #1f2937;
+            color: #1e293b;
             line-height: 1.5;
             text-align: left;
         }
@@ -240,21 +248,30 @@
         }
 
         .option-btn {
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            padding: 18px 20px;
-            border-radius: 12px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 20px 22px;
+            border-radius: 14px;
             text-align: left;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 16.5px;
+            font-weight: 600;
+            color: #334155;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease-in-out;
             position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
 
         .option-btn:hover {
-            background: #f3f4f6;
-            border-color: #cbd5e0;
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .option-btn.selected {
+            background: #f1f5f9;
+            border-color: #94a3b8;
         }
 
         .option-btn.selected::after {
@@ -270,36 +287,37 @@
             font-size: 13px;
             font-weight: bold;
             backdrop-filter: blur(2px);
-            animation: stamp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: stamp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes stamp {
             0% { transform: translateY(-50%) scale(2.5); opacity: 0; }
+            50% { transform: translateY(-50%) scale(0.9); opacity: 1; }
             100% { transform: translateY(-50%) scale(1); opacity: 1; }
         }
 
         #export-area {
             background: #ffffff;
-            padding: 12px;
-            border-radius: 16px;
+            padding: 15px;
+            border-radius: 20px;
         }
 
         .profile-card {
             background: #ffffff;
-            border: 2px solid #1e293b;
-            border-radius: 14px;
-            padding: 25px;
+            border: 3px solid #1e293b;
+            border-radius: 16px;
+            padding: 28px;
             text-align: left;
             position: relative;
-            box-shadow: 5px 5px 0px #1e293b;
-            animation: fadeIn 0.4s ease-out;
+            box-shadow: 6px 6px 0px #1e293b;
+            animation: fadeIn 0.5s ease-out;
             color: #1e293b !important;
         }
 
         .profile-header {
             border-bottom: 2px dashed #cbd5e1;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -308,15 +326,15 @@
         .profile-title-area { flex: 1; }
 
         .profile-avatar-box {
-            width: 85px;
-            height: 85px;
-            border-radius: 12px;
-            border: 2px solid #1e293b;
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            border: 3px solid #1e293b;
             overflow: hidden;
             background: #f1f5f9;
             margin-left: 15px;
             flex-shrink: 0;
-            box-shadow: 2px 2px 0px #1e293b;
+            box-shadow: 3px 3px 0px #1e293b;
             position: relative;
             display: flex;
             justify-content: center;
@@ -343,97 +361,105 @@
         }
 
         .profile-badge {
-            font-size: 12px;
+            font-size: 13px;
             background: #1e293b;
             color: #fff;
-            padding: 4px 10px;
-            border-radius: 4px;
+            padding: 5px 12px;
+            border-radius: 6px;
             font-weight: bold;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
         }
 
         .profile-name {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             color: #0f172a;
             margin: 0;
         }
 
         .profile-name span {
-            font-size: 14px;
+            font-size: 15px;
             color: #64748b;
             font-weight: 600;
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .profile-meta {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            font-size: 13.5px;
+            font-size: 14px;
             background: #f8fafc;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #e2e8f0;
         }
 
         .meta-item { line-height: 1.5; }
         .meta-label { font-weight: bold; color: #64748b; }
-        .meta-val { color: #334155; font-weight: 600; }
+        .meta-val { color: #334155; font-weight: 700; }
 
         .profile-body {
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 15.5px;
+            line-height: 1.8;
             color: #334155;
             text-align: justify;
         }
 
         .profile-quote {
             background: #f1f5f9;
-            border-left: 4px solid #475569;
-            padding: 12px 18px;
+            border-left: 5px solid #475569;
+            padding: 14px 20px;
             font-style: italic;
             font-weight: 600;
-            margin-top: 20px;
-            border-radius: 0 8px 8px 0;
-            font-size: 15px;
+            margin-top: 22px;
+            border-radius: 0 10px 10px 0;
+            font-size: 15.5px;
+            color: #1e293b;
         }
 
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             margin-top: 12px;
         }
 
         .trait-tag {
-            font-size: 13px;
-            padding: 4px 12px;
+            font-size: 13.5px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-weight: bold;
-            border: 1px solid #1e293b;
+            border: 1.5px solid #1e293b;
             color: #1e293b;
         }
 
         .action-buttons {
             display: flex;
-            gap: 14px;
+            gap: 16px;
             margin-top: 30px;
             width: 100%;
         }
 
         .action-btn {
             flex: 1;
-            padding: 14px 20px;
-            border-radius: 10px;
+            padding: 16px 20px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 800;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
         }
 
         .restart-btn {
@@ -441,25 +467,27 @@
             color: #1e293b;
             border: 2px solid #1e293b;
         }
-        .restart-btn:hover { background: #f1f5f9; }
+        .restart-btn:hover { background: #f8fafc; }
 
         .pdf-btn {
             background: #1e293b;
             color: white;
-            border: none;
+            border: 2px solid #1e293b;
         }
         .pdf-btn:hover { background: #0f172a; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         footer {
-            margin-top: 35px;
-            font-size: 11.5px;
+            margin-top: 40px;
+            font-size: 13px;
+            font-weight: 600;
             color: #94a3b8;
-            line-height: 1.6;
+            line-height: 1.8;
+            text-align: center;
         }
     </style>
     
@@ -620,9 +648,9 @@
                 const root = document.documentElement;
                 let textColor = '#fff';
                 
-                if (type === 'silver') { root.style.setProperty('--sticker-color', 'rgba(203, 213, 224, 0.7)'); textColor = '#4a5568'; }
-                else if (type === 'gold') { root.style.setProperty('--sticker-color', 'rgba(236, 201, 75, 0.7)'); textColor = '#744210'; }
-                else if (type === 'purple') { root.style.setProperty('--sticker-color', 'rgba(159, 122, 234, 0.7)'); textColor = '#ffffff'; }
+                if (type === 'silver') { root.style.setProperty('--sticker-color', 'rgba(203, 213, 224, 0.85)'); textColor = '#4a5568'; }
+                else if (type === 'gold') { root.style.setProperty('--sticker-color', 'rgba(236, 201, 75, 0.85)'); textColor = '#744210'; }
+                else if (type === 'purple') { root.style.setProperty('--sticker-color', 'rgba(159, 122, 234, 0.85)'); textColor = '#ffffff'; }
                 
                 root.style.setProperty('--sticker-text', textColor);
                 
@@ -744,14 +772,14 @@
                     <div class="profile-quote">
                         「${finalResult.quote}」
                     </div>
-                    <div style="font-size:12px; font-weight:bold; color:#64748b; margin-top:15px; margin-bottom:5px;">▸ 偵測解鎖貼紙標籤：</div>
+                    <div style="font-size:13px; font-weight:800; color:#64748b; margin-top:20px; margin-bottom:8px;">▸ 偵測解鎖貼紙標籤：</div>
                     <div class="tags-container">
                         ${traitHtml}
                     </div>
-                    <div style="position:absolute; right:15px; bottom:15px; opacity:0.15; pointer-events:none;">
-                        <svg width="60" height="60" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" fill="none" stroke="#000" stroke-width="5"/>
-                            <text x="50" y="55" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">PASSED</text>
+                    <div style="position:absolute; right:15px; bottom:15px; opacity:0.1; pointer-events:none;">
+                        <svg width="65" height="65" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#1e293b" stroke-width="5"/>
+                            <text x="50" y="55" font-size="13" font-weight="900" text-anchor="middle" fill="#1e293b">PASSED</text>
                         </svg>
                     </div>
                 `;
@@ -783,7 +811,7 @@
                         colors: burstColors,
                         zIndex: 9999
                     });
-                }, 200);
+                }, 300);
             },
 
             exportPDF: function() {
@@ -847,7 +875,7 @@
         
         <input type="text" id="user-name" class="name-input" placeholder="請輸入您的姓名或暱稱" required>
 
-        <p style="font-size: 15px; font-weight: bold; color: #334155; margin-bottom: 5px;">撕下一張你的專屬貼紙身分：</p>
+        <p style="font-size: 16px; font-weight: 800; color: #334155; margin-bottom: 8px;">撕下一張你的專屬貼紙身分：</p>
         
         <div class="identity-container">
             <button class="sticker-btn silver" onclick="window.jgQuiz.selectIdentity('silver')">國中生</button>
@@ -879,7 +907,7 @@
 
     <!-- 結果頁面 -->
     <div id="result-page" class="hidden">
-        <div style="font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;">▸ 畢聯會大數據精密 analysis：</div>
+        <div style="font-size: 15px; font-weight: 800; color: #64748b; margin-bottom: 12px; text-align: left;">▸ 畢聯會大數據精密 analysis：</div>
         
         <div id="export-area">
             <div class="profile-card" id="profile-card-box"></div>
@@ -892,7 +920,7 @@
     </div>
 
     <footer>
-        新竹市立建功高級中學 X 2026建功畢聯會<br>
+        © 2026 新竹市立建功高級中學 X 建功畢聯會<br>
         Hsinchu Municipal Chien Kung Senior High School
     </footer>
 </div>
