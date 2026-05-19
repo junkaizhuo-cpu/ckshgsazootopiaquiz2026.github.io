@@ -27,6 +27,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* 2. 行動裝置視覺高度優化 */
         }
 
         .container {
@@ -150,19 +151,19 @@
         }
 
         .silver { 
-            background: linear-gradient(135deg, rgba(226, 232, 240, 0.8), rgba(203, 213, 224, 0.8)); 
+            background: linear-gradient(135deg, rgba(226, 232, 240, 0.8), rgba(203, 213, 224, 0.8));
             color: #4a5568; 
             transform: rotate(-3deg);
             box-shadow: 2px 3px 0px #94a3b8, 4px 6px 10px rgba(0,0,0,0.08);
         }
         .gold { 
-            background: linear-gradient(135deg, rgba(254, 226, 226, 0.85), rgba(254, 240, 138, 0.85)); 
+            background: linear-gradient(135deg, rgba(254, 226, 226, 0.85), rgba(254, 240, 138, 0.85));
             color: #713f12; 
             transform: rotate(2deg);
             box-shadow: -2px 3px 0px #ca8a04, -4px 6px 10px rgba(0,0,0,0.08);
         }
         .purple { 
-            background: linear-gradient(135deg, rgba(224, 242, 254, 0.8), rgba(233, 213, 255, 0.8)); 
+            background: linear-gradient(135deg, rgba(224, 242, 254, 0.8), rgba(233, 213, 255, 0.8));
             color: #5b21b6; 
             transform: rotate(-1.5deg);
             box-shadow: 3px 2px 0px #7c3aed, 5px 5px 10px rgba(0,0,0,0.08);
@@ -258,8 +259,10 @@
         }
 
         @keyframes stamp {
-            0% { transform: translateY(-50%) scale(2.5); opacity: 0; }
-            100% { transform: translateY(-50%) scale(1); opacity: 1; }
+            0% { transform: translateY(-50%) scale(2.5);
+            opacity: 0; }
+            100% { transform: translateY(-50%) scale(1);
+            opacity: 1; }
         }
 
         /* ─── 🏆 PDF 擷取目標範圍 ─── */
@@ -431,7 +434,7 @@
             border: 2px solid #1e293b;
         }
         .restart-btn:hover { 
-            background: #f1f5f9; 
+            background: #f1f5f9;
         }
 
         .pdf-btn {
@@ -440,12 +443,14 @@
             border: none;
         }
         .pdf-btn:hover { 
-            background: #0f172a; 
+            background: #0f172a;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0;
+            transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0);
+            }
         }
 
         footer {
@@ -466,7 +471,6 @@
                 const qNum = index + 1;
                 imgTag.style.display = 'block';
                 imgTag.src = `問題${qNum}.png`;
-                
                 imgTag.onerror = function() {
                     this.onerror = function() {
                         this.onerror = function() { 
@@ -487,7 +491,8 @@
                 imgTag.src = '主視覺.jpeg';
                 imgTag.onerror = function() {
                     this.onerror = function() { 
-                        this.onerror = function() { this.style.display = 'none'; };
+                        this.onerror = function() { this.style.display = 'none';
+                        };
                         this.src = '主視覺.png'; 
                     };
                     this.src = '主視覺.jpg';
@@ -598,7 +603,6 @@
                     return;
                 }
                 this.userName = nameInput.value.trim();
-
                 const root = document.documentElement;
                 let textColor = '#fff';
                 
@@ -608,10 +612,13 @@
                 else if (type === 'purple') { root.style.setProperty('--sticker-color', 'rgba(159, 122, 234, 0.7)'); textColor = '#ffffff'; }
                 
                 root.style.setProperty('--sticker-text', textColor);
-
-                document.getElementById('start-page').className = 'hidden';
-                document.getElementById('quiz-page').className = '';
-                this.showQuestion();
+                
+                // 5. 貼紙 UX 優化：延遲 300 毫秒跳轉，讓使用者有視覺回饋
+                setTimeout(() => {
+                    document.getElementById('start-page').className = 'hidden';
+                    document.getElementById('quiz-page').className = '';
+                    this.showQuestion();
+                }, 300);
             },
 
             showQuestion: function() {
@@ -632,7 +639,6 @@
                 }
 
                 ImageEngine.setQuestionImage(this.currentQuestionIndex);
-
                 const optionsBox = document.getElementById('options-box');
                 optionsBox.innerHTML = '';
 
@@ -660,10 +666,9 @@
 
                 this.selectedScores.push(score);
                 this.currentQuestionIndex++;
-
                 setTimeout(() => {
                     this.showQuestion();
-                }, 400); 
+                }, 400);
             },
 
             showResult: function() {
@@ -673,7 +678,6 @@
                 const counts = {};
                 let maxScore = "B";
                 let maxCount = 0;
-
                 this.selectedScores.forEach(score => {
                     counts[score] = (counts[score] || 0) + 1;
                     if (counts[score] > maxCount) {
@@ -681,7 +685,6 @@
                         maxScore = score;
                     }
                 });
-
                 const finalResult = this.results[maxScore];
                 const cardBox = document.getElementById('profile-card-box');
                 
@@ -689,7 +692,6 @@
                 finalResult.traits.forEach(t => {
                     traitHtml += `<span class="trait-tag" style="background:${finalResult.bg}">${t}</span>`;
                 });
-
                 cardBox.innerHTML = `
                     <div class="profile-header">
                         <div class="profile-title-area">
@@ -741,12 +743,13 @@
             },
 
             exportPDF: function() {
-                const element = document.getElementById('export-area'); 
+                const element = document.getElementById('export-area');
                 const opt = {
                     margin:       15,
                     filename:     `${this.userName}_建功畢業生專屬檔案.pdf`,
                     image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                    // 3. PDF 匯出防呆與解析度強化
+                    html2canvas:  { scale: 3, useCORS: true, letterRendering: true, windowWidth: 800, logging: false },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 html2pdf().set(opt).from(element).save();
@@ -766,6 +769,25 @@
 
         window.onload = function() {
             ImageEngine.setWelcomeImage();
+            
+            // 4. 資源路徑圖片預載 (Preload)，防止切題白畫面
+            const preloadImages = [
+                '主視覺.jpeg', '主視覺.png', '主視覺.jpg',
+                '問題1.png', '問題1.jpg', '問題1.jpeg',
+                '問題2.png', '問題2.jpg', '問題2.jpeg',
+                '問題3.png', '問題3.jpg', '問題3.jpeg',
+                '問題4.png', '問題4.jpg', '問題4.jpeg',
+                '問題5.png', '問題5.jpg', '問題5.jpeg',
+                '蠻牛局長.jpeg', '蠻牛局長.png', '蠻牛局長.jpg',
+                '兔子茱蒂.jpeg', '兔子茱蒂.png', '兔子茱蒂.jpg',
+                '狐狸尼克.jpeg', '狐狸尼克.png', '狐狸尼克.jpg',
+                '樹懶快俠.jpeg', '樹懶快俠.png', '樹懶快俠.jpg'
+            ];
+            
+            preloadImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
         };
     </script>
 </head>
@@ -806,7 +828,7 @@
     </div>
 
     <div id="result-page" class="hidden">
-        <div style="font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;">▸ 畢聯會大數據精密分析：</div>
+        <div style="font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;">▸ 畢聯會大數據精密 analysis：</div>
         
         <div id="export-area">
             <div class="profile-card" id="profile-card-box"></div>
