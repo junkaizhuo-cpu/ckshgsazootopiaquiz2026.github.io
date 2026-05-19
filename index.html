@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 建功人請回答！！畢業限定心理測驗</title>
-    <!-- 保留原本的 PDF 輸出套件 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- 【升級】新增 Confetti 撒花特效套件 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -178,37 +176,12 @@
 
         #quiz-page { padding: 10px 0; }
 
-        /* 【升級】進度條佈局設計 */
-        .quiz-header-wrapper {
-            margin-bottom: 20px;
-        }
-        .quiz-header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .progress-text {
-            font-size: 13px;
-            color: #94a3b8;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-        .progress-bar-bg {
-            width: 100%;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 4px;
-        }
+        /* 【升級】進度條與排版佈局 */
+        .quiz-header-wrapper { margin-bottom: 20px; }
+        .quiz-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .progress-text { font-size: 13px; color: #94a3b8; font-weight: bold; letter-spacing: 0.5px; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; position: relative; }
+        .progress-bar-fill { height: 100%; background: var(--primary-color); width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 4px; }
 
         .back-btn {
             background: #f1f5f9;
@@ -233,11 +206,7 @@
             text-align: left;
         }
 
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        .options-container { display: flex; flex-direction: column; gap: 16px; }
 
         .option-btn {
             background: #f9fafb;
@@ -252,10 +221,7 @@
             position: relative;
         }
 
-        .option-btn:hover {
-            background: #f3f4f6;
-            border-color: #cbd5e0;
-        }
+        .option-btn:hover { background: #f3f4f6; border-color: #cbd5e0; }
 
         .option-btn.selected::after {
             content: '✓ 已貼上';
@@ -278,11 +244,7 @@
             100% { transform: translateY(-50%) scale(1); opacity: 1; }
         }
 
-        #export-area {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 16px;
-        }
+        #export-area { background: #ffffff; padding: 12px; border-radius: 16px; }
 
         .profile-card {
             background: #ffffff;
@@ -296,15 +258,7 @@
             color: #1e293b !important;
         }
 
-        .profile-header {
-            border-bottom: 2px dashed #cbd5e1;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .profile-header { border-bottom: 2px dashed #cbd5e1; padding-bottom: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-title-area { flex: 1; }
 
         .profile-avatar-box {
@@ -323,144 +277,47 @@
             align-items: center;
         }
 
-        .profile-avatar-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 3;
-        }
+        .profile-avatar-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 3; }
+        .profile-avatar-box .avatar-svg-fallback { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2; }
 
-        .profile-avatar-box .avatar-svg-fallback {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 2;
-        }
+        .profile-badge { font-size: 12px; background: #1e293b; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 8px; }
+        .profile-name { font-size: 24px; font-weight: 800; color: #0f172a; margin: 0; }
+        .profile-name span { font-size: 14px; color: #64748b; font-weight: 600; display: block; margin-top: 4px; }
 
-        .profile-badge {
-            font-size: 12px;
-            background: #1e293b;
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 800;
-            color: #0f172a;
-            margin: 0;
-        }
-
-        .profile-name span {
-            font-size: 14px;
-            color: #64748b;
-            font-weight: 600;
-            display: block;
-            margin-top: 4px;
-        }
-
-        .profile-meta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            font-size: 13.5px;
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
+        .profile-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13.5px; background: #f8fafc; padding: 14px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .meta-item { line-height: 1.5; }
         .meta-label { font-weight: bold; color: #64748b; }
         .meta-val { color: #334155; font-weight: 600; }
 
-        .profile-body {
-            font-size: 15px;
-            line-height: 1.7;
-            color: #334155;
-            text-align: justify;
-        }
+        .profile-body { font-size: 15px; line-height: 1.7; color: #334155; text-align: justify; }
+        .profile-quote { background: #f1f5f9; border-left: 4px solid #475569; padding: 12px 18px; font-style: italic; font-weight: 600; margin-top: 20px; border-radius: 0 8px 8px 0; font-size: 15px; }
 
-        .profile-quote {
-            background: #f1f5f9;
-            border-left: 4px solid #475569;
-            padding: 12px 18px;
-            font-style: italic;
-            font-weight: 600;
-            margin-top: 20px;
-            border-radius: 0 8px 8px 0;
-            font-size: 15px;
-        }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .trait-tag { font-size: 13px; padding: 4px 12px; border-radius: 20px; font-weight: bold; border: 1px solid #1e293b; color: #1e293b; }
 
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
+        /* ─── 📊 【升級】即時戰報數據圖表樣式 ─── */
+        .stats-container { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 14px; padding: 20px; margin-top: 25px; text-align: left; }
+        .stats-title { font-size: 15px; font-weight: 800; color: #1e293b; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .stats-row { margin-bottom: 12px; }
+        .stats-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 5px; }
+        .stats-bar-bg { width: 100%; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+        .stats-bar-fill { height: 100%; width: 0%; border-radius: 5px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .color-A { background: #dc2626; } /* 蠻牛紅 */
+        .color-B { background: #ca8a04; } /* 茱蒂黃 */
+        .color-C { background: #9333ea; } /* 尼克紫 */
+        .color-D { background: #16a34a; } /* 快俠綠 */
+        .loading-text { text-align: center; font-size: 13px; color: #64748b; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .trait-tag {
-            font-size: 13px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            border: 1px solid #1e293b;
-            color: #1e293b;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 14px;
-            margin-top: 30px;
-            width: 100%;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 14px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-        }
-
-        .restart-btn {
-            background: #ffffff;
-            color: #1e293b;
-            border: 2px solid #1e293b;
-        }
+        .action-buttons { display: flex; gap: 14px; margin-top: 30px; width: 100%; }
+        .action-btn { flex: 1; padding: 14px 20px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.2s; }
+        .restart-btn { background: #ffffff; color: #1e293b; border: 2px solid #1e293b; }
         .restart-btn:hover { background: #f1f5f9; }
-
-        .pdf-btn {
-            background: #1e293b;
-            color: white;
-            border: none;
-        }
+        .pdf-btn { background: #1e293b; color: white; border: none; }
         .pdf-btn:hover { background: #0f172a; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            margin-top: 35px;
-            font-size: 11.5px;
-            color: #94a3b8;
-            line-height: 1.6;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        footer { margin-top: 35px; font-size: 11.5px; color: #94a3b8; line-height: 1.6; }
     </style>
     
     <script>
@@ -500,11 +357,12 @@
         };
 
         window.jgQuiz = {
+            // 📊 已成功與你的後端自動化連結
+            GAS_URL: "https://script.google.com/macros/s/AKfycbyGeFfahFtnInVxnXx8TqMx6i2Zb5KvyBJBp8aS9jEJFSI4P7HRoc9rjU-kgKM5frFWjw/exec", 
             currentQuestionIndex: 0,
             selectedScores: [],
             userName: "",
             
-            // 【保留】所有題目與選項完全不變
             questions: [
                 {
                     title: "明天要考試，今天晚上我會選擇...",
@@ -548,7 +406,6 @@
                 }
             ],
 
-            // 【保留】所有角色結果完全不變
             results: {
                 "A": {
                     badge: "2026 頂峰執行者檔案",
@@ -596,15 +453,13 @@
                 }
             },
 
-            // 【升級】自定義平滑轉場控制函式
+            // 【升級】頁面轉場控制邏輯
             switchPage: function(hideId, showId) {
                 document.getElementById(hideId).classList.add('hidden');
                 const showEl = document.getElementById(showId);
                 showEl.classList.remove('hidden');
-                
-                // 強制重啟 CSS 動畫，讓轉場每次都生效
                 showEl.style.animation = 'none';
-                showEl.offsetHeight; /* trigger reflow */
+                showEl.offsetHeight; 
                 showEl.style.animation = null;
                 showEl.classList.add('page-transition');
             },
@@ -627,7 +482,6 @@
                 root.style.setProperty('--sticker-text', textColor);
                 
                 setTimeout(() => {
-                    // 使用升級的轉場切換
                     this.switchPage('start-page', 'quiz-page');
                     this.showQuestion();
                 }, 300);
@@ -642,7 +496,7 @@
                 const q = this.questions[this.currentQuestionIndex];
                 document.getElementById('progress').innerText = `QUESTION ${this.currentQuestionIndex + 1} / ${this.questions.length}`;
                 
-                // 【升級】動態更新進度條寬度
+                // 【升級】控制進度條平滑延展
                 const progressFill = document.getElementById('progress-fill');
                 const percentage = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
                 progressFill.style.width = percentage + '%';
@@ -673,14 +527,6 @@
                 if (this.currentQuestionIndex > 0) {
                     this.currentQuestionIndex--;
                     this.selectedScores.pop();
-                    
-                    // 【升級】讓進度條也具備返回動畫
-                    const showEl = document.getElementById('quiz-page');
-                    showEl.style.animation = 'none';
-                    showEl.offsetHeight; 
-                    showEl.style.animation = null;
-                    showEl.classList.add('page-transition');
-
                     this.showQuestion();
                 }
             },
@@ -698,7 +544,6 @@
             },
 
             showResult: function() {
-                // 使用升級的轉場切換
                 this.switchPage('quiz-page', 'result-page');
 
                 const counts = {};
@@ -765,25 +610,47 @@
                     this.src = `${finalResult.characterName}.jpg`;
                 };
 
-                // 【升級】依據動物角色啟動對應色彩的 Confetti 撒花特效
+                // 【升級】啟動色彩對應的彩色 Confetti 特效
                 const confettiColorMap = {
-                    "A": ["#dc2626", "#ef4444", "#fee2e2"], // 蠻牛局長（紅）
-                    "B": ["#ca8a04", "#eab308", "#fef9c3"], // 兔子茱蒂（黃）
-                    "C": ["#9333ea", "#a855f7", "#fae8ff"], // 狐狸尼克（紫）
-                    "D": ["#16a34a", "#22c55e", "#dcfce7"]  // 樹懶快俠（綠）
+                    "A": ["#dc2626", "#ef4444", "#fee2e2"],
+                    "B": ["#ca8a04", "#eab308", "#fef9c3"],
+                    "C": ["#9333ea", "#a855f7", "#fae8ff"],
+                    "D": ["#16a34a", "#22c55e", "#dcfce7"]
                 };
                 const burstColors = confettiColorMap[maxScore] || ['#4a5568', '#a0aec0'];
-                
-                // 延遲一點點讓轉場動畫先跑，再噴發碎紙花效果更好
                 setTimeout(() => {
-                    confetti({
-                        particleCount: 150,
-                        spread: 80,
-                        origin: { y: 0.6 },
-                        colors: burstColors,
-                        zIndex: 9999
-                    });
+                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: burstColors, zIndex: 9999 });
                 }, 200);
+
+                // 📊 【升級】數據非同步傳送到 Google Sheets 後台並即時繪製統計圖
+                this.fetchStatistics(maxScore);
+            },
+
+            // 📊 【升級】大數據統計圖非同步獲取函式
+            fetchStatistics: function(userResult) {
+                if (!this.GAS_URL || this.GAS_URL.includes("填入")) {
+                    document.getElementById('stats-box').style.display = 'none'; return;
+                }
+                const formData = new URLSearchParams();
+                formData.append('result', userResult);
+
+                fetch(this.GAS_URL, { method: 'POST', body: formData, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('stats-loading').classList.add('hidden');
+                    document.getElementById('stats-content').classList.remove('hidden');
+                    document.getElementById('total-players').innerText = `共 ${data.total} 人參與`;
+                    setTimeout(() => {
+                        ['A', 'B', 'C', 'D'].forEach(type => {
+                            const percent = data[type] || 0;
+                            document.getElementById(`pct-${type}`).innerText = percent + '%';
+                            document.getElementById(`bar-${type}`).style.width = percent + '%';
+                        });
+                    }, 100);
+                })
+                .catch(error => {
+                    document.getElementById('stats-loading').innerText = "連線擁擠，暫時無法顯示戰報 😢";
+                });
             },
 
             exportPDF: function() {
@@ -803,8 +670,9 @@
                 this.selectedScores = [];
                 this.userName = "";
                 document.getElementById('user-name').value = '';
+                document.getElementById('stats-loading').classList.remove('hidden');
+                document.getElementById('stats-content').classList.add('hidden');
                 
-                // 使用升級的轉場切換回到首頁
                 this.switchPage('result-page', 'start-page');
                 ImageEngine.setWelcomeImage();
             }
@@ -856,14 +724,12 @@
         </div>
     </div>
 
-    <!-- 測驗頁面 -->
     <div id="quiz-page" class="hidden">
         <div class="quiz-header-wrapper">
             <div class="quiz-header-top">
                 <div id="progress" class="progress-text"></div>
                 <button id="back-btn" class="back-btn hidden" onclick="window.jgQuiz.goBack()">← 上一題</button>
             </div>
-            <!-- 【升級】視覺化動態進度條 HTML 結構 -->
             <div class="progress-bar-bg">
                 <div id="progress-fill" class="progress-bar-fill"></div>
             </div>
@@ -877,12 +743,25 @@
         <div class="options-container" id="options-box"></div>
     </div>
 
-    <!-- 結果頁面 -->
     <div id="result-page" class="hidden">
         <div style="font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;">▸ 畢聯會大數據精密 analysis：</div>
         
         <div id="export-area">
             <div class="profile-card" id="profile-card-box"></div>
+            
+            <div class="stats-container" id="stats-box">
+                <div class="loading-text" id="stats-loading">📡 正在同步建功動物城即時戰報...</div>
+                <div id="stats-content" class="hidden">
+                    <div class="stats-title">
+                        <span>🔥 建功動物城即時人口佔比</span>
+                        <span id="total-players" style="font-size: 12px; color: #64748b;">共 0 人參與</span>
+                    </div>
+                    <div class="stats-row"><div class="stats-label"><span>蠻牛局長 (頂峰執行者)</span><span id="pct-A">0%</span></div><div class="stats-bar-bg"><div class="stats-bar-fill color-A" id="bar-A"></div></div></div>
+                    <div class="stats-row"><div class="stats-label"><span>兔子茱蒂 (活力夢想家)</span><span id="pct-B">0%</span></div><div class="stats-bar-bg"><div class="stats-bar-fill color-B" id="bar-B"></div></div></div>
+                    <div class="stats-row"><div class="stats-label"><span>狐狸尼克 (智商天花板)</span><span id="pct-C">0%</span></div><div class="stats-bar-bg"><div class="stats-bar-fill color-C" id="bar-C"></div></div></div>
+                    <div class="stats-row"><div class="stats-label"><span>樹懶快俠 (校園守護神)</span><span id="pct-D">0%</span></div><div class="stats-bar-bg"><div class="stats-bar-fill color-D" id="bar-D"></div></div></div>
+                </div>
+            </div>
         </div>
         
         <div class="action-buttons">
