@@ -221,7 +221,6 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
             animation: stamp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -359,12 +358,13 @@
 (function() {
     const questions = [
         { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
-        { title: "考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
+        { title: "開考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
         { title: "關於上學...", options: [{ text: "#上課有認真聽", score: "C" }, { text: "#有來學校就很棒了", score: "B" }] },
         { title: "下課時和好朋友兩個人在窗邊...", options: [{ text: "#高山流水遇知音", score: "A" }, { text: "#低山臭水遇噪音", score: "D" }] },
         { title: "面對未來的困難...", options: [{ text: "#放馬過來", score: "A" }, { text: "#放我一馬", score: "D" }] }
     ];
 
+    // 🌟 修正點：這裡是內部變數 results
     const results = {
         "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
         "B": { badge: "2026 活力夢想家檔案", name: "兔子茱蒂 × 體育股長", characterName: "兔子茱蒂", bg: "#fef9c3", meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！", quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" },
@@ -483,6 +483,7 @@
                 if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
             });
 
+            // 🌟 核心Bug修正：直接讀取閉包變數 results 
             const finalResult = results[maxScore];
             
             document.getElementById('result-header-text').innerText = `▸ 偵測 [${this.userName}] 的大數據精密 analysis：`;
@@ -530,22 +531,30 @@
             const ctx = canvas.getContext('2d');
             
             canvas.width = 500;
-            canvas.height = 680;
+            canvas.height = 700;
 
-            ctx.fillStyle = "#ffffff";
+            // 🎨 新增：建立漸層背景色，呼應手繪背景圖的色調
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, "#fdf2f8"); 
+            gradient.addColorStop(1, "#f3e8ff"); 
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.lineWidth = 4;
+
+            // 內層卡片底座
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(20, 20, canvas.width - 40, canvas.height - 40);
+            ctx.lineWidth = 3;
             ctx.strokeStyle = "#0f172a";
-            ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
 
             ctx.fillStyle = "#0f172a";
-            ctx.font = "bold 24px sans-serif";
-            ctx.fillText(this.userName + " 的專屬存檔", 30, 60);
+            ctx.font = "bold 20px sans-serif";
+            ctx.fillText(this.userName + " 的專屬報告檔案", 45, 65);
 
-            ctx.strokeStyle = "#cbd5e1";
+            ctx.strokeStyle = "#e2e8f0";
             ctx.lineWidth = 2;
             ctx.setLineDash([6, 4]);
-            ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(45, 95); ctx.lineTo(455, 95); ctx.stroke();
             ctx.setLineDash([]); 
 
             const pName = targetNode.querySelector('.profile-name')?.innerText || "";
@@ -553,70 +562,88 @@
             const pBody = targetNode.querySelector('.profile-body')?.innerText || "";
             const pQuote = targetNode.querySelector('.profile-quote')?.innerText || "";
 
-            ctx.fillStyle = "#0f172a";
-            ctx.font = "14px sans-serif";
-            ctx.fillText("【系統歸屬】 " + pBadge, 30, 135);
+            ctx.fillStyle = "#64748b";
+            ctx.font = "bold 12px sans-serif";
+            ctx.fillText(pBadge, 45, 130);
             
-            ctx.font = "bold 26px sans-serif";
-            ctx.fillText(pName, 30, 175);
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 24px sans-serif";
+            ctx.fillText(pName, 45, 168);
 
+            // 數據區底座
             ctx.fillStyle = "#f8fafc";
-            ctx.fillRect(30, 205, 440, 90);
-            ctx.strokeStyle = "#edf2f7";
-            ctx.strokeRect(30, 205, 440, 90);
+            ctx.fillRect(45, 195, 410, 110);
+            ctx.strokeStyle = "#0f172a";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(45, 195, 410, 110);
 
-            ctx.fillStyle = "#334155";
+            ctx.fillStyle = "#4a5568";
             ctx.font = "bold 13px sans-serif";
             
             const metaVals = targetNode.querySelectorAll('.meta-val');
-            const val1 = metaVals[0]?.innerText || "BOGO-BOSS-01";
-            const val2 = metaVals[1]?.innerText || "鐵血行動派";
-            const val3 = metaVals[2]?.innerText || "98%";
-            const val4 = metaVals[3]?.innerText || "建功高中";
+            const val1 = metaVals[0]?.innerText || "";
+            const val2 = metaVals[1]?.innerText || "";
+            const val3 = metaVals[2]?.innerText || "";
+            const val4 = metaVals[3]?.innerText || "";
 
-            ctx.fillText("安全編號: " + val1, 45, 235);
-            ctx.fillText("特質歸屬: " + val2, 250, 235);
-            ctx.fillText("危險系數: " + val3, 45, 270);
+            ctx.fillText("安全編號：" + val1, 60, 225);
+            ctx.fillText("危險系數：" + val3, 60, 255);
+            ctx.fillText("特質歸屬：" + val2, 60, 285);
             
-            let placeStr = "主要出沒: " + val4;
-            if(placeStr.length > 18) placeStr = placeStr.substring(0, 17) + "...";
-            ctx.fillText(placeStr, 250, 270);
+            // 處理主要出沒地點換行（解決長文字切除）
+            ctx.fillText("主要出沒：", 240, 225);
+            ctx.fillStyle = "#0f172a";
+            let placeWord1 = val4.substring(0, 10);
+            let placeWord2 = val4.substring(10);
+            ctx.fillText(placeWord1, 310, 225);
+            if(placeWord2) {
+                ctx.fillText(placeWord2, 310, 245);
+            }
 
-            ctx.fillStyle = "#334155";
-            ctx.font = "15px sans-serif";
+            // 描述區本文
+            ctx.fillStyle = "#1e293b";
+            ctx.font = "14px sans-serif";
             
-            function wrapText(context, text, x, y, maxWidth, lineHeight) {
-                let words = text.split('');
-                let line = '';
-                for(let n = 0; n < words.length; n++) {
-                    let testLine = line + words[n];
-                    let metrics = context.measureText(testLine);
-                    let testWidth = metrics.width;
-                    if (testWidth > maxWidth && n > 0) {
-                        context.fillText(line, x, y);
-                        line = words[n];
+            function wrapCanvasText(context, text, x, y, maxWidth, lineHeight) {
+                let chunks = text.split('');
+                let currentLine = '';
+                for(let i = 0; i < chunks.length; i++) {
+                    let test = currentLine + chunks[i];
+                    if (context.measureText(test).width > maxWidth && i > 0) {
+                        context.fillText(currentLine, x, y);
+                        currentLine = chunks[i];
                         y += lineHeight;
-                    } else { line = testLine; }
+                    } else { currentLine = test; }
                 }
-                context.fillText(line, x, y);
+                context.fillText(currentLine, x, y);
                 return y;
             }
-            let endY = wrapText(ctx, pBody, 30, 335, 430, 24);
+            let textEndY = wrapCanvasText(ctx, pBody, 45, 345, 400, 24);
 
+            // 經典語錄底座
             ctx.fillStyle = "#f1f5f9";
-            ctx.fillRect(30, endY + 20, 440, 45);
+            ctx.fillRect(45, textEndY + 20, 410, 45);
+            ctx.borderLeft = "4px solid #000";
+            
             ctx.fillStyle = "#0f172a";
-            ctx.font = "italic bold 14px sans-serif";
-            ctx.fillText(pQuote, 45, endY + 47);
+            ctx.font = "italic bold 13.5px sans-serif";
+            ctx.fillText(pQuote, 60, textEndY + 47);
 
-            ctx.strokeStyle = "rgba(15,23,42,0.15)";
-            ctx.lineWidth = 4;
-            ctx.beginPath(); ctx.arc(410, 600, 40, 0, 2 * Math.PI); ctx.stroke();
-            ctx.fillStyle = "rgba(15,23,42,0.15)";
-            ctx.font = "bold 11px sans-serif";
-            ctx.fillText("PASSED", 390, 604);
+            // 浮水印章
+            ctx.strokeStyle = "rgba(15,23,42,0.1)";
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(400, 610, 35, 0, 2 * Math.PI); ctx.stroke();
+            ctx.fillStyle = "rgba(15,23,42,0.1)";
+            ctx.font = "bold 10px sans-serif";
+            ctx.fillText("PASSED", 382, 614);
 
-            const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+            // 簽名聯
+            ctx.fillStyle = "#94a3b8";
+            ctx.font = "10px sans-serif";
+            ctx.fillText("新竹市立建功高級中學 X 2026建功畢聯會", 45, 660);
+
+            // 自動觸發下載
+            const dataURL = canvas.toDataURL('image/jpeg', 0.95);
             const downloadLink = document.createElement('a');
             downloadLink.href = dataURL;
             downloadLink.download = `${this.userName}_建功畢業鑑定報告.jpg`;
