@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 建功人請回答！！畢業限定心理測驗</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* ==============================
            🎨 全域設計系統與現代配色
            ============================== */
         :root {
             --primary-color: #4a5568;
-            --card-bg: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(255, 255, 255, 0.45); /* 調高背景白底透明度，增加閱讀對比 */
             --sticker-color: #cbd5e0;
-            --text-main: #ffffff;
-            --text-muted: #e2e8f0;
+            --text-main: #1e293b; /* 改為深灰藍色，增加對比 */
+            --text-muted: #475569; /* 改為中灰色 */
         }
         
         * {
@@ -24,7 +24,7 @@
 
         body {
             font-family: 'PingFang TC', 'SF Pro TC', 'Microsoft JhengHei', sans-serif;
-            background-color: #1a1a1a;
+            background-color: #f8fafc;
             color: var(--text-main);
             margin: 0;
             padding: 16px;
@@ -35,7 +35,7 @@
             line-height: 1.5;
         }
 
-        /* 🌆 全螢幕滿版背景圖：對應 GitHub 上的 背景.jpeg */
+        /* 🌆 全螢幕滿版背景圖 */
         #quiz-container {
             width: 100vw;
             height: 100vh;
@@ -52,18 +52,18 @@
             z-index: 1;
         }
 
-        /* 🔮 磨砂玻璃卡片（輕透果凍感） */
+        /* 🔮 磨砂玻璃卡片 */
         .container {
             max-width: 500px;
             width: 100%;
             background: var(--card-bg);
             border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
             padding: 28px 24px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: relative;
             z-index: 2;
             max-height: 90vh;
@@ -73,13 +73,13 @@
         .container::-webkit-scrollbar { width: 0px; }
 
         h1 {
-            color: #ffffff;
-            font-size: 24px;
+            color: #1e293b;
+            font-size: 25px;
             font-weight: 900;
             margin-top: 5px;
             margin-bottom: 12px;
             letter-spacing: 0.5px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 5px rgba(255,255,255,0.8); /* 改為亮色光暈 */
         }
 
         .subtitle {
@@ -88,13 +88,25 @@
             line-height: 1.6;
             margin-bottom: 24px;
             text-align: justify;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
         }
 
         .hidden { display: none !important; }
 
-        /* ─── 🖼️ 插圖容器 ─── */
-        .welcome-illustration, .scene-illustration {
+        /* ─── 🖼️ 插圖容器 (修復框線超出問題) ─── */
+        .welcome-illustration {
+            width: 100%;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* 強制裁切圓角，圖片不突出 */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* 改為外陰影更自然 */
+        }
+        
+        .scene-illustration { 
             width: 100%;
             height: 160px;
             border-radius: 16px;
@@ -102,34 +114,33 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.9); 
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: fadeIn 0.35s ease-out; 
         }
-        
-        .welcome-illustration { background: transparent; border: none; } /* 去除原本白底讓圖片更自然 */
-        .scene-illustration { background: rgba(255, 255, 255, 0.9); animation: fadeIn 0.35s ease-out; }
 
-        /* ─── 📝 姓名輸入框設計 ─── */
+        /* ─── 📝 姓名輸入框設計 (調整為深字) ─── */
         .name-input {
             width: 100%;
             padding: 14px 16px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            background: rgba(0, 0, 0, 0.3);
-            color: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.7);
+            color: #1e293b;
             font-size: 16px;
+            font-weight: bold;
             margin-bottom: 20px;
             outline: none;
             transition: all 0.3s ease;
             text-align: center;
         }
         .name-input:focus {
-            border-color: #cbd5e0;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+            border-color: #64748b;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
         }
-        .name-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .name-input::placeholder { color: rgba(71, 85, 105, 0.6); font-weight: normal; }
 
         /* ─── 🏷️ 身分貼紙按鈕區 ─── */
         .identity-container {
@@ -147,17 +158,17 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             text-align: center;
         }
         .sticker-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
 
-        .silver { background: linear-gradient(135deg, #f1f5f9, #cbd5e1); color: #334155; border: 1px solid #cbd5e1; }
+        .silver { background: linear-gradient(135deg, #f8fafc, #e2e8f0); color: #334155; border: 1px solid #cbd5e1; }
         .gold { background: linear-gradient(135deg, #fef08a, #eab308); color: #713f12; border: 1px solid #eab308; }
-        .purple { background: linear-gradient(135deg, #c084fc, #a855f7); color: #ffffff; border: 1px solid #a855f7; }
+        .purple { background: linear-gradient(135deg, #d8b4fe, #a855f7); color: #ffffff; border: 1px solid #a855f7; }
 
         /* ─── 🖊️ 題目區與互動選項 ─── */
         .quiz-header {
@@ -169,31 +180,33 @@
 
         .progress-text {
             font-size: 12px;
-            color: #e2e8f0;
-            font-weight: bold;
+            color: #475569;
+            font-weight: 800;
             letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.6);
+            color: #1e293b;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             padding: 4px 10px;
             border-radius: 8px;
             font-size: 12px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .back-btn:hover { background: rgba(255, 255, 255, 0.25); }
+        .back-btn:hover { background: #ffffff; }
 
         .question-title {
             font-size: 19px;
             font-weight: 800;
             margin-bottom: 24px;
-            color: #ffffff;
+            color: #1e293b;
             line-height: 1.4;
             text-align: left;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
         }
 
         .options-container {
@@ -203,8 +216,8 @@
         }
 
         .option-btn {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0,0,0,0.1);
             padding: 16px 20px;
             border-radius: 14px;
             text-align: left;
@@ -215,10 +228,12 @@
             transition: all 0.2s ease;
             position: relative;
             line-height: 1.4;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         .option-btn:hover {
             background: #ffffff;
             transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .option-btn.selected::after {
@@ -276,7 +291,7 @@
             border: 2.5px solid #0f172a;
             flex-shrink: 0;
             overflow: hidden;
-            background-color: #f1f5f9; /* 當圖片載入失敗時的底色 */
+            background-color: #f1f5f9;
         }
 
         .profile-title-block { flex-grow: 1; }
@@ -381,16 +396,16 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.2s;
             border: 2px solid;
         }
 
-        .restart-btn { background: #ffffff; color: #0f172a; border-color: #ffffff; }
-        .restart-btn:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+        .restart-btn { background: #ffffff; color: #0f172a; border-color: #e2e8f0; }
+        .restart-btn:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-1px); }
 
-        .pdf-btn { background: #0f172a; color: #ffffff; border-color: #0f172a; }
-        .pdf-btn:hover { background: #1e293b; transform: translateY(-1px); }
+        .png-btn { background: #0f172a; color: #ffffff; border-color: #0f172a; }
+        .png-btn:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px); }
@@ -400,10 +415,10 @@
         footer {
             margin-top: 20px;
             font-size: 11px;
-            color: rgba(255,255,255,0.6);
+            color: #475569;
             line-height: 1.6;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.6);
         }
     </style>
 </head>
@@ -415,7 +430,7 @@
         <div id="start-page">
             <h1>2026 建功人請回答！！</h1>
             <div class="welcome-illustration">
-                <img src="主視覺.png" alt="2026建功主視覺" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
+                <img src="主視覺.png" alt="2026建功主視覺" style="width: 100%; height: auto; display: block; object-fit: cover;">
             </div>
             <p class="subtitle">
                 這面牆是畢聯會為建功人設計的互動板，準備迎接即將到來的畢業典禮。以下問題請各位如實回答，不計分也無獎喔，希望大家可以透過這面牆面對更真實的自己~~
@@ -423,7 +438,7 @@
             
             <input type="text" id="user-name" class="name-input" placeholder="請輸入您的姓名或暱稱" required>
 
-            <p style="font-size: 14px; font-weight: bold; color: #ffffff; margin-bottom: 12px; text-align: left;">請點選你的貼紙身份開始：</p>
+            <p style="font-size: 14px; font-weight: 900; color: #1e293b; margin-bottom: 12px; text-align: left; text-shadow: 0 1px 2px rgba(255,255,255,0.8);">請點選你的貼紙身份開始：</p>
             <div class="identity-container">
                 <button class="sticker-btn silver" onclick="window.jgQuiz.selectIdentity('silver')">銀色貼紙：國中生</button>
                 <button class="sticker-btn gold" onclick="window.jgQuiz.selectIdentity('gold')">金色貼紙：高中生</button>
@@ -442,7 +457,7 @@
         </div>
 
         <div id="result-page" class="hidden">
-            <div style="font-size: 14px; font-weight: bold; color: #e2e8f0; margin-bottom: 10px; text-align: left;">▸ 畢聯會大數據精密分析：</div>
+            <div style="font-size: 14px; font-weight: 900; color: #1e293b; margin-bottom: 10px; text-align: left; text-shadow: 0 1px 2px rgba(255,255,255,0.8);">▸ 畢聯會大數據精密分析：</div>
             
             <div id="export-area">
                 <div class="profile-card" id="profile-card-box"></div>
@@ -450,7 +465,7 @@
 
             <div class="action-buttons">
                 <button class="action-btn restart-btn" onclick="window.jgQuiz.resetQuiz()">再測一次</button>
-                <button class="action-btn pdf-btn" onclick="window.jgQuiz.exportPDF()">📥 匯出 PDF</button>
+                <button class="action-btn png-btn" onclick="window.jgQuiz.exportPNG()">📥 儲存紀念卡 (PNG)</button>
             </div>
         </div>
 
@@ -530,8 +545,7 @@
         "C": {
             badge: "2026 智商天花板檔案",
             name: "狐狸尼克 × 學生會學霸",
-            bg: "transparent", /* 取消原本的紫色底色以突顯照片 */
-            // ✅ 串接：對應 GitHub 上的 狐狸尼克.jpg
+            bg: "transparent", 
             avatarSvg: `<img src="狐狸尼克.jpg" alt="狐狸尼克" style="width: 100%; height: 100%; object-fit: cover;">`,
             meta: { code: "NICK-WILD-99", danger: "65% (智商壓制)", place: "學生會辦公室 / 頒獎台中央", type: "從容智謀派" },
             traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"],
@@ -653,12 +667,12 @@
             const cardBox = document.getElementById('profile-card-box');
             
             let traitHtml = '';
-            // 若為圖片(C)時標籤沿用原本的紫色(#fae8ff)
             const tagBg = finalResult.bg === "transparent" ? "#fae8ff" : finalResult.bg;
             finalResult.traits.forEach(t => {
                 traitHtml += `<span class="trait-tag" style="background:${tagBg}">${t}</span>`;
             });
 
+            /* ✅ 修改：安全編號 -> 動物代碼 */
             cardBox.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar" style="background:${finalResult.bg}">
@@ -673,7 +687,7 @@
                     </div>
                 </div>
                 <div class="profile-meta">
-                    <div class="meta-item"><span class="meta-label">安全編號：</span><span class="meta-val">${finalResult.meta.code}</span></div>
+                    <div class="meta-item"><span class="meta-label">動物代碼：</span><span class="meta-val">${finalResult.meta.code}</span></div>
                     <div class="meta-item"><span class="meta-label">特質歸屬：</span><span class="meta-val">${finalResult.meta.type}</span></div>
                     <div class="meta-item"><span class="meta-label">危險系數：</span><span class="meta-val">${finalResult.meta.danger}</span></div>
                     <div class="meta-item"><span class="meta-label">主要出沒：</span><span class="meta-val">${finalResult.meta.place}</span></div>
@@ -697,18 +711,21 @@
             `;
         },
 
-        exportPDF: function() {
-            const element = document.getElementById('export-area');
+        /* ✅ 修改：改用 html2canvas 匯出高畫質 PNG */
+        exportPNG: function() {
+            const element = document.getElementById('profile-card-box'); // 只抓卡片本身
             
-            const opt = {
-                margin:       10,
-                filename:     `${userName}_建功畢業生專屬檔案.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save();
+            // 使用 scale: 3 來確保高畫質，並指定白底防透明破圖
+            html2canvas(element, { 
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${userName}_建功畢業生專屬檔案.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            });
         },
 
         resetQuiz: function() {
