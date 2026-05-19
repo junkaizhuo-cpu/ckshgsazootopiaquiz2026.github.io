@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zootopia 心靈鑑定特區 | 你是哪種動物？</title>
+    <style>
+        /* ==============================
+           🎨 核心樣式與配色 (Zootopia Theme)
+           ============================== */
+        :root {
+            --color-primary: #3498db; /* 哈茱蒂藍 */
+            --color-secondary: #e67e22; /* 胡尼克橘 */
+            --color-accent: #2c3e50; /* 警局深藍 */
+            --color-text: #333;
+            --color-bg: #f4f7f6;
+            --transition-speed: 0.5s;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden; /* 防止橫向捲動 */
+        }
+
+        /* 通用元件 */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn var(--transition-speed) ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==============================
+           🌇 [首頁] 歡迎區塊 
+           ============================== */
+        #welcome-screen {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            /* 滿版背景：建議替換成 Zootopia 天際線的高清圖 */
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
+                              url('https://images.unsplash.com/photo-1518640165980-d3e0e2ba6c1e?q=80&w=1920'); 
+            background-size: cover;
+            background-position: center;
+            z-index: 10;
+            transition: transform var(--transition-speed) ease-in-out;
+        }
+
+        /* 標題與視覺 */
+        .site-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #eee, #fff, var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        .site-subtitle {
+            font-size: 1.5rem;
+            color: #f1c40f; /* 閃亮黃 */
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* 角色大圖 (示意，之後可換) */
+        .character-visual {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        .character-visual div {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 4px solid white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+        .char-judy { background-image: url('https://i.imgur.com/8N69f1r.png'); /* 替換 Judy 圖片 */ }
+        .char-nick { background-image: url('https://i.imgur.com/V7M3Z5e.png'); /* 替換 Nick 圖片 */ }
+
+        /* 開始按鈕：閃爍酷炫效果 */
+        .start-btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background-color: var(--color-primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse-border 2s infinite;
+        }
+
+        .start-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05) translateY(-2px);
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        /* 當首頁被點擊後，整頁往上滑動隱藏 */
+        #welcome-screen.page-up {
+            transform: translateY(-100vh);
+        }
+
+        /* ==============================
+           🖊️ [測驗區] 容器與題目 
+           ============================== */
+        #quiz-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease var(--transition-speed);
+        }
+
+        #quiz-container.show-quiz {
+            opacity: 1;
+        }
+
+        .quiz-box {
+            max-width: 650px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .quiz-title {
+            text-align: center;
+            color: var(--color-accent);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            border-bottom: 3px solid var(--color-primary);
+            display: inline-block;
+            left: 50%; transform: translateX(-50%); position: relative;
+        }
+
+        /* 題目樣式優化 */
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            background-color: #fcfdfe;
+            border-radius: 12px;
+            border-left: 5px solid #ddd;
+            transition: border-color 0.3s;
+        }
+        .question-block:hover { border-left-color: var(--color-primary); }
+
+        .question-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        /* 選項樣式 */
+        label {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        label:hover {
+            background-color: #eaf2f8;
+            border-color: #bedaf3;
+            transform: translateX(3px);
+        }
+        input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
+
+        /* 提交按鈕 */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, var(--color-primary), #2980b9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 40px;
+        }
+        .submit-btn:hover { background: #1f618d; transform: translateY(-2px); }
+
+        /* ==============================
+           🏆 [結果顯示區] 
+           ============================== */
+        #result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .result-header { font-size: 1.2rem; color: #7f8c8d; margin-bottom: 5px; }
+        .result-title {
+            font-size: 2.5rem;
+            color: var(--color-secondary);
+            margin-bottom: 25px;
+            font-weight: 900;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .result-desc {
+            font-size: 1.1rem;
+            color: #555;
+            text-align: left;
+            background: #fff9f4;
+            padding: 25px;
+            border-left: 6px solid var(--color-secondary);
+            border-radius: 4px;
+            margin-bottom: 35px;
+            line-height: 1.8;
+        }
+        .retry-btn {
+            padding: 12px 30px;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .retry-btn:hover { background-color: #7f8c8d; }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-screen">
+        <div class="site-logo">ZOOTOPIA</div>
+        <div class="site-subtitle">心靈本性鑑定鑑定特區</div>
+        
+        <div class="character-visual">
+            <div class="char-judy"></div>
+            <div class="char-nick"></div>
+        </div>
+
+        <button class="start-btn" onclick="startQuiz()">開始鑑定</button>
+    </div>
+
+    <div id="quiz-container">
+        <div class="quiz-box">
+            
+            <div id="quiz-content">
+                <h1 class="quiz-title">你是哪種動物？</h1>
+                <p style="text-align:center; color:#7f8c8d; margin-bottom:30px;">憑直覺回答，測出你的隱藏屬性。</p>
+                
+                <form id="quizForm">
+                    <div class="question-block fade-in">
+                        <div class="question-title">1. 週末休息時間，你通常會如何安排？</div>
+                        <label><input type="radio" name="q1" value="A"> A. 安排滿滿計畫！戶外運動、探索新地點。</label>
+                        <label><input type="radio" name="q1" value="B"> B. 在街頭閒晃，發掘有趣事物與隱藏美食。</label>
+                        <label><input type="radio" name="q1" value="C"> C. 待在舒適室內，準備零食，追愛豆或影集。</label>
+                        <label><input type="radio" name="q1" value="D"> D. 處理未完成事項，整理房間，保持井然有序。</label>
+                        <label><input type="radio" name="q1" value="E"> E. 慢⋯慢⋯享⋯受⋯早⋯餐⋯，其⋯他⋯再⋯說⋯</label>
+                    </div>
+
+                    <div class="question-block fade-in">
+                        <div class="question-title">2. 遇到「不可能解決」的難題時，你的第一反應是？</div>
+                        <label><input type="radio" name="q2" value="A"> A. 燃起鬥志！絕對不放棄，證明自己能做到。</label>
+                        <label><input type="radio" name="q2" value="B"> B. 轉個彎思考，找個聰明取巧的捷徑搞定它。</label>
+                        <label><input type="radio" name="q2" value="C"> C. 焦慮不安，先找朋友訴苦，吃個甜點壓驚。</label>
+                        <label><input type="radio" name="q2" value="D"> D. 依照規定與 SOP 穩紮穩打處理，不容出錯。</label>
+                        <label><input type="radio" name="q2" value="E"> E. 順⋯其⋯自⋯然⋯，船⋯到⋯橋⋯頭⋯自⋯然⋯直⋯</label>
+                    </div>
+
+                    <div class="question-block fade-in">
+                        <div class="question-title">3. 在朋友圈裡，大家通常怎麼形容你？</div>
+                        <label><input type="radio" name="q3" value="A"> A. 充滿熱情、正義感爆棚的行動派。</label>
+                        <label><input type="radio" name="q3" value="B"> B. 幽默漫不經心，但其實非常講義氣。</label>
+                        <label><input type="radio" name="q3" value="C"> C. 超級友善、沒心機，大家眼中的開心果。</label>
+                        <label><input type="radio" name="q3" value="D"> D. 嚴肅有威嚴，出問題時可以依靠的領導者。</label>
+                        <label><input type="radio" name="q3" value="E"> E. 脾氣超級好，但步調似乎總是跟別人不一樣。</label>
+                    </div>
+
+                    <div class="question-block fade-in">
+                        <div class="question-title">4. 心目中最理想的工作環境或生活狀態是什麼？</div>
+                        <label><input type="radio" name="q4" value="A"> A. 充滿挑戰，能夠發揮影響力，讓世界變得更好。</label>
+                        <label><input type="radio" name="q4" value="B"> B. 自由不受拘束，自己掌握自己的步調。</label>
+                        <label><input type="radio" name="q4" value="C"> C. 氣氛輕鬆溫馨，同事好相處，有點心吃。</label>
+                        <label><input type="radio" name="q4" value="D"> D. 制度分明，各司其職，有明確規則和升遷管道。</label>
+                        <label><input type="radio" name="q4" value="E"> E. 步⋯調⋯平⋯緩⋯，不⋯需⋯要⋯趕⋯時⋯間⋯</label>
+                    </div>
+
+                    <div class="question-block fade-in">
+                        <div class="question-title">5. 路上看到前面的人錢包掉了，你會怎麼做？</div>
+                        <label><input type="radio" name="q5" value="A"> A. 立刻撿起來，不管多遠都狂奔追上去還他！</label>
+                        <label><input type="radio" name="q5" value="B"> B. 撿起來掂掂重量，笑著開個玩笑後再還給他。</label>
+                        <label><input type="radio" name="q5" value="C"> C. 驚呼，趕快撿起來，四處尋找失主或請人幫忙。</label>
+                        <label><input type="radio" name="q5" value="D"> D. 撿起來，依照程序交到最近的警察局。</label>
+                        <label><input type="radio" name="q5" value="E"> E. 等⋯我⋯走⋯到⋯那⋯邊⋯，錢⋯包⋯已⋯被⋯撿⋯走⋯了⋯</label>
+                    </div>
+
+                    <button type="button" class="submit-btn" onclick="calculateResult()">看鑑定結果</button>
+                </form>
+            </div>
+
+            <div id="result-section" class="fade-in">
+                <div class="result-header">鑑定結果：你的心靈屬性是</div>
+                <h2 class="result-title" id="result-name"></h2>
+                <div class="result-desc" id="result-desc"></div>
+                <button class="retry-btn" onclick="retryQuiz()">再鑑定一次</button>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // 1. JavaScript：頁面切換與計算邏輯
+
+    // 資料庫：結果
+    const resultData = {
+        'A': { name: "🐰 哈茱蒂 (Judy Hopps)", desc: "充滿熱情的理想主義者！你就像茱蒂一樣，是個充滿活力、永不言敗的樂天派。你有著強烈的正義感和目標，一旦下定決心，沒有任何困難能阻擋你。你相信只要努力，就能讓世界變得更好！" },
+        'B': { name: "🦊 胡尼克 (Nick Wilde)", desc: "聰明機智的街頭生存專家！你擁有極高的情商和靈活的腦袋。你看透了社會的運作規則，懂得用幽默和圓滑來保護自己。表面玩世不恭，但其實你內心柔軟，對認定的朋友絕對挺到底。" },
+        'C': { name: "🐆 洪金豹 (Benjamin Clawhauser)", desc: "溫暖友善的氣氛製造機！你是大家眼中的小天使，性格溫和、熱情且超級友善。在你身邊總能感到放鬆和快樂，雖然有時候容易分心，但你絕對是團隊中最不可或缺的潤滑劑。" },
+        'D': { name: "🐃 蠻牛局長 (Chief Bogo)", desc: "務實可靠的霸氣領導者！你做事講求效率、重視規則與秩序。有時候會讓人覺得有點嚴肅，但這都是因為你對自己和團隊有著極高的責任感。在危機時刻，你總是最能扛起重責大任的那個人。" },
+        'E': { name: "🦥 快俠 (Flash)", desc: "佛系生活的慢活大師！在這個急躁的世界裡，你擁有屬於自己的獨特節奏。你性格溫和、情緒穩定，幾乎沒有什麼事能讓你大發脾氣。其實你把一切都看在眼裡，可能還有著跌破眾人眼鏡的狂野嗜好！" }
+    };
+
+    // 邏輯 1：從首頁開始測驗
+    function startQuiz() {
+        const welcome = document.getElementById('welcome-screen');
+        const quizContainer = document.getElementById('quiz-container');
+        
+        welcome.classList.add('page-up'); // 首頁上滑
+        quizContainer.classList.add('show-quiz'); // 測驗區浮現
+        
+        // 切換完後將首頁設為 hidden 防止擋到捲動
+        setTimeout(() => {
+            welcome.classList.add('hidden');
+        }, 500);
+    }
+
+    // 邏輯 2：計算結果
+    function calculateResult() {
+        let scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0 };
+        
+        // 驗證每題是否填寫
+        for (let i = 1; i <= 5; i++) {
+            let selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!selected) {
+                alert(`請先回答完第 ${i} 題喔！`);
+                return;
+            }
+            scores[selected.value]++;
+        }
+
+        // 計算最高分
+        let maxChar = 'A';
+        let maxScore = 0;
+        for (let char in scores) {
+            if (scores[char] > maxScore) {
+                maxScore = scores[char];
+                maxChar = char;
+            }
+        }
+
+        // 切換區塊
+        document.getElementById('quiz-content').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        
+        // 寫入結果
+        document.getElementById('result-name').innerText = resultData[maxChar].name;
+        document.getElementById('result-desc').innerText = resultData[maxChar].desc;
+        
+        // 網頁自動捲動到上方
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    // 邏輯 3：再鑑定一次 (回到首頁)
+    function retryQuiz() {
+        const welcome = document.getElementById('welcome-screen');
+        const quizContainer = document.getElementById('quiz-container');
+
+        document.getElementById('quizForm').reset(); // 重設表單
+        
+        // 先顯示首頁，再往下跑
+        welcome.classList.remove('hidden');
+        quizContainer.classList.remove('show-quiz');
+        welcome.classList.remove('page-up');
+        
+        // 重設題目與結果區狀態
+        setTimeout(() => {
+            document.getElementById('quiz-content').style.display = 'block';
+            document.getElementById('result-section').style.display = 'none';
+        }, 500);
+
+        window.scrollTo({top: 0});
+    }
+</script>
+
+</body>
+</html>
