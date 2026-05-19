@@ -10,9 +10,9 @@
            ============================== */
         :root {
             --primary-color: #4a5568;
-            --card-bg: rgba(255, 255, 255, 0.12); /* 🌟 調低透明度，讓你的背景圖透出來 */
+            --card-bg: rgba(255, 255, 255, 0.12); 
             --sticker-color: #cbd5e0;
-            --text-main: #ffffff; /* 🌟 配合手繪背景，主要字體改為白色提升對比度 */
+            --text-main: #ffffff; 
             --text-muted: #e2e8f0;
         }
         
@@ -34,7 +34,7 @@
             line-height: 1.5;
         }
 
-        /* 🌆 全螢幕滿版背景圖：對應你同目錄下的 背景.jpeg */
+        /* 🌆 全螢幕滿版背景圖 */
         #quiz-container {
             width: 100vw;
             height: 100vh;
@@ -51,7 +51,7 @@
             z-index: 1;
         }
 
-        /* 🔮 磨砂玻璃卡片（輕透果凍感） */
+        /* 🔮 磨砂玻璃卡片 */
         .container {
             max-width: 500px;
             width: 100%;
@@ -105,11 +105,11 @@
         }
 
         .welcome-illustration {
-            background: rgba(255, 255, 255, 0.85); /* 讓 SVG 在歡迎頁面清晰保持原色 */
+            background: rgba(255, 255, 255, 0.85); 
         }
 
         .scene-illustration {
-            background: rgba(255, 255, 255, 0.9); /* 讓題目 SVG 有白底更易讀 */
+            background: rgba(255, 255, 255, 0.9); 
             animation: fadeIn 0.35s ease-out;
         }
 
@@ -161,7 +161,7 @@
         }
 
         .option-btn {
-            background: rgba(255, 255, 255, 0.85); /* 輕微透光的白底選項，兼顧字體易讀性 */
+            background: rgba(255, 255, 255, 0.85); 
             border: 1px solid rgba(255,255,255,0.4);
             padding: 16px 20px;
             border-radius: 14px;
@@ -180,7 +180,6 @@
             transform: translateY(-1px);
         }
 
-        /* 已選取貼紙蓋章特效 */
         .option-btn.selected::after {
             content: '✓ 已貼上';
             position: absolute;
@@ -216,7 +215,7 @@
             text-align: left;
             position: relative;
             box-shadow: 6px 6px 0px #0f172a;
-            color: #1e293b; /* 報告內容使用深色字確保像紙張卡片 */
+            color: #1e293b; 
         }
 
         .profile-header {
@@ -263,11 +262,12 @@
             margin: 0;
         }
 
+        /* 🛠️ 大數據表格優化 */
         .profile-meta {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            font-size: 13px;
+            font-size: 12.5px; /* 稍微縮小字體以利手機換行 */
             background: #f8fafc;
             padding: 14px;
             border-radius: 12px;
@@ -275,11 +275,11 @@
             border: 1px solid #edf2f7;
         }
 
+        /* 🛠️ 修理文字過長被截斷的問題 */
         .meta-item {
             line-height: 1.5;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;      /* 🌟 允許文字自動換行 */
+            word-break: break-all;    /* 🌟 確保長英文字也能正常換行 */
         }
 
         .meta-label {
@@ -301,388 +301,4 @@
 
         .profile-quote {
             background: #f1f5f9;
-            border-left: 4px solid #475569;
-            padding: 12px 16px;
-            font-style: italic;
-            font-weight: 700;
-            margin-top: 18px;
-            border-radius: 0 10px 10px 0;
-            color: #1e293b;
-        }
-
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 12px;
-        }
-
-        .trait-tag {
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-weight: bold;
-            border: 1px solid #0f172a;
-            box-shadow: 1px 1px 0px #0f172a;
-            color: #0f172a;
-        }
-
-        .restart-btn {
-            background: #ffffff;
-            color: #0f172a;
-            border: 2px solid #ffffff;
-            padding: 14px 32px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
-            margin-top: 28px;
-            width: 100%; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s;
-        }
-
-        .restart-btn:hover { 
-            background: rgba(255,255,255,0.9);
-            transform: translateY(-1px);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            margin-top: 32px;
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.6;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-    </style>
-</head>
-<body>
-
-<div id="quiz-container">
-
-    <div class="container">
-        <div id="start-page">
-            <h1>2026 建功人請回答！！</h1>
-            <div class="welcome-illustration">
-                <svg viewBox="0 0 200 100" width="100%" height="100%">
-                    <defs>
-                        <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#bae6fd"/>
-                            <stop offset="100%" stop-color="#f0fdf4"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="200" height="100" fill="url(#sky)" rx="12"/>
-                    <path d="M 0,85 L 200,85" stroke="#cbd5e1" stroke-width="4"/>
-                    <rect x="20" y="45" width="40" height="40" fill="#cbd5e0" rx="2"/>
-                    <rect x="32" y="55" width="16" height="30" fill="#94a3b8"/>
-                    <circle cx="150" cy="40" r="12" fill="#f87171" opacity="0.8"/>
-                    <circle cx="162" cy="48" r="10" fill="#fbbf24" opacity="0.8"/>
-                    <circle cx="142" cy="52" r="11" fill="#60a5fa" opacity="0.8"/>
-                    <path d="M150,52 Q152,70 155,85 M162,58 Q160,72 157,85 M142,63 Q146,75 154,85" stroke="#94a3b8" stroke-width="1" fill="none"/>
-                    <path d="M 90,30 L 105,25 L 120,30 L 105,35 Z" fill="#1e293b"/>
-                    <rect x="101" y="32" width="8" height="6" fill="#1e293b"/>
-                    <path d="M 109,35 Q 114,42 115,46" stroke="#fbbf24" stroke-width="1" fill="none"/>
-                </svg>
-            </div>
-            <p class="subtitle">
-                這面牆是畢聯會為建功人設計的互動板，準備迎接即將到來的畢業典禮。以下問題請各位如實回答，不計分也無獎喔，希望大家可以透過這面牆面對更真實的自己~~
-            </p>
-            <p style="font-size: 14.5px; font-weight: bold; color: #ffffff; margin-bottom: 16px;">請先選取你的貼紙身份：</p>
-            <div class="identity-container">
-                <button class="sticker-btn silver" onclick="window.jgQuiz.selectIdentity('silver')">銀色貼紙：國中生</button>
-                <button class="sticker-btn gold" onclick="window.jgQuiz.selectIdentity('gold')">金色貼紙：高中生</button>
-                <button class="sticker-btn purple" onclick="window.jgQuiz.selectIdentity('purple')">家長及外賓</button>
-            </div>
-        </div>
-
-        <div id="quiz-page" class="hidden">
-            <div id="progress" style="font-size: 12px; color: #e2e8f0; font-weight: bold; margin-bottom: 12px; text-align: left; letter-spacing: 0.5px;"></div>
-            <div class="scene-illustration" id="scene-img-box"></div>
-            <div class="question-title" id="question-text"></div>
-            <div class="options-container" id="options-box"></div>
-        </div>
-
-        <div id="result-page" class="hidden">
-            <div style="font-size: 14px; font-weight: bold; color: #e2e8f0; margin-bottom: 10px; text-align: left;">▸ 畢聯會大數據精密分析：</div>
-            <div class="profile-card" id="profile-card-box"></div>
-            <button class="restart-btn" onclick="window.jgQuiz.resetQuiz()">重新建檔 / 再測一次</button>
-        </div>
-
-        <footer>
-            新竹市立建功高級中學 X 2026建功畢聯會<br>
-            Hsinchu Municipal Chien Kang Senior High School
-        </footer>
-    </div>
-    
-</div>
-
-<script>
-(function() {
-    const questions = [
-        {
-            title: "明天要考試，今天晚上我會選擇...",
-            sceneSvg: `<svg viewBox="0 0 200 100" width="100%" height="100%">
-                <rect width="200" height="100" fill="#0f172a" rx="12"/>
-                <path d="M 100,0 L 40,100 L 160,100 Z" fill="#fef08a" opacity="0.15"/>
-                <rect x="85" y="75" width="30" height="15" fill="#f1f5f9" rx="2"/>
-                <line x1="88" y1="80" x2="112" y2="80" stroke="#cbd5e1" stroke-width="2"/>
-                <line x1="88" y1="85" x2="105" y2="85" stroke="#cbd5e1" stroke-width="2"/>
-                <path d="M135,90 L165,90 L160,82 L140,82 Z" fill="#64748b"/>
-                <path d="M138,82 L162,82 L158,74 L142,74 Z" fill="#475569"/>
-                <circle cx="100" cy="25" r="8" fill="#fef08a"/>
-                <path d="M92,25 Q100,10 100,0 M108,25 Q100,10 100,0" stroke="#94a3b8" stroke-width="2" fill="none"/>
-            </svg>`,
-            options: [
-                { text: "#想辦法捲死同學", score: "A" },
-                { text: "#與周公約會", score: "B" }
-            ]
-        },
-        {
-            title: "考前我更願意相信...",
-            sceneSvg: `<svg viewBox="0 0 200 100" width="100%" height="100%">
-                <rect width="200" height="100" fill="#faf5ff" rx="12"/>
-                <circle cx="60" cy="50" r="18" fill="#e9d5ff" stroke="#9333ea" stroke-width="2"/>
-                <path d="M50,45 Q60,35 70,45 Q65,65 60,68 Z" fill="#c084fc"/>
-                <circle cx="60" cy="50" r="4" fill="#fff" opacity="0.8"/>
-                <polygon points="135,35 155,35 160,45 160,75 130,75 130,45" fill="#f87171" stroke="#dc2626" stroke-width="2"/>
-                <rect x="137" y="47" width="16" height="22" fill="#fef08a"/>
-                <text x="145" y="62" font-size="10" font-weight="bold" text-anchor="middle" fill="#b91c1c">必勝</text>
-                <path d="M145,35 L145,25" stroke="#fbbf24" stroke-width="2"/>
-            </svg>`,
-            options: [
-                { text: "#自己的智商", score: "C" },
-                { text: "#神明一定會幫助我的", score: "D" }
-            ]
-        },
-        {
-            title: "關於上學...",
-            sceneSvg: `<svg viewBox="0 0 200 100" width="100%" height="100%">
-                <rect width="200" height="100" fill="#f0fdf4" rx="12"/>
-                <rect x="20" y="10" width="160" height="40" fill="#14532d" rx="2"/>
-                <line x1="20" y1="47" x2="180" y2="47" stroke="#b45309" stroke-width="3"/>
-                <text x="100" y="32" font-size="11" fill="#f0fdf4" text-anchor="middle" font-family="monospace">KUANG CHIEN 2026</text>
-                <path d="M 60,85 L 140,85 L 130,65 L 70,65 Z" fill="#d97706"/>
-                <line x1="75" y1="65" x2="75" y2="85" stroke="#475569" stroke-width="3"/>
-                <line x1="125" y1="65" x2="125" y2="85" stroke="#475569" stroke-width="3"/>
-            </svg>`,
-            options: [
-                { text: "#上課有認真聽", score: "C" },
-                { text: "#有來學校就很棒了", score: "B" }
-            ]
-        },
-        {
-            title: "和朋友的相處...",
-            sceneSvg: `<svg viewBox="0 0 200 100" width="100%" height="100%">
-                <rect width="200" height="100" fill="#f0f9ff" rx="12"/>
-                <circle cx="40" cy="30" r="15" fill="#fff" opacity="0.7"/>
-                <circle cx="55" cy="32" r="12" fill="#fff" opacity="0.7"/>
-                <rect x="0" y="70" width="200" height="30" fill="#e2e8f0"/>
-                <line x1="0" y1="70" x2="200" y2="70" stroke="#94a3b8" stroke-width="2"/>
-                <circle cx="85" cy="50" r="6" fill="#38bdf8"/>
-                <path d="M85,56 Q85,70 82,70 M85,56 Q90,65 92,70" stroke="#38bdf8" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="115" cy="48" r="6" fill="#34d399"/>
-                <path d="M115,54 Q112,70 110,70 M115,54 Q120,68 122,70" stroke="#34d399" stroke-width="4" stroke-linecap="round"/>
-            </svg>`,
-            options: [
-                { text: "#高山流水遇知音", score: "A" },
-                { text: "#低山臭水遇噪音", score: "D" }
-            ]
-        },
-        {
-            title: "面對未來的困難...",
-            sceneSvg: `<svg viewBox="0 0 200 100" width="100%" height="100%">
-                <rect width="200" height="100" fill="#fff7ed" rx="12"/>
-                <circle cx="100" cy="65" r="25" fill="#fed7aa" opacity="0.6"/>
-                <path d="M -20,80 L 70,50 L 140,80 Z" fill="#ffedd5"/>
-                <path d="M 60,80 L 130,45 L 230,80 Z" fill="#ffedd5" opacity="0.7"/>
-                <polygon points="85,100 115,100 103,65 97,65" fill="#cbd5e1"/>
-                <path d="M 40,25 Q 45,20 50,25 Q 55,20 60,25" stroke="#ea580c" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M 140,35 Q 143,31 147,35 Q 151,31 154,35" stroke="#ea580c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            </svg>`,
-            options: [
-                { text: "#放馬過來", score: "A" },
-                { text: "#放我一馬", score: "D" }
-            ]
-        }
-    ];
-
-    const results = {
-        "A": {
-            badge: "2026 頂峰執行者檔案",
-            name: "蠻牛局長 × 糾察隊長",
-            bg: "#fee2e2",
-            avatarSvg: `<svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="42" r="20" fill="#dc2626"/><path d="M20 80c0-15 15-20 30-20s30 5 30 20z" fill="#dc2626"/><path d="M35 25l-10-8M65 25l10-8" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/></svg>`,
-            meta: { code: "BOGO-BOSS-01", danger: "98% (極度危險)", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" },
-            traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"],
-            desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！",
-            quote: "別擋路，我的目標只有頂峰。"
-        },
-        "B": {
-            badge: "2026 活力夢想家檔案",
-            name: "兔子茱蒂 × 畢聯會會長",
-            bg: "#fef9c3",
-            avatarSvg: `<svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="50" r="20" fill="#ca8a04"/><path d="M25 82c0-12 12-16 25-16s25 4 25 16z" fill="#ca8a04"/><path d="M42 32V12c0-3-4-3-4 0v20M58 32V12c0-3-4-3-4 0v20" fill="#ca8a04" stroke="#1e293b" stroke-width="2"/></svg>`,
-            meta: { code: "JUDY-HOPS-26", danger: "15% (人畜無害)", place: "畢聯會開會現場 / 體育館", type: "佛系熱血派" },
-            traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"],
-            desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但只要到了好玩的關鍵時刻，你點燃熱情的速度比誰都快！就像茱蒂兔一樣，看似無害其實內心生命力爆棚。這面打卡牆就是你這種性格的夥伴為大家精心打造的！",
-            quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！"
-        },
-        "C": {
-            badge: "2026 智商天花板檔案",
-            name: "狐狸尼克 × 學生會學霸",
-            bg: "#fae8ff",
-            avatarSvg: `<svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="45" r="18" fill="#9333ea"/><path d="M22 80c0-14 14-18 28-18s28 4 28 18z" fill="#9333ea"/><path d="M32 35l-10-10 4-2zM68 35l10-10-4-2z" fill="#9333ea" stroke="#1e293b" stroke-width="2"/></svg>`,
-            meta: { code: "NICK-WILD-99", danger: "65% (智商壓制)", place: "學生會辦公室 / 頒獎台中央", type: "從容智謀派" },
-            traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"],
-            desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。就像狐狸尼克一樣聰明、帶點讓人又愛又恨的小傲嬌，總能用最省力、最優雅且精準的方式把難題迎刃而解。",
-            quote: "實力擺在那裡，神明放假去也沒關係。"
-        },
-        "D": {
-            badge: "2026 校園守護神檔案",
-            name: "樹懶快俠 × 合作社阿姨/叔叔",
-            bg: "#dcfce7",
-            avatarSvg: `<svg viewBox="0 0 100 100" width="60" height="60"><circle cx="50" cy="45" r="20" fill="#16a34a"/><path d="M20 82c0-12 15-17 30-17s30 5 30 17z" fill="#16a34a"/><circle cx="42" cy="42" r="4" fill="#fff"/><circle cx="58" cy="42" r="4" fill="#fff"/><path d="M40 55q10 5 20 0" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
-            meta: { code: "FLASH-SLOW-00", danger: "0% (療癒爆表)", place: "熱門合作社櫃檯 / 榕樹下", type: "療癒避風港" },
-            traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"],
-            desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。即使生活中偶爾遇到人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解。你就像樹懶快俠，是大家累了、煩了最想找來聊天依靠的溫慢神殿。",
-            quote: "沒事沒事，平安畢業，順其自然。"
-        }
-    };
-
-    let currentQuestionIndex = 0;
-    let selectedScores = [];
-
-    document.getElementById('quiz-page').className = 'hidden';
-    document.getElementById('result-page').className = 'hidden';
-    document.getElementById('start-page').className = '';
-
-    window.jgQuiz = {
-        selectIdentity: function(type) {
-            const root = document.documentElement;
-            let textColor = '#fff';
-            
-            if (type === 'silver') { root.style.setProperty('--sticker-color', '#cbd5e0'); textColor = '#4a5568'; }
-            else if (type === 'gold') { root.style.setProperty('--sticker-color', '#ecc94b'); textColor = '#744210'; }
-            else if (type === 'purple') { root.style.setProperty('--sticker-color', '#9f7aea'); textColor = '#ffffff'; }
-            
-            root.style.setProperty('--sticker-text', textColor);
-
-            document.getElementById('start-page').className = 'hidden';
-            document.getElementById('quiz-page').className = '';
-            this.showQuestion();
-        },
-
-        showQuestion: function() {
-            if (currentQuestionIndex >= questions.length) {
-                this.showResult();
-                return;
-            }
-
-            const q = questions[currentQuestionIndex];
-            document.getElementById('progress').innerText = `QUESTION ${currentQuestionIndex + 1} / ${questions.length}`;
-            document.getElementById('question-text').innerText = q.title;
-            document.getElementById('scene-img-box').innerHTML = q.sceneSvg;
-
-            const optionsBox = document.getElementById('options-box');
-            optionsBox.innerHTML = '';
-
-            q.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt.text;
-                btn.onclick = () => this.selectOption(btn, opt.score);
-                optionsBox.appendChild(btn);
-            });
-        },
-
-        selectOption: function(element, score) {
-            element.classList.add('selected');
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.style.pointerEvents = 'none');
-
-            selectedScores.push(score);
-            currentQuestionIndex++;
-
-            setTimeout(() => {
-                this.showQuestion();
-            }, 400); 
-        },
-
-        showResult: function() {
-            document.getElementById('quiz-page').className = 'hidden';
-            document.getElementById('result-page').className = 'result-card';
-
-            const counts = {};
-            let maxScore = "B";
-            let maxCount = 0;
-
-            selectedScores.forEach(score => {
-                counts[score] = (counts[score] || 0) + 1;
-                if (counts[score] > maxCount) {
-                    maxCount = counts[score];
-                    maxScore = score;
-                }
-            });
-
-            const finalResult = results[maxScore];
-            const cardBox = document.getElementById('profile-card-box');
-            
-            let traitHtml = '';
-            finalResult.traits.forEach(t => {
-                traitHtml += `<span class="trait-tag" style="background:${finalResult.bg}">${t}</span>`;
-            });
-
-            cardBox.innerHTML = `
-                <div class="profile-header">
-                    <div class="profile-avatar" style="background:${finalResult.bg}">
-                        ${finalResult.avatarSvg}
-                    </div>
-                    <div class="profile-title-block">
-                        <span class="profile-badge">${finalResult.badge}</span>
-                        <h2 class="profile-name">${finalResult.name}</h2>
-                    </div>
-                </div>
-                <div class="profile-meta">
-                    <div class="meta-item"><span class="meta-label">安全編號：</span><span class="meta-val">${finalResult.meta.code}</span></div>
-                    <div class="meta-item"><span class="meta-label">特質歸屬：</span><span class="meta-val">${finalResult.meta.type}</span></div>
-                    <div class="meta-item"><span class="meta-label">危險系數：</span><span class="meta-val">${finalResult.meta.danger}</span></div>
-                    <div class="meta-item"><span class="meta-label">主要出沒：</span><span class="meta-val">${finalResult.meta.place}</span></div>
-                </div>
-                <div class="profile-body">
-                    ${finalResult.desc}
-                </div>
-                <div class="profile-quote">
-                    「${finalResult.quote}」
-                </div>
-                <div style="font-size:12px; font-weight:bold; color:#64748b; margin-top:15px; margin-bottom:6px;">▸ 偵測解鎖貼紙標籤：</div>
-                <div class="tags-container">
-                    ${traitHtml}
-                </div>
-                <div style="position:absolute; right:15px; bottom:15px; opacity:0.12; pointer-events:none;">
-                    <svg width="60" height="60" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="#000" stroke-width="5"/>
-                        <text x="50" y="55" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">PASSED</text>
-                    </svg>
-                </div>
-            `;
-        },
-
-        resetQuiz: function() {
-            currentQuestionIndex = 0;
-            selectedScores = [];
-            document.getElementById('result-page').className = 'hidden';
-            document.getElementById('quiz-page').className = 'hidden';
-            document.getElementById('start-page').className = '';
-        }
-    };
-})();
-</script>
-
-</body>
-</html>
+            border-left: 4px
