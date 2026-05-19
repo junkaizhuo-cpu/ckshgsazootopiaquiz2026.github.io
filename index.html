@@ -10,7 +10,7 @@
            ============================== */
         :root {
             --primary-color: #4a5568;
-            --bg-color-fallback: #f1f5f9; 
+            --bg-color-fallback: #f1f5f9; /* 預載背景，確保無圖片時依然美觀不黑屏 */
             --card-bg: rgba(255, 255, 255, 0.96); 
             --sticker-color: #cbd5e0;
             --text-main: #1e293b;
@@ -19,12 +19,13 @@
         
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; 
+            -webkit-tap-highlight-color: transparent; /* 消除手機點擊時產生的預設藍色陰影 */
         }
 
         body {
             font-family: '-apple-system', 'PingFang TC', 'SF Pro TC', 'Microsoft JhengHei', sans-serif;
             background-color: var(--bg-color-fallback);
+            /* 🔗 全螢幕背景：自動相容你上傳的背景檔 */
             background-image: url('背景.jpeg'), url('背景.jpg'), url('背景.png');
             background-size: cover;
             background-position: center;
@@ -40,25 +41,17 @@
             line-height: 1.5;
         }
 
-        #quiz-container {
-            width: 100vw;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-        }
-
+        /* 🔮 磨砂高質感主容器 */
         .container {
             max-width: 500px;
             width: 100%;
             background: var(--card-bg);
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
             padding: 30px 24px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px); /* 當後方有自訂背景時會產生霧面玻璃質感 */
             -webkit-backdrop-filter: blur(12px);
             position: relative;
         }
@@ -84,29 +77,10 @@
             display: none !important;
         }
 
-        /* ─── ⌨️ 暱稱輸入框設計 ─── */
-        .name-input-box {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            font-weight: 600;
-            border: 2px solid #cbd5e1;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-            outline: none;
-            transition: all 0.2s;
-            background: #f8fafc;
-        }
-        .name-input-box:focus {
-            border-color: #4f46e5;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
+        /* ─── 🖼️ 圖片外框自適應顯示區域 ─── */
         .image-box {
             width: 100%;
-            height: 180px; 
+            height: 180px; /* 手機端黃金展示比例 */
             border-radius: 16px;
             margin-bottom: 24px;
             overflow: hidden;
@@ -115,43 +89,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .image-box img {
             width: 100%;
             height: 100%;
-            object-fit: contain; 
+            object-fit: contain; /* 改為 contain 確保你親自畫的圖不會被強行裁剪變形 */
         }
 
-        /* ─── 🔙 上一頁功能頂部列 ─── */
-        .quiz-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .back-btn {
-            background: none;
-            border: none;
-            color: #4f46e5;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            padding: 5px 0;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: opacity 0.2s;
-            visibility: hidden;
-        }
-        .back-btn:hover { opacity: 0.7; }
-
+        /* ─── 🏷️ 擬真貼紙排版區域 ─── */
         .identity-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 14px;
-            margin: 10px 0 10px 0;
+            margin: 24px 0 10px 0;
             padding: 20px 14px;
             background: rgba(248, 250, 252, 0.6);
             border-radius: 16px;
@@ -168,14 +121,42 @@
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
             letter-spacing: 0.5px;
+            position: relative;
         }
 
-        .silver { background: linear-gradient(135deg, #f1f5f9, #cbd5e1); color: #334155; transform: rotate(-2.5deg); box-shadow: 2px 3px 0px #94a3b8, 2px 5px 10px rgba(0,0,0,0.06); }
-        .gold { background: linear-gradient(135deg, #fffbeb, #fef08a); color: #713f12; transform: rotate(2deg); box-shadow: -2px 3px 0px #d97706, -2px 5px 10px rgba(0,0,0,0.06); }
-        .purple { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #5b21b6; transform: rotate(-1.5deg); box-shadow: 2px 2px 0px #7c3aed, 3px 4px 10px rgba(0,0,0,0.06); }
+        /* 貼紙傾斜與立體厚度陰影設定 */
+        .silver { 
+            background: linear-gradient(135deg, #f1f5f9, #cbd5e1); 
+            color: #334155; 
+            transform: rotate(-2.5deg);
+            box-shadow: 2px 3px 0px #94a3b8, 2px 5px 10px rgba(0,0,0,0.06);
+        }
+        .gold { 
+            background: linear-gradient(135deg, #fffbeb, #fef08a); 
+            color: #713f12; 
+            transform: rotate(2deg);
+            box-shadow: -2px 3px 0px #d97706, -2px 5px 10px rgba(0,0,0,0.06);
+        }
+        .purple { 
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff); 
+            color: #5b21b6; 
+            transform: rotate(-1.5deg);
+            box-shadow: 2px 2px 0px #7c3aed, 3px 4px 10px rgba(0,0,0,0.06);
+        }
 
-        .sticker-btn:hover { transform: scale(1.06) rotate(0deg) translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); z-index: 10; }
-        .sticker-btn:active { transform: scale(0.98); }
+        .sticker-btn:hover {
+            transform: scale(1.06) rotate(0deg) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .sticker-btn:active {
+            transform: scale(0.98);
+        }
+
+        #quiz-page {
+            padding: 5px 0;
+        }
 
         .question-title {
             font-size: 19px;
@@ -207,8 +188,14 @@
             position: relative;
             line-height: 1.4;
         }
-        .option-btn:hover { background: #f1f5f9; border-color: #cbd5e1; color: #0f172a; }
 
+        .option-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        /* 已選取貼紙蓋章特效 */
         .option-btn.selected::after {
             content: '✓ 已貼上';
             position: absolute;
@@ -221,6 +208,7 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             animation: stamp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -229,7 +217,7 @@
             100% { transform: translateY(-50%) scale(1); opacity: 1; filter: blur(0); }
         }
 
-        /* ─── 🏆 檔案風格卡片 ─── */
+        /* ─── 🏆 人物檔案風格卡片 ─── */
         .profile-card {
             background: #ffffff;
             border: 2px solid #0f172a;
@@ -252,50 +240,387 @@
             gap: 12px;
         }
 
-        .profile-title-area { flex: 1; }
+        .profile-title-area {
+            flex: 1;
+        }
+
+        /* 自訂匯入的角色大頭貼樣式 */
         .profile-avatar-box {
-            width: 80px; height: 80px; border-radius: 14px; border: 2px solid #0f172a;
-            overflow: hidden; background: #f8fafc; flex-shrink: 0; box-shadow: 2px 2px 0px #0f172a;
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
+            border: 2px solid #0f172a;
+            overflow: hidden;
+            background: #f8fafc;
+            flex-shrink: 0;
+            box-shadow: 2px 2px 0px #0f172a;
         }
-        .profile-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-badge { font-size: 11px; background: #0f172a; color: #fff; padding: 3px 10px; border-radius: 6px; font-weight: bold; display: inline-block; margin-bottom: 6px; }
-        .profile-name { font-size: 21px; font-weight: 800; color: #0f172a; margin: 0; }
 
+        .profile-avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-badge {
+            font-size: 11px;
+            background: #0f172a;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-name {
+            font-size: 21px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        /* 📊 智能響應式大數據網格 */
         .profile-meta {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;
-            background: #f8fafc; padding: 14px; border-radius: 12px; margin-bottom: 18px; border: 1px solid #edf2f7;
-        }
-        .meta-item { line-height: 1.5; white-space: normal; word-break: break-all; }
-        .meta-label { font-weight: bold; color: #64748b; display: block; margin-bottom: 2px; }
-        .meta-val { color: #334155; font-weight: 700; }
-
-        @media (max-width: 440px) { .profile-meta { grid-template-columns: 1fr; gap: 10px; } }
-
-        .profile-body { font-size: 14.5px; line-height: 1.7; color: #334155; text-align: justify; }
-        .profile-quote { background: #f1f5f9; border-left: 4px solid #475569; padding: 12px 16px; font-style: italic; font-weight: 700; margin-top: 18px; border-radius: 0 10px 10px 0; font-size: 14.5px; color: #1e293b; }
-        
-        .tags-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-        .trait-tag { font-size: 12px; padding: 4px 12px; border-radius: 50px; font-weight: bold; border: 1px solid #0f172a; box-shadow: 1px 1px 0px #0f172a; color: #0f172a; }
-
-        /* 功能控制按鈕底座 */
-        .action-box {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 25px;
+            font-size: 13px;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #edf2f7;
         }
-        .action-btn {
-            border: none; padding: 14px 32px; border-radius: 12px; cursor: pointer;
-            font-size: 15px; font-weight: bold; width: 100%; transition: all 0.2s;
+
+        /* 🌟 關鍵優化：防止文字過長被截斷，小螢幕自動重排 */
+        .meta-item { 
+            line-height: 1.5; 
+            white-space: normal; 
+            word-break: break-all;
         }
-        .export-btn { background: linear-gradient(45deg, #10b981, #059669); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-        .export-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
-        .restart-btn { background: #0f172a; color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15); }
+
+        .meta-label { 
+            font-weight: bold; 
+            color: #64748b; 
+            display: block; 
+            margin-bottom: 2px;
+        }
+        
+        .meta-val { 
+            color: #334155; 
+            font-weight: 700; 
+        }
+
+        @media (max-width: 440px) {
+            .profile-meta {
+                grid-template-columns: 1fr; /* 在小尺寸手機上自動變為單欄排列，不擠壓文字 */
+                gap: 10px;
+            }
+        }
+
+        .profile-body {
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: #334155;
+            text-align: justify;
+        }
+
+        .profile-quote {
+            background: #f1f5f9;
+            border-left: 4px solid #475569;
+            padding: 12px 16px;
+            font-style: italic;
+            font-weight: 700;
+            margin-top: 18px;
+            border-radius: 0 10px 10px 0;
+            font-size: 14.5px;
+            color: #1e293b;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .trait-tag {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-weight: bold;
+            border: 1px solid #0f172a;
+            box-shadow: 1px 1px 0px #0f172a;
+            color: #0f172a;
+        }
+
+        .restart-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 28px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            transition: background 0.2s;
+        }
+
         .restart-btn:hover { background: #1e293b; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        footer { margin-top: 32px; font-size: 11px; color: #94a3b8; font-weight: 500; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            margin-top: 32px;
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.6;
+            font-weight: 500;
+        }
     </style>
+    
+    <script>
+        // ─── 圖片載入防呆管理引擎 ───
+        const ImageEngine = {
+            setQuestionImage: function(index) {
+                const imgTag = document.getElementById('quiz-img');
+                if(!imgTag) return;
+                const qNum = index + 1;
+                
+                imgTag.src = `問題${qNum}.png`;
+                
+                imgTag.onerror = function() {
+                    this.onerror = function() {
+                        this.onerror = function() { this.src = ''; };
+                        this.src = `問題${qNum}.jpg`;
+                    };
+                    this.src = `問題${qNum}.jpeg`;
+                };
+            },
+
+            setWelcomeImage: function() {
+                const imgTag = document.getElementById('welcome-img');
+                if(!imgTag) return;
+                imgTag.src = '主視覺.jpeg';
+                imgTag.onerror = function() {
+                    this.onerror = function() { this.src = '主視覺.png'; };
+                    this.src = '主視覺.jpg';
+                };
+            }
+        };
+
+        window.jgQuiz = {
+            currentQuestionIndex: 0,
+            selectedScores: [],
+            
+            questions: [
+                {
+                    title: "明天要考試，今天晚上我會選擇...",
+                    options: [
+                        { text: "#想辦法捲死同學", score: "A" },
+                        { text: "#與周公約會", score: "B" }
+                    ]
+                },
+                {
+                    title: "考前我更願意相信...",
+                    options: [
+                        { text: "#自己的智商", score: "C" },
+                        { text: "#神明一定會幫助我的", score: "D" }
+                    ]
+                },
+                {
+                    title: "關於上學...",
+                    options: [
+                        { text: "#上課有認真聽", score: "C" },
+                        { text: "#有來學校就很棒了", score: "B" }
+                    ]
+                },
+                {
+                    title: "下課時和好朋友兩個人在窗邊...",
+                    options: [
+                        { text: "#高山流水遇知音", score: "A" },
+                        { text: "#低山臭水遇噪音", score: "D" }
+                    ]
+                },
+                {
+                    title: "面對未來的困難...",
+                    options: [
+                        { text: "#放馬過來", score: "A" },
+                        { text: "#放我一馬", score: "D" }
+                    ]
+                }
+            ],
+
+            results: {
+                "A": {
+                    badge: "2026 頂峰執行者檔案",
+                    name: "蠻牛局長 × 風紀股長",
+                    characterName: "蠻牛局長",
+                    bg: "#fee2e2",
+                    meta: { code: "BOGO-BOSS-01", danger: "98% (極度危險)", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" },
+                    traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"],
+                    desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！",
+                    quote: "別擋路，我的目標只有頂峰。"
+                },
+                "B": {
+                    badge: "2026 活力夢想家檔案",
+                    name: "兔子茱蒂 × 體育股長",
+                    characterName: "兔子茱蒂",
+                    bg: "#fef9c3",
+                    meta: { code: "JUDY-SPORTS-26", danger: "15% (人畜無害)", place: "操場跑道 / 體育器材室", type: "佛系熱血派" },
+                    traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"],
+                    desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！",
+                    quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！"
+                },
+                "C": {
+                    badge: "2026 智商天花板檔案",
+                    name: "狐狸尼克 × 副班長",
+                    characterName: "狐狸尼克",
+                    bg: "#fae8ff",
+                    meta: { code: "NICK-VICE-99", danger: "65% (智商壓制)", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" },
+                    traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"],
+                    desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌，平時低調看戲、優雅省力，但大局需要時總能用高智商精準掌控，是班上的隱藏版大佬。",
+                    quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。"
+                },
+                "D": {
+                    badge: "2026 校園守護神檔案",
+                    name: "樹懶快俠 × 普通學生",
+                    characterName: "樹懶快俠",
+                    bg: "#dcfce7",
+                    meta: { code: "FLASH-STUDENT-00", danger: "0% (療癒爆表)", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" },
+                    traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"],
+                    desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。即使身邊的人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解，活得悠閒又療癒。",
+                    quote: "沒事沒事，平安畢業，順其自然。"
+                }
+            },
+
+            selectIdentity: function(type) {
+                const root = document.documentElement;
+                let textColor = '#fff';
+                
+                if (type === 'silver') { root.style.setProperty('--sticker-color', '#cbd5e0'); textColor = '#4a5568'; }
+                else if (type === 'gold') { root.style.setProperty('--sticker-color', '#ecc94b'); textColor = '#744210'; }
+                else if (type === 'purple') { root.style.setProperty('--sticker-color', '#9f7aea'); textColor = '#ffffff'; }
+                
+                root.style.setProperty('--sticker-text', textColor);
+
+                document.getElementById('start-page').className = 'hidden';
+                document.getElementById('quiz-page').className = '';
+                this.showQuestion();
+            },
+
+            showQuestion: function() {
+                if (this.currentQuestionIndex >= this.questions.length) {
+                    this.showResult();
+                    return;
+                }
+
+                const q = this.questions[this.currentQuestionIndex];
+                document.getElementById('progress').innerText = `QUESTION ${this.currentQuestionIndex + 1} / ${this.questions.length}`;
+                document.getElementById('question-text').innerText = q.title;
+                
+                ImageEngine.setQuestionImage(this.currentQuestionIndex);
+
+                const optionsBox = document.getElementById('options-box');
+                optionsBox.innerHTML = '';
+
+                q.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = opt.text;
+                    btn.onclick = () => this.selectOption(btn, opt.score);
+                    optionsBox.appendChild(btn);
+                });
+            },
+
+            selectOption: function(element, score) {
+                element.classList.add('selected');
+                const buttons = document.querySelectorAll('.option-btn');
+                buttons.forEach(b => b.style.pointerEvents = 'none');
+
+                this.selectedScores.push(score);
+                this.currentQuestionIndex++;
+
+                setTimeout(() => {
+                    this.showQuestion();
+                }, 400); 
+            },
+
+            showResult: function() {
+                document.getElementById('quiz-page').className = 'hidden';
+                document.getElementById('result-page').className = '';
+
+                const counts = {};
+                let maxScore = "B";
+                let maxCount = 0;
+
+                this.selectedScores.forEach(score => {
+                    counts[score] = (counts[score] || 0) + 1;
+                    if (counts[score] > maxCount) {
+                        maxCount = counts[score];
+                        maxScore = score;
+                    }
+                });
+
+                const finalResult = this.results[maxScore];
+                const cardBox = document.getElementById('profile-card-box');
+                
+                let traitHtml = '';
+                finalResult.traits.forEach(t => {
+                    traitHtml += `<span class="trait-tag" style="background:${finalResult.bg}">${t}</span>`;
+                });
+
+                cardBox.innerHTML = `
+                    <div class="profile-header">
+                        <div class="profile-title-area">
+                            <span class="profile-badge">${finalResult.badge}</span>
+                            <h2 class="profile-name">${finalResult.name}</h2>
+                        </div>
+                        <div class="profile-avatar-box">
+                            <img src="${finalResult.characterName}.jpeg" onerror="this.onerror=null; this.src='${finalResult.characterName}.jpg'; this.onerror=function(){this.src='${finalResult.characterName}.png';};" alt="${finalResult.name}">
+                        </div>
+                    </div>
+                    <div class="profile-meta">
+                        <div class="meta-item"><span class="meta-label">安全編號</span><span class="meta-val">${finalResult.meta.code}</span></div>
+                        <div class="meta-item"><span class="meta-label">特質歸屬</span><span class="meta-val">${finalResult.meta.type}</span></div>
+                        <div class="meta-item"><span class="meta-label">危險系數</span><span class="meta-val">${finalResult.meta.danger}</span></div>
+                        <div class="meta-item"><span class="meta-label">主要出沒</span><span class="meta-val">${finalResult.meta.place}</span></div>
+                    </div>
+                    <div class="profile-body">
+                        ${finalResult.desc}
+                    </div>
+                    <div class="profile-quote">
+                        「${finalResult.quote}」
+                    </div>
+                    <div style="font-size:12px; font-weight:bold; color:#64748b; margin-top:15px; margin-bottom:5px;">▸ 偵測解鎖貼紙標籤：</div>
+                    <div class="tags-container">
+                        ${traitHtml}
+                    </div>
+                `;
+            },
+
+            resetQuiz: function() {
+                this.currentQuestionIndex = 0;
+                this.selectedScores = [];
+                document.getElementById('result-page').className = 'hidden';
+                document.getElementById('quiz-page').className = 'hidden';
+                document.getElementById('start-page').className = '';
+                ImageEngine.setWelcomeImage();
+            }
+        };
+
+        window.onload = function() {
+            ImageEngine.setWelcomeImage();
+        };
+    </script>
 </head>
 <body>
 
@@ -311,11 +636,8 @@
                 <p class="subtitle">
                     這個測驗是畢聯會為建功人設計的，準備好迎接即將到來的畢業典禮嗎！快來看看你在建功動物城是什麼角色吧！希望大家可以透過一些小問題面對更真實的自己~~
                 </p>
-                
-                <p style="font-size: 14.5px; font-weight: bold; color: #334155; margin-bottom: 8px;">填入你的畢業大名 / 暱稱：</p>
-                <input type="text" id="user-name-input" class="name-input-box" placeholder="例如：萬年班長小明 (限8字)" maxlength="8">
-
                 <p style="font-size: 14.5px; font-weight: bold; color: #334155; margin-bottom: 5px;">撕下一張你的專屬貼紙身分：</p>
+                
                 <div class="identity-container">
                     <button class="sticker-btn silver" onclick="window.jgQuiz.selectIdentity('silver')">國中生</button>
                     <button class="sticker-btn gold" onclick="window.jgQuiz.selectIdentity('gold')">高中生</button>
@@ -324,10 +646,7 @@
             </div>
 
             <div id="quiz-page" class="hidden">
-                <div class="quiz-top-bar">
-                    <button id="back-btn" class="back-btn" onclick="window.jgQuiz.prevQuestion()">← 上一頁</button>
-                    <div id="progress" style="font-size: 12px; color: #94a3b8; font-weight: bold; letter-spacing: 0.5px;"></div>
-                </div>
+                <div id="progress" style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-bottom: 15px; text-align: left; letter-spacing: 0.5px;"></div>
                 <div class="image-box">
                     <img id="quiz-img" src="" alt="問題插圖">
                 </div>
@@ -336,14 +655,9 @@
             </div>
 
             <div id="result-page" class="hidden">
-                <div id="result-header-text" style="font-size: 13.5px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;"></div>
-                
+                <div style="font-size: 13.5px; font-weight: bold; color: #64748b; margin-bottom: 8px; text-align: left;">▸ 畢聯會大數據精密 analysis：</div>
                 <div class="profile-card" id="profile-card-box"></div>
-                
-                <div class="action-box">
-                    <button class="action-btn export-btn" onclick="window.jgQuiz.exportToImage()">📸 儲存鑑定報告 (JPEG檔案)</button>
-                    <button class="action-btn restart-btn" onclick="window.jgQuiz.resetQuiz()">重新建檔 / 再測一次</button>
-                </div>
+                <button class="restart-btn" onclick="window.jgQuiz.resetQuiz()">重新建檔 / 再測一次</button>
             </div>
 
             <footer>
@@ -353,314 +667,6 @@
         </div>
         
     </div>
-
-<script>
-(function() {
-    const questions = [
-        { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
-        { title: "考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
-        { title: "關於上學...", options: [{ text: "#上課有認真聽", score: "C" }, { text: "#有來學校就很棒了", score: "B" }] },
-        { title: "下課時和好朋友兩個人在窗邊...", options: [{ text: "#高山流水遇知音", score: "A" }, { text: "#低山臭水遇噪音", score: "D" }] },
-        { title: "面對未來的困難...", options: [{ text: "#放馬過來", score: "A" }, { text: "#放我一馬", score: "D" }] }
-    ];
-
-    // 🌟 全域變數修復：把這個重要的資料庫放到 window 上，確保不管怎麼叫都絕對叫得到！
-    window.quizResultsDatabase = {
-        "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
-        "B": { badge: "2026 活力夢想家檔案", name: "兔子茱蒂 × 體育股長", characterName: "兔子茱蒂", bg: "#fef9c3", meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！", quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" },
-        "C": { badge: "2026 智商天花板檔案", name: "狐狸尼克 × 副班長", characterName: "狐狸尼克", bg: "#fae8ff", meta: { code: "NICK-VICE-99", danger: "65%", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" }, traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"], desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌，平時低調看戲、優雅省力，但大局需要時總能用高智商精準掌控，是班上的隱藏版大佬。", quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。" },
-        "D": { badge: "2026 校園守護神檔案", name: "樹懶快俠 × 普通學生", characterName: "樹懶快俠", bg: "#dcfce7", meta: { code: "FLASH-STUDENT-00", danger: "0%", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" }, traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"], desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。即使身邊的人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解，活得悠閒又療癒。", quote: "沒事沒事，平安畢業，順其自然。" }
-    };
-
-    const ImageEngine = {
-        setQuestionImage: function(index) {
-            const imgTag = document.getElementById('quiz-img');
-            if(!imgTag) return;
-            const qNum = index + 1;
-            imgTag.src = `問題${qNum}.png`;
-            imgTag.onerror = function() {
-                this.onerror = function() {
-                    this.onerror = function() { this.src = ''; };
-                    this.src = `問題${qNum}.jpg`;
-                };
-                this.src = `問題${qNum}.jpeg`;
-            };
-        },
-        setWelcomeImage: function() {
-            const imgTag = document.getElementById('welcome-img');
-            if(!imgTag) return;
-            imgTag.src = '主視覺.jpeg';
-            imgTag.onerror = function() {
-                this.onerror = function() { this.src = '主視覺.png'; };
-                this.src = '主視覺.jpg';
-            };
-        }
-    };
-
-    window.jgQuiz = {
-        currentQuestionIndex: 0,
-        selectedScores: [],
-        userName: "建功人",
-
-        selectIdentity: function(type) {
-            const inputName = document.getElementById('user-name-input').value.trim();
-            if(inputName) { this.userName = inputName; }
-
-            const root = document.documentElement;
-            let textColor = '#fff';
-            if (type === 'silver') { root.style.setProperty('--sticker-color', '#cbd5e0'); textColor = '#4a5568'; }
-            else if (type === 'gold') { root.style.setProperty('--sticker-color', '#ecc94b'); textColor = '#744210'; }
-            else if (type === 'purple') { root.style.setProperty('--sticker-color', '#9f7aea'); textColor = '#ffffff'; }
-            root.style.setProperty('--sticker-text', textColor);
-
-            document.getElementById('start-page').className = 'hidden';
-            document.getElementById('quiz-page').className = '';
-            this.showQuestion();
-        },
-
-        showQuestion: function() {
-            if (this.currentQuestionIndex >= questions.length) {
-                this.showResult();
-                return;
-            }
-
-            const backBtn = document.getElementById('back-btn');
-            if(this.currentQuestionIndex > 0) {
-                backBtn.style.visibility = 'visible';
-            } else {
-                backBtn.style.visibility = 'hidden';
-            }
-
-            const q = questions[this.currentQuestionIndex];
-            document.getElementById('progress').innerText = `QUESTION ${this.currentQuestionIndex + 1} / ${questions.length}`;
-            document.getElementById('question-text').innerText = q.title;
-            
-            ImageEngine.setQuestionImage(this.currentQuestionIndex);
-
-            const optionsBox = document.getElementById('options-box');
-            optionsBox.innerHTML = '';
-
-            q.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt.text;
-                btn.onclick = () => this.selectOption(btn, opt.score);
-                optionsBox.appendChild(btn);
-            });
-        },
-
-        selectOption: function(element, score) {
-            element.classList.add('selected');
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.style.pointerEvents = 'none');
-
-            this.selectedScores.push(score);
-            this.currentQuestionIndex++;
-
-            setTimeout(() => {
-                this.showQuestion();
-            }, 350); 
-        },
-
-        prevQuestion: function() {
-            if(this.currentQuestionIndex > 0) {
-                this.currentQuestionIndex--;
-                this.selectedScores.pop(); 
-                this.showQuestion();
-            }
-        },
-
-        showResult: function() {
-            document.getElementById('quiz-page').className = 'hidden';
-            document.getElementById('result-page').className = '';
-
-            const counts = {};
-            let maxScore = "B";
-            let maxCount = 0;
-
-            this.selectedScores.forEach(score => {
-                counts[score] = (counts[score] || 0) + 1;
-                if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
-            });
-
-            // 🌟 修正：從穩定、公開的 window.quizResultsDatabase 中精確抓取結果
-            const finalResult = window.quizResultsDatabase[maxScore];
-            
-            document.getElementById('result-header-text').innerText = `▸ 偵測 [${this.userName}] 的大數據精密 analysis：`;
-
-            const cardBox = document.getElementById('profile-card-box');
-            let traitHtml = '';
-            finalResult.traits.forEach(t => {
-                traitHtml += `<span class="trait-tag" style="background:${finalResult.bg}">${t}</span>`;
-            });
-
-            cardBox.innerHTML = `
-                <div class="profile-header">
-                    <div class="profile-title-area">
-                        <span class="profile-badge">${finalResult.badge}</span>
-                        <h2 class="profile-name">${finalResult.name}</h2>
-                    </div>
-                    <div class="profile-avatar-box">
-                        <img src="${finalResult.characterName}.jpeg" onerror="this.onerror=null; this.src='${finalResult.characterName}.jpg'; this.onerror=function(){this.src='${finalResult.characterName}.png';};" alt="${finalResult.name}">
-                    </div>
-                </div>
-                <div class="profile-meta">
-                    <div class="meta-item"><span class="meta-label">安全編號</span><span class="meta-val">${finalResult.meta.code}</span></div>
-                    <div class="meta-item"><span class="meta-label">特質歸屬</span><span class="meta-val">${finalResult.meta.type}</span></div>
-                    <div class="meta-item"><span class="meta-label">危險系數</span><span class="meta-val">${finalResult.meta.danger}</span></div>
-                    <div class="meta-item"><span class="meta-label">主要出沒</span><span class="meta-val">${finalResult.meta.place}</span></div>
-                </div>
-                <div class="profile-body">
-                    ${finalResult.desc}
-                </div>
-                <div class="profile-quote">
-                    「${finalResult.quote}」
-                </div>
-                <div style="font-size:12px; font-weight:bold; color:#64748b; margin-top:15px; margin-bottom:6px;">▸ 偵測解鎖貼紙標籤：</div>
-                <div class="tags-container">
-                    ${traitHtml}
-                </div>
-            `;
-        },
-
-        exportToImage: function() {
-            const targetNode = document.getElementById('profile-card-box');
-            if(!targetNode) return;
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.width = 500;
-            canvas.height = 700;
-
-            // 建立高畫質粉紫色漸層底色
-            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, "#fdf2f8"); 
-            gradient.addColorStop(1, "#f3e8ff"); 
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // 卡片白框
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(20, 20, canvas.width - 40, canvas.height - 40);
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = "#0f172a";
-            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-
-            ctx.fillStyle = "#0f172a";
-            ctx.font = "bold 20px sans-serif";
-            ctx.fillText(this.userName + " 的專屬報告檔案", 45, 65);
-
-            ctx.strokeStyle = "#e2e8f0";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([6, 4]);
-            ctx.beginPath(); ctx.moveTo(45, 95); ctx.lineTo(455, 95); ctx.stroke();
-            ctx.setLineDash([]); 
-
-            const pName = targetNode.querySelector('.profile-name')?.innerText || "";
-            const pBadge = targetNode.querySelector('.profile-badge')?.innerText || "";
-            const pBody = targetNode.querySelector('.profile-body')?.innerText || "";
-            const pQuote = targetNode.querySelector('.profile-quote')?.innerText || "";
-
-            ctx.fillStyle = "#64748b";
-            ctx.font = "bold 12px sans-serif";
-            ctx.fillText(pBadge, 45, 130);
-            
-            ctx.fillStyle = "#0f172a";
-            ctx.font = "bold 24px sans-serif";
-            ctx.fillText(pName, 45, 168);
-
-            // 基本資料表格
-            ctx.fillStyle = "#f8fafc";
-            ctx.fillRect(45, 195, 410, 110);
-            ctx.strokeStyle = "#0f172a";
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(45, 195, 410, 110);
-
-            ctx.fillStyle = "#4a5568";
-            ctx.font = "bold 13px sans-serif";
-            
-            const metaVals = targetNode.querySelectorAll('.meta-val');
-            const val1 = metaVals[0]?.innerText || "";
-            const val2 = metaVals[1]?.innerText || "";
-            const val3 = metaVals[2]?.innerText || "";
-            const val4 = metaVals[3]?.innerText || "";
-
-            ctx.fillText("安全編號：" + val1, 60, 225);
-            ctx.fillText("危險系數：" + val3, 60, 255);
-            ctx.fillText("特質歸屬：" + val2, 60, 285);
-            
-            ctx.fillText("主要出沒：", 240, 225);
-            ctx.fillStyle = "#0f172a";
-            let placeWord1 = val4.substring(0, 10);
-            let placeWord2 = val4.substring(10);
-            ctx.fillText(placeWord1, 310, 225);
-            if(placeWord2) { ctx.fillText(placeWord2, 310, 245); }
-
-            // 描述本文
-            ctx.fillStyle = "#1e293b";
-            ctx.font = "14px sans-serif";
-            
-            function wrapCanvasText(context, text, x, y, maxWidth, lineHeight) {
-                let chunks = text.split('');
-                let currentLine = '';
-                for(let i = 0; i < chunks.length; i++) {
-                    let test = currentLine + chunks[i];
-                    if (context.measureText(test).width > maxWidth && i > 0) {
-                        context.fillText(currentLine, x, y);
-                        currentLine = chunks[i];
-                        y += lineHeight;
-                    } else { currentLine = test; }
-                }
-                context.fillText(currentLine, x, y);
-                return y;
-            }
-            let textEndY = wrapCanvasText(ctx, pBody, 45, 345, 400, 24);
-
-            // 引言區
-            ctx.fillStyle = "#f1f5f9";
-            ctx.fillRect(45, textEndY + 20, 410, 45);
-            ctx.fillStyle = "#0f172a";
-            ctx.font = "italic bold 13.5px sans-serif";
-            ctx.fillText(pQuote, 60, textEndY + 47);
-
-            // 印章
-            ctx.strokeStyle = "rgba(15,23,42,0.1)";
-            ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.arc(400, 620, 32, 0, 2 * Math.PI); ctx.stroke();
-            ctx.fillStyle = "rgba(15,23,42,0.1)";
-            ctx.font = "bold 10px sans-serif";
-            ctx.fillText("PASSED", 382, 624);
-
-            // 頁尾
-            ctx.fillStyle = "#94a3b8";
-            ctx.font = "10px sans-serif";
-            ctx.fillText("新竹市立建功高級中學 X 2026建功畢聯會", 45, 665);
-
-            const dataURL = canvas.toDataURL('image/jpeg', 0.95);
-            const downloadLink = document.createElement('a');
-            downloadLink.href = dataURL;
-            downloadLink.download = `${this.userName}_建功畢業鑑定報告.jpg`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        },
-
-        resetQuiz: function() {
-            this.currentQuestionIndex = 0;
-            this.selectedScores = [];
-            document.getElementById('result-page').className = 'hidden';
-            document.getElementById('quiz-page').className = 'hidden';
-            document.getElementById('start-page').className = '';
-            ImageEngine.setWelcomeImage();
-        }
-    };
-
-    window.onload = function() {
-        ImageEngine.setWelcomeImage();
-    };
-})();
-</script>
 
 </body>
 </html>
