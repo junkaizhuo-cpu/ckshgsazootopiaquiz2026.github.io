@@ -326,7 +326,7 @@
         window.jgQuiz = {
             currentQuestionIndex: 0,
             selectedScores: [],
-            userName: "建功人", // 預設名字
+            userName: "建功人", 
             
             questions: [
                 { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
@@ -344,7 +344,6 @@
             },
 
             selectIdentity: function(type) {
-                // 讀取暱稱
                 const inputName = document.getElementById('user-name-input').value.trim();
                 if(inputName) { this.userName = inputName; }
 
@@ -366,7 +365,6 @@
                     return;
                 }
 
-                // 控制「上一頁」按鈕的顯隱
                 const backBtn = document.getElementById('back-btn');
                 if(this.currentQuestionIndex > 0) {
                     backBtn.style.visibility = 'visible';
@@ -405,11 +403,10 @@
                 }, 350); 
             },
 
-            // 🔙 【新功能】退回上一頁邏輯
             prevQuestion: function() {
                 if(this.currentQuestionIndex > 0) {
                     this.currentQuestionIndex--;
-                    this.selectedScores.pop(); // 移除上一次選的分數
+                    this.selectedScores.pop(); 
                     this.showQuestion();
                 }
             },
@@ -427,9 +424,8 @@
                     if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
                 });
 
-                const finalResult = this.results[maxScore];
+                const finalResult = results[maxScore];
                 
-                // 動態帶入使用者輸入的暱稱
                 document.getElementById('result-header-text').innerText = `▸ 偵測 [${this.userName}] 的大數據精密 analysis：`;
 
                 const cardBox = document.getElementById('profile-card-box');
@@ -467,39 +463,32 @@
                 `;
             },
 
-            // 📸 【新功能】純原生 HTML5 Canvas 圖片導出引擎（防黑屏、免外掛）
             exportToImage: function() {
                 const targetNode = document.getElementById('profile-card-box');
                 if(!targetNode) return;
 
-                // 建立乾淨的畫布
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // 設定高解析度尺寸（適應精美列印或高畫質分享）
                 canvas.width = 500;
                 canvas.height = 680;
 
-                // 1. 繪製純白大卡片底色與黑色粗邊框
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.lineWidth = 4;
                 ctx.strokeStyle = "#0f172a";
                 ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
 
-                // 2. 渲染文字標題與徽章
                 ctx.fillStyle = "#0f172a";
                 ctx.font = "bold 24px sans-serif";
                 ctx.fillText(this.userName + " 的專屬存檔", 30, 60);
 
-                // 3. 虛擬虛線分隔
                 ctx.strokeStyle = "#cbd5e1";
                 ctx.lineWidth = 2;
                 ctx.setLineDash([6, 4]);
                 ctx.beginPath(); ctx.moveTo(30, 95); ctx.lineTo(470, 95); ctx.stroke();
-                ctx.setLineDash([]); // 恢復實線
+                ctx.setLineDash([]); 
 
-                // 4. 撈取目前畫面渲染結果中的核心文字並繪製到畫布上
                 const pName = targetNode.querySelector('.profile-name')?.innerText || "";
                 const pBadge = targetNode.querySelector('.profile-badge')?.innerText || "";
                 const pBody = targetNode.querySelector('.profile-body')?.innerText || "";
@@ -512,7 +501,6 @@
                 ctx.font = "bold 26px sans-serif";
                 ctx.fillText(pName, 30, 175);
 
-                // 5. 渲染基本 meta 資料欄位
                 ctx.fillStyle = "#f8fafc";
                 ctx.fillRect(30, 205, 440, 90);
                 ctx.strokeStyle = "#edf2f7";
@@ -521,7 +509,6 @@
                 ctx.fillStyle = "#334155";
                 ctx.font = "bold 13px sans-serif";
                 
-                // 抓取畫面上動態產生的內容
                 const metaVals = targetNode.querySelectorAll('.meta-val');
                 const val1 = metaVals[0]?.innerText || "BOGO-BOSS-01";
                 const val2 = metaVals[1]?.innerText || "鐵血行動派";
@@ -532,12 +519,10 @@
                 ctx.fillText("特質歸屬: " + val2, 250, 235);
                 ctx.fillText("危險系數: " + val3, 45, 270);
                 
-                // 處理可能過長的主要出沒地點
                 let placeStr = "主要出沒: " + val4;
                 if(placeStr.length > 18) placeStr = placeStr.substring(0, 17) + "...";
                 ctx.fillText(placeStr, 250, 270);
 
-                // 6. 處理長文本自動換行敘述區
                 ctx.fillStyle = "#334155";
                 ctx.font = "15px sans-serif";
                 
@@ -559,14 +544,12 @@
                 }
                 let endY = wrapText(ctx, pBody, 30, 335, 430, 24);
 
-                // 7. 渲染經典語錄
                 ctx.fillStyle = "#f1f5f9";
                 ctx.fillRect(30, endY + 20, 440, 45);
                 ctx.fillStyle = "#0f172a";
                 ctx.font = "italic bold 14px sans-serif";
                 ctx.fillText(pQuote, 45, endY + 47);
 
-                // 8. 浮水印章蓋印
                 ctx.strokeStyle = "rgba(15,23,42,0.15)";
                 ctx.lineWidth = 4;
                 ctx.beginPath(); ctx.arc(410, 600, 40, 0, 2 * Math.PI); ctx.stroke();
@@ -574,7 +557,6 @@
                 ctx.font = "bold 11px sans-serif";
                 ctx.fillText("PASSED", 390, 604);
 
-                // 9. 轉化為圖片直鏈並觸發手機自動下載
                 const dataURL = canvas.toDataURL('image/jpeg', 0.9);
                 const downloadLink = document.createElement('a');
                 downloadLink.href = dataURL;
