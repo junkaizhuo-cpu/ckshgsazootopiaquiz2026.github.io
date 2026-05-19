@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你在《動物方城市》裡是誰？ | 心理測驗</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: block;
+        }
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1em;
+        }
+        .question-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.15em;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        label {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+        label:hover {
+            background-color: #e8f4fd;
+            border-color: #3498db;
+            color: #2980b9;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        #result-section {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-header {
+            font-size: 1.3em;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .result-title {
+            font-size: 2.2em;
+            color: #e67e22;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .result-desc {
+            font-size: 1.1em;
+            color: #555;
+            text-align: left;
+            background: #fff9f4;
+            padding: 20px;
+            border-left: 5px solid #e67e22;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        .retry-btn {
+            padding: 12px 30px;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .retry-btn:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 測試題目區塊 -->
+    <div id="quiz-section">
+        <h1>🐾 你在《動物方城市》裡是誰？</h1>
+        <div class="subtitle">憑直覺回答以下 5 個問題，測出你的隱藏動物人格！</div>
+        
+        <form id="quizForm">
+            <!-- 第一題 -->
+            <div class="question-block">
+                <div class="question-title">1. 終於到了週末，你通常會怎麼安排你的休息時間？</div>
+                <label><input type="radio" name="q1" value="A"> A. 安排滿滿的計畫！去戶外運動、探索新地點，一刻都閒不下來。</label>
+                <label><input type="radio" name="q1" value="B"> B. 在街頭或商圈閒晃，看看有沒有什麼有趣的事物，順便發掘隱藏版美食。</label>
+                <label><input type="radio" name="q1" value="C"> C. 待在舒適的室內，準備好滿滿的零食，追自己最愛的偶像或影集。</label>
+                <label><input type="radio" name="q1" value="D"> D. 處理本週未完成的代辦事項或整理房間，保持一切井然有序。</label>
+                <label><input type="radio" name="q1" value="E"> E. 睡到自然醒，然後慢⋯⋯慢⋯⋯地⋯⋯享⋯⋯受⋯⋯早⋯⋯餐⋯⋯</label>
+            </div>
+
+            <!-- 第二題 -->
+            <div class="question-block">
+                <div class="question-title">2. 當遇到一個看起來「不可能解決」的難題時，你的第一反應是？</div>
+                <label><input type="radio" name="q2" value="A"> A. 燃起鬥志！絕對不放棄，想盡一切辦法證明自己能做到。</label>
+                <label><input type="radio" name="q2" value="B"> B. 轉個彎思考，找個聰明（甚至有點取巧）的捷徑來搞定它。</label>
+                <label><input type="radio" name="q2" value="C"> C. 感到有點焦慮，先找朋友訴苦，或者吃個甜點壓壓驚。</label>
+                <label><input type="radio" name="q2" value="D"> D. 依照過往的經驗、規定和 SOP 穩紮穩打地處理，不容許出錯。</label>
+                <label><input type="radio" name="q2" value="E"> E. 不⋯⋯著⋯⋯急⋯⋯，船⋯⋯到⋯⋯橋⋯⋯頭⋯⋯自⋯⋯然⋯⋯直⋯⋯</label>
+            </div>
+
+            <!-- 第三題 -->
+            <div class="question-block">
+                <div class="question-title">3. 在你的朋友圈裡，大家通常怎麼形容你？</div>
+                <label><input type="radio" name="q3" value="A"> A. 充滿熱情、正義感爆棚的行動派。</label>
+                <label><input type="radio" name="q3" value="B"> B. 幽默、嘴砲、看起來漫不經心但其實很講義氣。</label>
+                <label><input type="radio" name="q3" value="C"> C. 超級友善、沒心機，是大家眼中的開心果。</label>
+                <label><input type="radio" name="q3" value="D"> D. 嚴肅、有威嚴、出問題時總是可以依靠的領導者。</label>
+                <label><input type="radio" name="q3" value="E"> E. 脾氣超級好、但生活節奏似乎總是跟別人不太一樣。</label>
+            </div>
+
+            <!-- 第四題 -->
+            <div class="question-block">
+                <div class="question-title">4. 你心目中最理想的工作環境或生活狀態是什麼樣子？</div>
+                <label><input type="radio" name="q4" value="A"> A. 充滿挑戰，能夠發揮影響力，甚至「讓世界變得更美好」！</label>
+                <label><input type="radio" name="q4" value="B"> B. 自由不受拘束，不用看別人臉色，自己掌握自己的步調。</label>
+                <label><input type="radio" name="q4" value="C"> C. 氣氛輕鬆溫馨，同事好相處，最重要的是有吃不完的點心。</label>
+                <label><input type="radio" name="q4" value="D"> D. 制度分明，大家各司其職，有明確的規矩和升遷管道。</label>
+                <label><input type="radio" name="q4" value="E"> E. 步⋯⋯調⋯⋯平⋯⋯緩⋯⋯，不⋯⋯需⋯⋯要⋯⋯趕⋯⋯時⋯⋯間⋯⋯</label>
+            </div>
+
+            <!-- 第五題 -->
+            <div class="question-block">
+                <div class="question-title">5. 走在路上，你突然看到前面的人錢包掉了，你會怎麼做？</div>
+                <label><input type="radio" name="q5" value="A"> A. 立刻撿起來，不管多遠都狂奔追上去還給對方！</label>
+                <label><input type="radio" name="q5" value="B"> B. 撿起來掂掂重量，笑著跟對方搭話開個玩笑後再還給他。</label>
+                <label><input type="radio" name="q5" value="C"> C. 驚呼一聲，趕快撿起來，四處張望尋找失主或請旁邊的人幫忙。</label>
+                <label><input type="radio" name="q5" value="D"> D. 撿起來，然後直接依照程序交到最近的警察局或招領處。</label>
+                <label><input type="radio" name="q5" value="E"> E. 等⋯⋯我⋯⋯走⋯⋯到⋯⋯那⋯⋯邊⋯⋯，錢⋯⋯包⋯⋯已⋯⋯被⋯⋯撿⋯⋯走⋯⋯了⋯⋯</label>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="calculateResult()">看測驗結果</button>
+        </form>
+    </div>
+
+    <!-- 結果顯示區塊 -->
+    <div id="result-section">
+        <div class="result-header">你的測驗結果是：</div>
+        <h2 class="result-title" id="result-name"></h2>
+        <div class="result-desc" id="result-desc"></div>
+        <button class="retry-btn" onclick="resetQuiz()">再玩一次</button>
+    </div>
+</div>
+
+<script>
+    // 測驗結果資料庫
+    const resultData = {
+        'A': { name: "🐰 哈茱蒂 (Judy Hopps)", desc: "充滿熱情的理想主義者！你就像茱蒂一樣，是個充滿活力、永不言敗的樂天派。你有著強烈的正義感和目標，一旦下定決心，沒有任何困難能阻擋你。你相信只要努力，就能讓世界變得更好！" },
+        'B': { name: "🦊 胡尼克 (Nick Wilde)", desc: "聰明機智的街頭生存專家！你擁有極高的情商和靈活的腦袋。你看透了社會的運作規則，懂得用幽默和圓滑來保護自己。表面玩世不恭，但其實你內心柔軟，對認定的朋友絕對挺到底。" },
+        'C': { name: "🐆 洪金豹 (Benjamin Clawhauser)", desc: "溫慢友善的氣氛製造機！你是大家眼中的小天使，性格溫和、熱情且超級友善。在你身邊總能感到放鬆和快樂，雖然有時候容易分心，但你絕對是團隊中最不可或缺的潤滑劑。" },
+        'D': { name: "🐃 蠻牛局長 (Chief Bogo)", desc: "務實可靠的霸氣領導者！你做事講求效率、重視規則與秩序。有時候會讓人覺得有點嚴肅，但這都是因為你對自己和團隊有著極高的責任感。在危機時刻，你總是最能扛起重責大任的那個人。" },
+        'E': { name: "🦥 快俠 (Flash)", desc: "佛系生活的慢活大師！在這個急躁的世界裡，你擁有屬於自己的獨特節奏。你性格溫和、情緒穩定，幾乎沒有什麼事能讓你大發脾氣。其實你把一切都看在眼裡，可能還有著跌破眾人眼鏡的狂野嗜好！" }
+    };
+
+    function calculateResult() {
+        let scores = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0 };
+        
+        // 驗證每題是否皆已填寫
+        for (let i = 1; i <= 5; i++) {
+            let selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!selected) {
+                alert(`請先回答完第 ${i} 題喔！`);
+                return;
+            }
+            scores[selected.value]++;
+        }
+
+        // 計算最高分的選項
+        let maxChar = 'A';
+        let maxScore = 0;
+        for (let char in scores) {
+            if (scores[char] > maxScore) {
+                maxScore = scores[char];
+                maxChar = char;
+            }
+        }
+
+        // 切換顯示區塊
+        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        
+        // 寫入結果
+        document.getElementById('result-name').innerText = resultData[maxChar].name;
+        document.getElementById('result-desc').innerText = resultData[maxChar].desc;
+        
+        // 讓網頁自動捲動到最上方
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function resetQuiz() {
+        // 重設表單並切換回題目區
+        document.getElementById('quizForm').reset();
+        document.getElementById('result-section').style.display = 'none';
+        document.getElementById('quiz-section').style.display = 'block';
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+</script>
+
+</body>
+</html>
