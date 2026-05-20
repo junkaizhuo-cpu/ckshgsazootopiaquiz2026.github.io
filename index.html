@@ -1204,18 +1204,21 @@
         .toast.show { transform: translateX(-50%) translateY(0); }
 
         .preview-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 10001;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 10001;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    /* 將原本的 center 改為 flex-start，讓內容從上往下自然延伸 */
+    justify-content: flex-start;
+    /* 加入 overflow-y 允許滾動，並設定上下留白，滑到底才不會太貼邊緣 */
+    padding: 40px 16px 80px 16px;
+    overflow-y: auto;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
         .preview-overlay.show {
             display: flex;
             animation: previewFade 0.4s cubic-bezier(0.32, 0.72, 0, 1);
@@ -1243,112 +1246,59 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .preview-overlay .preview-img {
-            max-width: 100%;
-            max-height: 60vh;
-            border-radius: 12px;
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.15),
-                0 24px 64px rgba(0,0,0,0.6),
-                0 4px 12px rgba(0,0,0,0.4);
-            -webkit-touch-callout: default;
-            -webkit-user-select: auto;
-            user-select: auto;
-            animation: previewImgPop 0.55s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
-        }
+    max-width: 100%;
+    /* 移除原本的 max-height: 60vh; 讓它能完整顯示原比例 */
+    height: auto;
+    /* 避免圖片在 flex 容器中被異常擠壓 */
+    flex-shrink: 0; 
+    border-radius: 12px;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.15),
+        0 24px 64px rgba(0,0,0,0.6),
+        0 4px 12px rgba(0,0,0,0.4);
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    user-select: auto;
+    animation: previewImgPop 0.55s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
         @keyframes previewImgPop {
             from { opacity: 0; transform: scale(0.85) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .preview-overlay .preview-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 18px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            max-width: 380px;
-            animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-        }
-              /* 🌟 修復 iPhone/iPad 上預覽畫面按鈕與圖片重疊的問題 */
-        .preview-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 10001;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 16px; /* 增加上下安全邊距，把空間留給按鈕 */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .preview-overlay.show {
-            display: flex;
-            animation: previewFade 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-        }
-        @keyframes previewFade {
-            from { opacity: 0; backdrop-filter: blur(0); }
-            to { opacity: 1; backdrop-filter: blur(12px); }
-        }
-        
-        .preview-overlay .preview-hint {
-            color: #fff; font-size: 13.5px; font-weight: 600; margin-bottom: 14px; text-align: center; line-height: 1.5;
-            padding: 10px 18px; background: rgba(255,255,255,0.14); border-radius: 50px; backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255,255,255,0.18); 
-            flex-shrink: 0; /* 提示字絕對不允許被壓縮 */
-            animation: hintSlideDown 0.6s 0.1s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-        }
-        @keyframes hintSlideDown {
-            from { opacity: 0; transform: translateY(-12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* 🌟 核心修復點：限制圖片最高 55vh，並允許它在小螢幕上縮小，絕不擠壓按鈕 */
-        .preview-overlay .preview-img {
-            max-width: 100%;
-            max-height: 55vh; 
-            min-height: 0; 
-            flex-shrink: 1; 
-            object-fit: contain; 
-            border-radius: 12px;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 24px 64px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4);
-            -webkit-touch-callout: default;
-            user-select: auto;
-            animation: previewImgPop 0.55s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
-        }
-        @keyframes previewImgPop {
-            from { opacity: 0; transform: scale(0.85) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        /* 🌟 強制按鈕塊維持原本高度，不准被圖片壓縮 */
-        .preview-overlay .preview-actions {
-            flex-shrink: 0; /* 按鈕區域絕對不允許被壓縮 */
-            display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 380px;
-            animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-        }
-        
+    display: flex;
+    gap: 10px;
+    margin-top: 24px; /* 與圖片拉開一點距離 */
+    margin-bottom: 20px; /* 確保底部有留白 */
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 380px;
+    flex-shrink: 0; /* 防止按鈕高度被壓縮 */
+    animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
+}
         .preview-overlay button {
-            flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 14px; border: none; font-size: 15px; font-weight: 700;
-            cursor: pointer; font-family: inherit; letter-spacing: -0.005em; transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+            flex: 1;
+            min-width: 130px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: none;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: -0.005em;
+            transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
         }
         .preview-overlay .btn-download {
             background: linear-gradient(135deg, #FEDA77 0%, #F58529 18%, #DD2A7B 45%, #8134AF 70%, #515BD4 100%);
-            background-size: 220% 220%; color: #fff;
-            box-shadow: 0 4px 16px rgba(221, 42, 123, 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+            background-size: 220% 220%;
+            color: #fff;
+            box-shadow:
+                0 4px 16px rgba(221, 42, 123, 0.45),
+                inset 0 1px 0 rgba(255,255,255,0.25);
             animation: gradientShift 6s ease infinite, hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
         }
-        .preview-overlay .btn-download:hover { filter: brightness(1.08); transform: translateY(-1px); }
-        .preview-overlay .btn-download:active { transform: scale(0.97); filter: brightness(0.95); }
-        
-        .preview-overlay .btn-close {
-            background: rgba(255,255,255,0.18); color: #fff; backdrop-filter: blur(20px); flex: 0 0 auto; min-width: 80px;
-            border: 0.5px solid rgba(255,255,255,0.15);
-        }
-        .preview-overlay .btn-close:hover { background: rgba(255,255,255,0.26); }
-        .preview-overlay .btn-close:active { transform: scale(0.97); }
-
         .preview-overlay .btn-download:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .preview-overlay .btn-download:active { transform: scale(0.97); filter: brightness(0.95); }
         .preview-overlay .btn-close {
@@ -1933,3 +1883,4 @@
 </script>
 </body>
 </html>
+
