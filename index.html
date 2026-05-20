@@ -1265,48 +1265,52 @@
             from { opacity: 0; transform: scale(0.85) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
+               /* 🌟 強制按鈕塊維持原本高度，並改為上下排列強制置中 */
         .preview-overlay .preview-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 24px; /* 與圖片拉開一點距離 */
-    margin-bottom: 20px; /* 確保底部有留白 */
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    max-width: 380px;
-    flex-shrink: 0; /* 防止按鈕高度被壓縮 */
-    animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-}
+            flex-shrink: 0; 
+            display: flex; 
+            flex-direction: column; /* 🌟 改為上下對稱堆疊 */
+            align-items: center;    /* 🌟 絕對水平置中 */
+            gap: 12px; 
+            margin-top: 20px; 
+            width: 100%; 
+            animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
+        }
+        
+        /* 🌟 拔除原本不對稱的彈性設定，給予統一的最大寬度 */
         .preview-overlay button {
-            flex: 1;
-            min-width: 130px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            border: none;
-            font-size: 15px;
+            width: 100%; 
+            max-width: 260px; /* 🌟 讓兩顆按鈕寬度一模一樣 */
+            padding: 14px 18px; 
+            border-radius: 14px; 
+            border: none; 
+            font-size: 15px; 
             font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            letter-spacing: -0.005em;
+            cursor: pointer; 
+            font-family: inherit; 
+            letter-spacing: -0.005em; 
             transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
         }
+        
         .preview-overlay .btn-download {
             background: linear-gradient(135deg, #FEDA77 0%, #F58529 18%, #DD2A7B 45%, #8134AF 70%, #515BD4 100%);
-            background-size: 220% 220%;
-            color: #fff;
-            box-shadow:
-                0 4px 16px rgba(221, 42, 123, 0.45),
-                inset 0 1px 0 rgba(255,255,255,0.25);
+            background-size: 220% 220%; color: #fff;
+            box-shadow: 0 4px 16px rgba(221, 42, 123, 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
             animation: gradientShift 6s ease infinite, hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
         }
         .preview-overlay .btn-download:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .preview-overlay .btn-download:active { transform: scale(0.97); filter: brightness(0.95); }
+        
         .preview-overlay .btn-close {
-            background: rgba(255,255,255,0.18);
-            color: #fff;
-            backdrop-filter: blur(20px);
-            flex: 0 0 auto;
-            min-width: 80px;
+            background: rgba(255,255,255,0.18); 
+            color: #fff; 
+            backdrop-filter: blur(20px); 
+            /* 🌟 刪除了破壞對稱的 flex 屬性 */
+            border: 0.5px solid rgba(255,255,255,0.15);
+        }
+        .preview-overlay .btn-close:hover { background: rgba(255,255,255,0.26); }
+        .preview-overlay .btn-close:active { transform: scale(0.97); }
+
             border: 0.5px solid rgba(255,255,255,0.15);
         }
         .preview-overlay .btn-close:hover { background: rgba(255,255,255,0.26); }
