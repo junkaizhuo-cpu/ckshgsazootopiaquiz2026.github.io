@@ -459,309 +459,310 @@
         }
 
         /* =========================================================
-           🪪 證件/識別證風格的結算卡
-           - 結構：上方 id-card-row (左大頭貼 + 右資料區) → 下方 description + quote + tags
-           - 平常瀏覽 (手機)：寬 100%，整體 ~620px 高，一個螢幕內
-           - 匯出 IG：套 .ig-story，540×960 (9:16)，scale 2 → 1080×1920
+                  /* =========================================================
+           📁 機密檔案風格結算卡（情報局特務風）
            ========================================================= */
         .profile-card {
             background: #ffffff;
-            border: 0.5px solid rgba(60, 60, 67, 0.12);
-            border-radius: 22px;
-            padding: 0;
+            border: 2px solid #000000;
+            border-radius: 0px; /* 檔案風走硬朗直角 */
+            padding: 20px 16px;
             margin-top: 12px;
             text-align: left;
             position: relative;
-            box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.04),
-                0 4px 14px rgba(0, 0, 0, 0.06),
-                0 14px 36px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Microsoft JhengHei", sans-serif;
             animation: cardPop 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-        }
-        @keyframes cardPop {
-            0% { opacity: 0; transform: translateY(20px) scale(0.94); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 證件頂部色帶 (Mac Finder 風的小圓點) */
-        .id-card-strip {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 18px;
-            background: linear-gradient(135deg, rgba(0,122,255,0.06), rgba(175,82,222,0.06));
-            border-bottom: 0.5px solid rgba(60,60,67,0.08);
-            position: relative;
-        }
-        .id-card-dots {
-            display: flex;
-            gap: 6px;
-        }
-        .id-card-dots span {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .id-card-dots span:nth-child(1) { background: #FF5F57; }
-        .id-card-dots span:nth-child(2) { background: #FEBC2E; }
-        .id-card-dots span:nth-child(3) { background: #28C840; }
-        .id-card-filename {
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--label-tertiary);
-            letter-spacing: 0.04em;
+        /* 頂部黑底機密條 */
+        .report-top-bar {
+            background: #000000;
+            color: #ffffff;
+            padding: 6px 12px;
+            font-size: 10px;
+            font-weight: 700;
             font-family: 'SF Mono', Menlo, monospace;
-            flex: 1;
-            text-align: center;
-            margin-right: 46px;        /* 平衡左側 dots 寬度 */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            display: flex;
+            justify-content: space-between;
+            letter-spacing: 0.06em;
+            margin-bottom: 16px;
+        }
+        .report-top-bar .dot-secret::before {
+            content: "●";
+            color: #ff2d55;
+            margin-right: 6px;
         }
 
-        /* 證件主體：橫向兩欄 */
-        .id-card-row {
-            display: flex;
-            gap: 14px;
-            padding: 16px 16px 14px;
-            align-items: stretch;
-        }
-        /* 左：大頭貼框 */
-        .id-photo {
-            flex: 0 0 38%;
+        /* 主標題區 */
+        .report-header {
+            border-bottom: 2px solid #000000;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
             position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            background: var(--hero-bg, #f2f2f7);
-            aspect-ratio: 3 / 4;            /* 證件大頭照標準直立比例 */
-            box-shadow:
-                inset 0 0 0 1px rgba(255,255,255,0.6),
-                0 1px 3px rgba(0,0,0,0.08),
-                0 4px 12px rgba(0,0,0,0.06);
         }
-        .id-photo img {
+        .report-subtitle {
+            font-size: 11px;
+            font-weight: 800;
+            color: #555555;
+            letter-spacing: 0.08em;
+            font-family: 'SF Mono', Menlo, monospace;
+            margin: 0 0 2px 0;
+        }
+        .report-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #000000;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+        /* 紅色「極機密」印章 */
+                .stamp-top-secret {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            border: 3px solid #dc3545; /* 稍微加粗邊框 */
+            color: #dc3545;
+            padding: 6px 16px; /* 增加內邊距 */
+            font-size: 22px; /* 字體從原本的 16px-18px 放大到 22px */
+            font-weight: 900;
+            text-transform: uppercase;
+            transform: rotate(8deg);
+            opacity: 0.85;
+            letter-spacing: 3px; /* 增加字距讓它更有蓋章感 */
+            border-radius: 4px;
+        }
+
+
+        /* 上方資訊欄：左大頭貼、右表格 */
+        .report-meta-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        /* 左：相片區 */
+        .report-photo-box {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .report-photo {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border: 1px solid #000000;
+            background: var(--hero-bg, #f2f2f7);
+            position: relative;
+            padding: 8px;
+        }
+        /* 模擬相片角落的 L 型裁切線 */
+        .report-photo::before, .report-photo::after {
+            content: "";
+            position: absolute;
+            width: 10px; height: 10px;
+            border-color: #000000;
+            border-style: solid;
+            pointer-events: none;
+        }
+        .report-photo::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+        .report-photo::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+        
+        .report-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 30%;
-            animation: heroFloat 0.7s cubic-bezier(0.32, 0.72, 0, 1);
         }
-        @keyframes heroFloat {
-            0% { opacity: 0; transform: scale(1.06); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        /* 大頭貼下角小水印 */
-        .id-photo::after {
-            content: "OFFICIAL 2026";
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            font-size: 7.5px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.85);
-            background: rgba(0,0,0,0.45);
-            padding: 2px 6px;
-            border-radius: 50px;
-            letter-spacing: 0.08em;
-            font-family: 'SF Mono', Menlo, monospace;
-            backdrop-filter: blur(8px);
+           .report-biometric {
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 恢復置中 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif; /* 改為黑體 */
+            font-size: 25 px; /* 保持放大後的清晰字體 */
+            font-weight: 900; /* 特粗體 */
+            color: #000000; /* 純黑色 */
+            border: 1px solid #000000; /* 刪掉外框 */
+            padding: 4px 0;
+            background: transparent; /* 刪掉背景色 */
         }
 
-        /* 右：資料欄 */
-        .id-info {
+
+
+
+              /* 修正後的經典表格：左欄全面套用灰底 */
+        .report-table {
             flex: 1;
-            min-width: 0;             /* 防 flex 撐爆 */
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12.5px;
+        }
+        .report-table td {
+            border: 1px solid #000000;
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+        /* 表格左半邊（審查項目、核心屬性等）全面灰底 */
+                .report-table td:first-child {
+            width: 90px; /* 固定左欄寬度，防止「主要出沒地」擠壓換行 */
+            white-space: nowrap; /* 強制文字不換行 */
+            background: #f5f5f7;
+            font-weight: 700;
+            color: #333333;
+            width: 32%;
+            text-align: center;
+        }
+        .report-table .td-val {
+            font-weight: 700;
+            color: #000000;
+        }
+        /* 危險等級進度條 */
+        .danger-bar-container {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
             gap: 8px;
-            padding-top: 2px;
         }
-        .id-badge {
-            display: inline-block;
-            font-size: 10.5px;
-            font-weight: 700;
-            color: #fff;
-            background: linear-gradient(135deg, var(--apple-pink), var(--apple-purple));
-            padding: 4px 10px;
-            border-radius: 50px;
-            letter-spacing: 0.03em;
-            box-shadow: 0 2px 8px rgba(175,82,222,0.3);
-            align-self: flex-start;
-            white-space: nowrap;
-        }
-        .id-name {
-            font-size: 19px;
-            font-weight: 800;
-            line-height: 1.18;
-            letter-spacing: -0.022em;
-            color: var(--label-primary);
-            margin: 4px 0 2px;
-        }
-        .id-name-en {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--label-tertiary);
-            letter-spacing: 0.06em;
-            font-family: 'SF Mono', Menlo, monospace;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-        .id-name-divider {
-            width: 32px;
-            height: 3px;
+        .danger-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: #e5e5ea;
             border-radius: 2px;
-            background: linear-gradient(90deg, var(--apple-pink), var(--apple-purple), var(--apple-indigo));
-            margin-bottom: 6px;
-        }
-        .id-fields {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 10px;
-            font-size: 11.5px;
-        }
-        .id-field {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-        .id-field-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--label-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 1px;
-        }
-        .id-field-val {
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--label-primary);
-            letter-spacing: -0.005em;
-            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
+        }
+        .danger-bar-fg {
+            height: 100%;
+            background: #ff2d55;
         }
 
-        /* 證件下方：description + quote + tags（更緊湊） */
-        .id-body {
-            padding: 0 16px 16px;
+        /* 區段標題（SECTION 02 刪除了括號中文） */
+        .section-divider {
+            font-size: 9px;
+            font-weight: 800;
+            color: #666666;
+            font-family: 'SF Mono', Menlo, monospace;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #000000;
+            padding-bottom: 4px;
+            margin: 18px 0 10px 0;
+            text-transform: uppercase;
         }
-        .id-divider {
-            height: 0.5px;
-            background: rgba(60,60,67,0.12);
-            margin: 0 0 12px;
+
+
+        /* 診斷內文區 */
+        .report-text-block {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #111111;
+            text-align: justify;
             position: relative;
         }
-        .id-divider::before, .id-divider::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: rgba(60,60,67,0.18);
-            transform: translateY(-50%);
+        /* 內文姓名高亮 */
+        .highlight-name {
+            background: #fef08a; /* 螢光黃底色高亮 */
+            font-weight: 800;
+            padding: 1px 4px;
         }
-        .id-divider::before { left: -3px; }
-        .id-divider::after { right: -3px; }
-
-        .id-desc {
-            font-size: 13px;
-            line-height: 1.55;
-            color: var(--label-secondary);
-            text-align: justify;
-            letter-spacing: -0.005em;
-            margin-bottom: 10px;
+       
+        /* 監聽對話紀錄區 */
+        .quote-log-box {
+            background: #f8f9fa;
+            border: 1px solid #e5e5ea;
+            padding: 10px 12px;
+            margin-top: 12px;
+            font-size: 12px;
         }
-        .id-quote {
-            background: linear-gradient(135deg, rgba(88,86,214,0.06), rgba(175,82,222,0.06));
-            border-left: 3px solid var(--apple-indigo);
-            padding: 9px 12px;
-            font-style: italic;
-            font-weight: 600;
-            border-radius: 0 10px 10px 0;
-            font-size: 12.5px;
-            color: var(--label-primary);
-            letter-spacing: -0.005em;
-            margin-bottom: 10px;
+        .quote-log-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #8e8e93;
+            font-family: 'SF Mono', Menlo, monospace;
+            margin-bottom: 2px;
+        }
+        .quote-log-content {
+            font-size:16px;
+            font-weight: 900;
+            line-height: 1.5;
+            font-style: italic; /* 讓對話維持斜體更有紀錄感 */
+            color: #111;
         }
 
-        .id-tags-row {
+        /* 衍生特徵因子標籤 */
+        .report-tags-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 6px;
         }
-        .id-tag {
-            font-size: 10.5px;
-            padding: 3.5px 9px;
-            border-radius: 50px;
+        .report-tag-item {
+            border: 1px solid #000000;
+            padding: 4px 10px;
+            font-size: 11.5px;
             font-weight: 700;
-            color: var(--label-primary);
-            border: 0.5px solid rgba(60,60,67,0.1);
-            animation: tagPop 0.5s cubic-bezier(0.32, 0.72, 0, 1.4) backwards;
-            letter-spacing: -0.005em;
-        }
-        .id-tag:nth-child(1) { animation-delay: 0.1s; }
-        .id-tag:nth-child(2) { animation-delay: 0.18s; }
-        .id-tag:nth-child(3) { animation-delay: 0.26s; }
-        .id-tag:nth-child(4) { animation-delay: 0.34s; }
-        @keyframes tagPop {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+            color: #000000;
+            background: #ffffff;
         }
 
-        /* 證件底部條 (學校 + 浮水印) */
-        .id-footer-strip {
-            padding: 9px 16px;
-            background: linear-gradient(135deg, rgba(0,122,255,0.05), rgba(175,82,222,0.05));
-            border-top: 0.5px dashed rgba(60,60,67,0.16);
+        /* 底部公文宣告與紅色實體章印 */
+        .report-footer {
+            margin-top: 24px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            font-size: 9.5px;
-            font-weight: 600;
-            color: var(--label-tertiary);
-            letter-spacing: 0.02em;
+            align-items: flex-end;
+            position: relative;
         }
-        .id-footer-strip .id-stamp {
+        .report-footer-meta {
+            font-size: 8.5px;
             font-family: 'SF Mono', Menlo, monospace;
-            font-weight: 700;
-            color: var(--apple-indigo);
-            letter-spacing: 0.06em;
+            color: #777777;
+            line-height: 1.4;
+        }
+        /* 💥 紅色復古圓形建功畢聯會章 */
+        .stamp-red-seal {
+            width: 52px;
+            height: 52px;
+            border: 2px solid rgba(255, 45, 85, 0.85);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 45, 85, 0.85);
+            font-size: 8px;
+            font-weight: 900;
+            line-height: 1.2;
+            text-align: center;
+            transform: rotate(-5deg) translateY(4px);
+            letter-spacing: -0.05em;
+            background: rgba(255,255,255,0.8);
+            box-shadow: inset 0 0 0 1px rgba(255, 45, 85, 0.3);
         }
 
-        /* 手機（≤440px）微調，仍只在一個螢幕內 */
-        @media (max-width: 440px) {
-            .container { padding: 22px 18px; border-radius: 24px; }
-            h1 { font-size: 23px; }
-            .image-box { aspect-ratio: 16 / 9; margin-bottom: 16px; border-radius: 16px; }
-            .question-title { font-size: 18px; margin-bottom: 14px; }
-            .option-btn { padding: 13px 16px; font-size: 15px; }
-            .subtitle { font-size: 13.5px; margin-bottom: 18px; }
-            .identity-container { padding: 14px 12px; gap: 10px; }
-            .sticker-btn { padding: 10px 18px; font-size: 14px; }
-            .action-btn { padding: 13px 24px; font-size: 15px; }
-            footer { margin-top: 20px; font-size: 10.5px; }
-            body { padding: 8px; }
-            #quiz-container { padding: 8px 0; }
-
-            .id-card-row { padding: 14px 14px 12px; gap: 12px; }
-            .id-body { padding: 0 14px 14px; }
-            .id-name { font-size: 17.5px; }
-            .id-desc { font-size: 12.5px; line-height: 1.5; -webkit-line-clamp: 4; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
-            .id-quote { font-size: 12px; padding: 8px 11px; }
-            .id-tag { font-size: 10px; padding: 3px 8px; }
-            .id-fields { gap: 5px 8px; }
-            .id-field-val { font-size: 11px; }
-            .id-card-strip { padding: 10px 14px; }
-            .id-card-filename { font-size: 11px; margin-right: 42px; }
+        /* =========================================================
+           📱 調整隨之對應的 IG 限動 9:16 匯出樣式調整
+           ========================================================= */
+        .profile-card.ig-story {
+            width: 540px;
+            height: 960px;
+            border: none;
+            padding: 32px 28px;
         }
+        .profile-card.ig-story .report-top-bar { font-size: 12px; padding: 8px 14px; margin-bottom: 24px; }
+        .profile-card.ig-story .report-title { font-size: 32px; }resul
+        .profile-card.ig-story .report-subtitle { font-size: 14px; }
+                .profile-card.ig-story .stamp-top-secret { font-size: 26px; padding: 8px 20px; top: 20px; right: 20px; }
 
-        /* 平常瀏覽時隱藏匯出專屬浮水印 */
-        .export-only { display: none; }
-        .profile-card.exporting .export-only { display: block; }
+        .profile-card.ig-story .report-meta-row { gap: 24px; margin-bottom: 24px; }
+        .profile-card.ig-story .report-table { font-size: 14.5px; }
+        .profile-card.ig-story .report-table td { padding: 11px 14px; }
+        .profile-card.ig-story .section-divider { font-size: 12px; margin: 26px 0 14px; }
+        .profile-card.ig-story .report-text-block { font-size: 16px; line-height: 1.7; }
+        
+        .profile-card.ig-story .quote-log-box { padding: 14px 16px; margin-top: 18px; font-size: 14.5px; }
+        .profile-card.ig-story .quote-log-label { font-size: 11px; }
+        .profile-card.ig-story .report-tag-item { font-size: 14px; padding: 6px 14px; }
+        .profile-card.ig-story .report-tags-grid { gap: 10px; }
+        .profile-card.ig-story .report-footer { margin-top: 40px; }
+        .profile-card.ig-story .report-footer-meta { font-size: 11px; }
+        .profile-card.ig-story .stamp-red-seal { width: 72px; height: 72px; font-size: 11px; }
+
 
         /* =========================================================
            📱 IG 限動 9:16 匯出模式（540 × 960 → scale 2 → 1080 × 1920）
@@ -1023,6 +1024,7 @@
             letter-spacing: -0.01em;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
+        
     </style>
 </head>
 <body>
@@ -1115,7 +1117,7 @@
     ];
 
     window.quizResultsDatabase = {
-        "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
+        "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
         "B": { badge: "2026 活力夢想家檔案", name: "兔子茱蒂 × 體育股長", characterName: "哈茱蒂", bg: "#fef9c3", meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！", quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" },
         "C": { badge: "2026 智商天花板檔案", name: "狐狸尼克 × 副班長", characterName: "狐狸尼克", bg: "#fae8ff", meta: { code: "NICK-VICE-99", danger: "65%", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" }, traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"], desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌，平時低調看戲、優雅省力，但大局需要時總能用高智商精準掌控，是班上的隱藏版大佬。", quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。" },
         "D": { badge: "2026 校園守護神檔案", name: "樹懶快俠 × 普通學生", characterName: "快俠", bg: "#dcfce7", meta: { code: "FLASH-STUDENT-00", danger: "0%", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" }, traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"], desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。即使身邊的人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解，活得悠閒又療癒。", quote: "沒事沒事，平安畢業，順其自然。" }
@@ -1317,56 +1319,102 @@
 
             const finalResult = window.quizResultsDatabase[maxScore];
             
-            document.getElementById('result-header-text').innerText = `▸ 偵測 [${this.userName}] 的大數據精密 analysis：`;
+            document.getElementById('result-header-text').innerText = `▸ 偵測 ${this.userName}的大數據精密分析：`;
 
             const cardBox = document.getElementById('profile-card-box');
 
+                        // 此段請直接蓋掉原先 showResult 裡的 cardBox.innerHTML 賦值區塊：
+                        // 請用這段完全覆蓋 showResult 裡的 cardBox.innerHTML 區塊：
+                        // 根據動物原本的 bg 顏色（例如 #FFD700 等），動態生成一個 12% 透明度的淺色背景供欄位與標籤使用
+            const lightThemeBg = `${finalResult.bg}50`; // 這裡維持給 Hashtag 用（20 代表 12% 透明度）
+            const tableLeftBg = `${finalResult.bg}40`;  // 這裡專門給「表格左欄」用（把 40 改大就會變深，改小就會變淺！）
+
+
             cardBox.innerHTML = `
-                <div class="id-card-strip">
-                    <div class="id-card-dots"><span></span><span></span><span></span></div>
-                    <div class="id-card-filename">${this.userName}_鑑定報告.id</div>
+                <div class="report-top-bar">
+                    <div class="dot-secret">TOP SECRET // CLASS-2026</div>
+                    <div>DOC-ID: ${finalResult.meta.code}</div>
                 </div>
-                <div class="id-card-row">
-                    <div class="id-photo" style="--hero-bg:${finalResult.bg}; background:${finalResult.bg};">
-                        <img src="${finalResult.characterName}.jpeg" onerror="this.onerror=null; this.src='${finalResult.characterName}.jpg'; this.onerror=function(){ this.onerror=null; this.src='${finalResult.characterName}.png'; this.onerror=function(){ this.style.display='none'; }; };" alt="${finalResult.name}">
-                    </div>
-                    <div class="id-info">
-                        <div>
-                            <span class="id-badge">${finalResult.badge}</span>
-                            <h2 class="id-name">${finalResult.name}</h2>
-                            <div class="id-name-en">${finalResult.meta.code}</div>
-                            <div class="id-name-divider"></div>
+                
+                <div class="report-header">
+                    <div class="report-subtitle">HSINCHU CHIEN-KUNG INTELLIGENCE</div>
+                    <h2 class="report-title"><span>${finalResult.name}</span></h2>
+                    <div class="stamp-top-secret">極機密</div>
+                </div>
+
+                <div class="report-meta-row">
+                    <div class="report-photo-box">
+                        <div class="report-photo" style="--hero-bg:${finalResult.bg};">
+                            <img src="${finalResult.characterName}.jpeg" onerror="this.onerror=null; this.src='${finalResult.characterName}.jpg'; this.onerror=function(){ this.onerror=null; this.src='${finalResult.characterName}.png'; this.onerror=function(){ this.style.display='none'; }; };" alt="${finalResult.name}">
                         </div>
-                        <div class="id-fields">
-                            <div class="id-field">
-                                <span class="id-field-label">類型</span>
-                                <span class="id-field-val">${finalResult.meta.type}</span>
-                            </div>
-                            <div class="id-field">
-                                <span class="id-field-label">危險</span>
-                                <span class="id-field-val">${finalResult.meta.danger}</span>
-                            </div>
-                            <div class="id-field" style="grid-column: 1 / -1;">
-                                <span class="id-field-label">主要出沒</span>
-                                <span class="id-field-val">${finalResult.meta.place}</span>
-                            </div>
+                        <div class="report-biometric">
+                            ${this.userName}
                         </div>
                     </div>
+                    
+                                        <table class="report-table">
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222; background-image: none !important;">審查項目</td>
+                            <td class="td-val">鑑定機關觀測紀錄</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">觀測代號</td>
+                            <td class="td-val" style="font-family:'SF Mono',monospace; font-size:11px;">${finalResult.meta.code}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">危險等級</td>
+                            <td class="td-val">
+                                <div class="danger-bar-container">
+                                    <div class="danger-bar-bg">
+                                        <div class="danger-bar-fg" style="width: ${finalResult.meta.danger}; background-color: ${finalResult.bg};"></div>
+                                    </div>
+                                    <span style="font-family:'SF Mono',monospace; width:32px; text-align:right;">${finalResult.meta.danger}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">核心屬性</td>
+                            <td class="td-val">${finalResult.badge}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">主型態</td>
+                            <td class="td-val">${finalResult.meta.type}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222; font-size: 11px;">主要出沒地</td>
+                            <td class="td-val" style="font-size:11px; line-height:1.2;">${finalResult.meta.place}</td>
+                        </tr>
+                    </table>
+
                 </div>
-                <div class="id-body">
-                    <div class="id-divider"></div>
-                    <div class="id-desc">${finalResult.desc}</div>
-                    <div class="id-quote">「${finalResult.quote}」</div>
-                    <div class="id-tags-row">
-                        ${finalResult.traits.map(t => `<span class="id-tag" style="background:${finalResult.bg}">${t}</span>`).join('')}
+
+                <div class="section-divider">SECTION 01 // BEHAVIORAL DIAGNOSIS </div>
+                <div class="report-text-block">
+                    經過 2026 建功大數據與行為軌跡追蹤，對象個體 <span class="highlight-name">${this.userName}</span> 在校園生態系中展現出極為顯著的 <span class="highlight-name">${finalResult.name}</span> 特徵。${finalResult.desc}
+                    
+                    <div class="quote-log-box">
+                        <div class="quote-log-content">「${finalResult.quote}」</div>
                     </div>
                 </div>
-                <div class="id-footer-strip">
-                    <span>新竹市立建功高級中學 × 2026 畢聯會</span>
-                    <span class="id-stamp">2026</span>
+
+                <div class="section-divider">SECTION 02 // SUB-TRAITS</div>
+                <div class="report-tags-grid">
+                    ${finalResult.traits.map(t => `<span class="report-tag-item" style="background-color: ${lightThemeBg}; border-color: ${finalResult.bg}; color: #111; font-weight: 600;">${t}</span>`).join('')}
+                </div>
+
+                <div class="report-footer">
+                    <div class="report-footer-meta">
+                        CLASSIFIED BY: 2026 CKHS GRADUATION COMMITTEE<br>
+                        DATE OF ISSUED: 2026.06 // AUTHORIZED UNDER STATUTE 63
+                    </div>
+                    <div class="stamp-red-seal">
+                        建功高中<br>畢聯會<br><span style="font-family:'SF Mono',monospace; font-size:7px; margin-top:2px;">2026</span>
+                    </div>
                 </div>
                 <div class="export-only" id="export-watermark"></div>
             `;
+
+
 
             // 把卡片底色變數設給卡片本體，供 IG 模式背景使用
             cardBox.style.setProperty('--hero-bg', finalResult.bg);
