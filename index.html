@@ -38,50 +38,52 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'PingFang TC', 'Helvetica Neue', 'Microsoft JhengHei', sans-serif;
-            background-color: #F2F2F7;
-            background-image: url('背景.jpeg'), url('背景.jpg'), url('背景.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: var(--label-primary);
-            margin: 0;
-            padding: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            line-height: 1.47;
-            letter-spacing: -0.01em;
-        }
+        /* 移除 body 原有的 background 設定 */
+/* 1. 鎖定 body，不讓整個網頁捲動 */
+/* 1. 確保 body 不會捲動 */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* 強制關閉頁面滾動 */
+    position: relative;
+}
 
-        #quiz-container {
-            width: 100vw;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 12px 0;
-        }
+/* 2. 背景層固定 */
+.global-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    background-image: url('背景.jpeg'), url('背景.jpg'), url('背景.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
-        .container {
-            max-width: 500px;
-            width: 100%;
-            background: var(--card-bg);
-            border-radius: 28px;
-            box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.04),
-                0 8px 24px rgba(0, 0, 0, 0.08),
-                0 24px 56px rgba(0, 0, 0, 0.06);
-            padding: 26px 22px;
-            text-align: center;
-            border: 0.5px solid rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            position: relative;
-        }
+/* 3. 滾動容器：關鍵修改 */
+#quiz-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;   /* 允許內容過長時滾動 */
+    overflow-x: hidden; /* 絕對禁止水平滾動 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 讓內容水平置中 */
+    padding: 20px 12px;  /* 給一點上下間距 */
+}
+
+.container {
+    max-width: 500px;
+    width: 100%;
+    /* 移除 min-height: 100vh，否則會讓內容永遠撐開導致捲動不順 */
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 26px 22px;
+    margin-bottom: 20px; /* 底部保留一點空間 */
+}
+
 
         h1 {
             color: var(--label-primary);
@@ -1328,7 +1330,12 @@
     </style>
 </head>
 <body>
-
+<div class="global-background"></div>
+    
+    <div id="quiz-container">
+        <div class="container">
+        
+    </div>
     <div id="quiz-container">
         
         <div class="container">
