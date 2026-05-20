@@ -620,7 +620,7 @@
             flex-direction: column;
             gap: 8px;
         }
-       .report-photo {
+        .report-photo {
     width: 100%;
     height: 0;
     padding-top: 100%;     ← 加這行（撐出正方形）
@@ -648,7 +648,11 @@
         .report-photo::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
         .report-photo::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
         
-        
+        .report-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .report-biometric {
             margin-top: 1px;
             display: flex;
@@ -1091,23 +1095,13 @@
         .export-only { display: none; }
         .profile-card.exporting .export-only { display: block; }
 
+        /* card-scale-wrap：讓 scale 縮放後仍填滿寬度、高度準確回收 */
         #card-scale-wrap {
-    width: 100%;
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    overflow: hidden;
-}
-
-#card-scale-wrap .profile-card {
-    margin-top: 0;
-    width: 100%;
-    /* 用 CSS clamp 直接縮放，不靠 JS */
-    transform: scale(clamp(0.55, calc(100vw / 540), 1));
-    transform-origin: top center;
-    flex-shrink: 0;
-}
+            width: 100%;
+            position: relative;
+            margin-top: 12px;
+            /* 高度由 JS 設定 */
+        }
         #card-scale-wrap .profile-card {
             margin-top: 0;          /* 已由 wrap 提供 margin */
             transform-origin: top left;
@@ -1677,7 +1671,7 @@
                 <div class="report-header">
                     <div class="report-subtitle">HSINCHU CHIEN-KUNG INTELLIGENCE</div>
                     <h2 class="report-title"><span>${finalResult.name}</span></h2>
-                    <div class="stamp-top-secret">機密</div>
+                    <div class="stamp-top-secret">極機密</div>
                 </div>
 
                 <div class="report-meta-row">
@@ -1769,7 +1763,39 @@
 
         // 🔧 FIX2: 結算卡等比縮放到一個螢幕內
         fitCardToScreen: function() {
-},
+            const card = document.getElementById('profile-card-box');
+            const wrap = document.getElementById('card-scale-wrap');
+            if(!card || !wrap) return;
+
+            // 重置以取得原始尺寸
+            card.style.transform = 'none';
+            card.style.width = '100%';
+            wrap.style.height = '';
+            const naturalH = card.offsetHeight;
+
+            // 預留空間：偵測小標 ~30 + 兩顆按鈕 ~140 + footer ~80 + container padding 60
+            const reservedH = 310;
+            const availableH = window.innerHeight - reservedH;
+
+            if (naturalH > availableH && availableH > 0) {
+                const ratio = availableH / naturalH;
+                const scale = Math.max(0.55, Math.min(1, ratio));
+
+                if (scale < 1) {
+                    card.style.transformOrigin = 'top left';
+                    card.style.transform = `scale(${scale})`;
+                    card.style.width = `${100 / scale}%`;   // 補回寬度，讓卡片填滿 wrap
+
+                    // wrap 高度設為縮放後的視覺高度（這樣下方 action-box 緊貼卡片）
+                    const visualH = Math.ceil(naturalH * scale);
+                    wrap.style.height = `${visualH}px`;
+                }
+            } else {
+                card.style.transform = 'none';
+                card.style.width = '100%';
+                wrap.style.height = '';
+            }
+        },
 
         // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
         exportToImage: async function() {
@@ -1945,14 +1971,20 @@
         },
 
         resetQuiz: function() {
-    this.currentQuestionIndex = 0;
-    this.selectedScores = [];
-    document.getElementById('result-page').className = 'hidden';
-    document.getElementById('quiz-page').className = 'hidden';
-    document.getElementById('start-page').className = '';
-    ImageEngine.setWelcomeImage();
-},
-};
+            this.currentQuestionIndex = 0;
+            this.selectedScores = [];
+            document.getElementById('result-page').className = 'hidden';
+            document.getElementById('quiz-page').className = 'hidden';
+            document.getElementById('start-page').className = '';
+            // 還原 card 的 transform/margin
+            const card = document.getElementById('profile-card-box');
+            if(card) { card.style.transform = ''; card.style.marginBottom = ''; card.style.width = ''; }
+            const wrap = document.getElementById('card-scale-wrap');
+            if(wrap) wrap.style.height = '';
+            ImageEngine.setWelcomeImage();
+        }
+    };
+
     // 視窗大小變化時重新計算結算卡縮放
     window.addEventListener('resize', () => {
         if(document.getElementById('result-page') && 
