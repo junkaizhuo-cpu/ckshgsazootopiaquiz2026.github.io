@@ -1819,7 +1819,6 @@
                 card.style.marginBottom = '12px';
             }
         },
-
         // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
         exportToImage: async function() {
             const targetNode = document.getElementById('profile-card-box');
@@ -1841,17 +1840,7 @@
                 `;
             }
 
-            // 🔧 暫時取消 scale/width 縮放，讓 html2canvas 截到完整卡片
-            const oldTransform = targetNode.style.transform;
-            const oldMarginBottom = targetNode.style.marginBottom;
-            const oldWidth = targetNode.style.width;
-            targetNode.style.transform = 'none';
-            targetNode.style.marginBottom = '0';
-            targetNode.style.width = '';
-
-            targetNode.classList.add('exporting', 'ig-story');
-
-            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+            await new Promise(r => setTimeout(r, 50));
             const allImgs = targetNode.querySelectorAll('img');
             await Promise.all(Array.from(allImgs).map(img => {
                 if(img.complete && img.naturalWidth > 0) return Promise.resolve();
@@ -1864,9 +1853,7 @@
             }));
 
             try {
-                // 先量測實際內容高度，動態決定 height（至少 1920，不會被裁）
-                const naturalH = Math.max(1920, targetNode.scrollHeight, targetNode.offsetHeight);
-
+                // 🌟 MAGIC FIX: 完全不更改真實網頁上的 CSS，而是在 onclone 虛擬環境中套用 1080x1920 尺寸
                 const canvas = await html2canvas(targetNode, {
                     scale: 1,
                     backgroundColor: '#FFFFFF',
@@ -1875,15 +1862,19 @@
                     logging: false,
                     imageTimeout: 5000,
                     width: 1080,
-                    height: naturalH,
+                    height: 1920,
                     windowWidth: 1080,
-                    windowHeight: naturalH,
+                    windowHeight: 1920,
+                    x: 0,
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0,
                     onclone: (clonedDoc) => {
                         const card = clonedDoc.getElementById('profile-card-box');
                         if(card) {
-                            card.style.animation = 'none';
+                            // 僅在複製出來的虛擬圖層加上 IG 樣式，手機畫面絕對不會受到干擾跑版
+                            card.classList.add('exporting', 'ig-story');
                             card.style.transform = 'none';
-                            card.style.boxShadow = 'none';
                             card.style.margin = '0';
                             card.querySelectorAll('*').forEach(el => {
                                 el.style.animation = 'none';
@@ -1903,22 +1894,102 @@
                 this._lastDataUrl = dataUrl;
                 this._lastFileName = fileName;
 
-                // 🔧 FIX3: 開預覽 overlay，讓使用者可長按整張圖
                 this.previewOpen(dataUrl);
                 showToast('✅ 生成完成！', 1500);
             } catch (err) {
                 console.error('匯出失敗:', err);
                 showToast('⚠️ 匯出失敗，請再試一次', 2500);
             } finally {
-                targetNode.classList.remove('exporting', 'ig-story');
-                // 還原 scale
-                targetNode.style.transform = oldTransform;
-                targetNode.style.marginBottom = oldMarginBottom;
-                targetNode.style.width = oldWidth;
                 btn.disabled = false;
                 btn.innerHTML = oldHtml;
             }
         },
+        // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
+        exportToImage: async function() {
+            const targetNode = document.getElementById('profile-card-box');
+            const btn = document.getElementById('export-btn-ig');
+            if(!targetNode || !window.html2canvas) {
+                showToast('匯出工具尚未載入，請稍候');
+                return;
+            }
+
+            btn.disabled = true;
+            const oldHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">正在生成...</span>';
+            showToast('📱 正在生成高畫質報告...', 4000);
+
+            const watermark = document.getElementById('export-watermark');
+            if(watermark) {
+                watermark.innerHTML = `
+                    <div style="font-weight: 600; color: rgba(60, 60, 67, 0.7); margin-bottom: 2px; text-align:center; padding-top:8px; font-size:10px;">${this.userName} 的專屬畢業鑑定報告</div>
+                `;
+            }
+
+            await new Promise(r => setTimeout(r, 50));
+            const allImgs = targetNode.querySelectorAll('img');
+            await Promise.all(Array.from(allImgs).map(img => {
+                if(img.complete && img.naturalWidth > 0) return Promise.resolve();
+                return new Promise(r => {
+                    const done = () => r();
+                    img.addEventListener('load', done, { once: true });
+                    img.addEventListener('error', done, { once: true });
+                    setTimeout(done, 2500);
+                });
+            }));
+
+            try {
+                // 🌟 MAGIC FIX: 完全不更改真實網頁上的 CSS，而是在 onclone 虛擬環境中套用 1080x1920 尺寸
+                const canvas = await html2canvas(targetNode, {
+                    scale: 1,
+                    backgroundColor: '#FFFFFF',
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    imageTimeout: 5000,
+                    width: 1080,
+                    height: 1920,
+                    windowWidth: 1080,
+                    windowHeight: 1920,
+                    x: 0,
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0,
+                    onclone: (clonedDoc) => {
+                        const card = clonedDoc.getElementById('profile-card-box');
+                        if(card) {
+                            // 僅在複製出來的虛擬圖層加上 IG 樣式，手機畫面絕對不會受到干擾跑版
+                            card.classList.add('exporting', 'ig-story');
+                            card.style.transform = 'none';
+                            card.style.margin = '0';
+                            card.querySelectorAll('*').forEach(el => {
+                                el.style.animation = 'none';
+                                el.style.transition = 'none';
+                            });
+                        }
+                    }
+                });
+
+                const blob = await new Promise((resolve, reject) => {
+                    canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png', 1.0);
+                });
+                const fileName = `${this.userName}_建功畢業鑑定報告.png`;
+                const dataUrl = canvas.toDataURL('image/png', 1.0);
+
+                this._lastBlob = blob;
+                this._lastDataUrl = dataUrl;
+                this._lastFileName = fileName;
+
+                this.previewOpen(dataUrl);
+                showToast('✅ 生成完成！', 1500);
+            } catch (err) {
+                console.error('匯出失敗:', err);
+                showToast('⚠️ 匯出失敗，請再試一次', 2500);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = oldHtml;
+            }
+        },
+
 
         // 🔧 FIX3: 預覽相關函式
         previewOpen: function(dataUrl) {
