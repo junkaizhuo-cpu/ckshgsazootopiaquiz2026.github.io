@@ -1,13 +1,3 @@
-以下是為你修改完成的完整 `index.html` 程式碼。
-
-我已經將你提供的兩項修正完整融入程式碼中：
-
-1. **更新 `fitCardToScreen` 縮放邏輯**：加入重測 `realH` 的步驟，解決寬度撐開、行數減少後，高度計算不精準導致與按鈕間距過大或重疊的問題。
-2. **新增 CSS 匯出防裁切規則**：在 `<style>` 中加入了 `.profile-card.exporting.ig-story` 的絕對定位規則，確保在高畫質截圖時不會受到手機容器限制而被裁切。
-
-你可以直接複製下方整段程式碼使用：
-
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -15,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>2026 建功人請回答！！畢業限定心理測驗</title>
 
+    <!-- 🌟 html2canvas：直接擷取 DOM，畫質高、字體準 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -1091,15 +1082,6 @@
             font-size: 17px;
         }
 
-        /* 🌟 讓匯出瞬間的卡片絕對定位，擺擺脫手機容器限制，避免截圖被按鈕或邊界切到 */
-        .profile-card.exporting.ig-story {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 1080px !important;
-            z-index: 9999 !important;
-        }
-
         /* 匯出浮水印（平常隱藏） */
         .export-only { display: none; }
         .profile-card.exporting .export-only { display: block; }
@@ -1411,6 +1393,7 @@
 
     <div id="toast" class="toast"></div>
 
+    <!-- 🔧 FIX3: 匯出後顯示完整大圖，使用者可長按整張圖 -->
     <div id="preview-overlay" class="preview-overlay">
         <div class="preview-hint">👇 長按圖片可選「儲存影像」存到相簿，或按下方按鈕下載</div>
         <img id="preview-img" class="preview-img" alt="鑑定報告預覽">
@@ -1732,6 +1715,7 @@
                     </div>
                 </div>
 
+                <!-- 升級：底部條碼 + 文件編號區（讓 IG 限動底部不空，更像真檔案） -->
                 <div class="report-barcode">
                     <div class="barcode-lines"></div>
                     <div class="barcode-meta">
@@ -1752,7 +1736,7 @@
             setTimeout(fireConfetti, 200);
         },
 
-        // 🔧 新 JS 縮放計算邏輯：加入重新量測 realH 步驟
+        // 🔧 FIX2: 結算卡等比縮放到一個螢幕內
         fitCardToScreen: function() {
             const card = document.getElementById('profile-card-box');
             if(!card) return;
@@ -1760,8 +1744,8 @@
             // 重置以取得原始尺寸
             card.style.transform = 'none';
             card.style.width = '';
-            card.style.marginBottom = '0'; // 先歸零確保計算正確
             const naturalH = card.offsetHeight;
+            const naturalW = card.offsetWidth;
 
             // 預留空間：偵測小標 ~30 + 兩顆按鈕 ~140 + footer ~70 + padding 60
             const reservedH = 300;
@@ -1772,20 +1756,13 @@
                 const scale = Math.max(0.6, Math.min(1, ratio));
 
                 if (scale < 1) {
-                    // 1. 先把寬度撐開
+                    // 寬度補償：放大成 (1/scale) 倍，scale 後視覺剛好填滿原本寬度
                     card.style.width = `${100 / scale}%`;
-                    
-                    // 2. 🌟 關鍵修復：因為寬度變寬了，文字換行減少，卡片會變「矮」
-                    // 必須在這裡重新量測排版後的真實高度！
-                    const realH = card.offsetHeight;
-                    
-                    // 3. 套用縮放
                     card.style.transformOrigin = 'top left';
                     card.style.transform = `scale(${scale})`;
-                    
-                    // 4. 根據「真實高度」計算按鈕該往上拉多少
-                    const visualH = realH * scale;
-                    card.style.marginBottom = `${-(realH - visualH) + 12}px`;
+                    // scale 後實際佔的高度會變小，用負 margin 補
+                    const visualH = naturalH * scale;
+                    card.style.marginBottom = `${-(naturalH - visualH) + 12}px`;
                 } else {
                     card.style.transform = 'none';
                     card.style.marginBottom = '12px';
@@ -1902,11 +1879,14 @@
             const img = document.getElementById('preview-img');
             img.src = dataUrl;
             overlay.classList.add('show');
+
+            // 不再切換按鈕顯隱（合併成一顆「下載到相簿」）
         },
         previewClose: function() {
             document.getElementById('preview-overlay').classList.remove('show');
         },
-        // 智慧型下載
+        // 智慧型下載：iOS Safari 有 Web Share API + canShare files → 跳系統分享（可選「儲存到照片」直入相簿）
+        // 其他環境 → 走傳統 <a download>
         previewDownload: async function() {
             if(!this._lastBlob) return;
             const file = new File([this._lastBlob], this._lastFileName, { type: 'image/png' });
@@ -1923,9 +1903,11 @@
                     return;
                 } catch (e) {
                     if (e && e.name === 'AbortError') {
+                        // 使用者取消，靜默處理
                         return;
                     }
                     console.warn('share fallback to download:', e);
+                    // 落到下方 fallback
                 }
             }
 
@@ -1970,5 +1952,3 @@
 
 </body>
 </html>
-
-```
