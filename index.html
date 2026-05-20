@@ -488,11 +488,88 @@
             justify-content: space-between;
             letter-spacing: 0.06em;
             margin-bottom: 16px;
+            position: relative;
+        }
+        /* 頂部黑條左邊三個打孔（活頁夾風） */
+        .report-top-bar .punch-holes {
+            display: inline-flex;
+            gap: 4px;
+            align-items: center;
+            margin-right: 8px;
+        }
+        .report-top-bar .punch-holes span {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.5);
         }
         .report-top-bar .dot-secret::before {
             content: "●";
             color: #ff2d55;
             margin-right: 6px;
+        }
+
+        /* QR 點陣裝飾（放在 footer 區） */
+        .qr-deco {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1px;
+            flex-shrink: 0;
+        }
+        .qr-deco span {
+            background: #000;
+            border-radius: 1px;
+        }
+        .qr-deco span.empty { background: transparent; }
+
+        /* 紅色圖釘（左上） */
+        .pin-deco {
+            position: absolute;
+            top: 8px;
+            left: 22px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #ff6b8a 0%, #dc2641 60%, #8b0d1e 100%);
+            box-shadow:
+                0 2px 4px rgba(0,0,0,0.35),
+                0 4px 10px rgba(220, 38, 65, 0.4),
+                inset 0 -1px 2px rgba(0,0,0,0.3);
+            z-index: 5;
+        }
+        .pin-deco::after {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 0 4px rgba(255,255,255,0.6);
+        }
+
+        /* 大背景浮水印「OFFICIAL」斜傾 */
+        .bg-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 50px;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.025);
+            letter-spacing: 0.3em;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+        }
+        /* 確保內容浮在浮水印之上 */
+        .profile-card > *:not(.bg-watermark):not(.pin-deco) {
+            position: relative;
+            z-index: 1;
         }
 
         .report-header {
@@ -704,7 +781,12 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            gap: 12px;
             position: relative;
+        }
+        .report-footer .report-footer-meta {
+            flex: 1;
+            min-width: 0;
         }
         .report-footer-meta {
             font-size: 8.5px;
@@ -784,9 +866,9 @@
            ========================================================= */
         .profile-card.ig-story {
             width: 1080px;
-            height: 1920px;
+            min-height: 1920px;
             border: 6px solid #000000;
-            padding: 48px 52px;
+            padding: 48px 52px 38px;
             /* 匯出時取消縮放 */
             transform: none !important;
             box-sizing: border-box;
@@ -804,7 +886,7 @@
                 /* 主底 */
                 radial-gradient(circle at 20% 10%, #ffffff 0%, #faf8f3 70%, #f5f1e8 100%);
             box-shadow: none;
-            overflow: hidden;
+            overflow: visible;
         }
         /* IG 模式：四角的「機密」裝飾 */
         .profile-card.ig-story::before {
@@ -843,6 +925,32 @@
             padding: 14px 24px;
             margin-bottom: 36px;
             letter-spacing: 0.08em;
+        }
+        .profile-card.ig-story .report-top-bar .punch-holes {
+            gap: 8px;
+            margin-right: 16px;
+        }
+        .profile-card.ig-story .report-top-bar .punch-holes span {
+            width: 10px; height: 10px;
+        }
+        .profile-card.ig-story .qr-deco {
+            width: 96px;
+            height: 96px;
+            gap: 2px;
+        }
+        .profile-card.ig-story .pin-deco {
+            top: 16px;
+            left: 50px;
+            width: 28px;
+            height: 28px;
+        }
+        .profile-card.ig-story .pin-deco::after {
+            width: 7px; height: 7px;
+        }
+        .profile-card.ig-story .bg-watermark {
+            font-size: 130px;
+            letter-spacing: 0.35em;
+            color: rgba(0,0,0,0.025);
         }
         .profile-card.ig-story .report-header {
             border-bottom-width: 3px;
@@ -1518,9 +1626,20 @@
             const lightThemeBg = `${finalResult.bg}50`;
             const tableLeftBg = `${finalResult.bg}40`;
 
+            // QR 點陣（用 hash 化的角色代碼產生固定 pattern）
+            const qrSeed = finalResult.meta.code;
+            let qrPattern = '';
+            for(let i = 0; i < 36; i++) {
+                const ch = qrSeed.charCodeAt(i % qrSeed.length);
+                const filled = ((ch + i * 7) % 3) !== 0;
+                qrPattern += filled ? '<span></span>' : '<span class="empty"></span>';
+            }
+
             cardBox.innerHTML = `
+                <div class="bg-watermark">OFFICIAL · 2026 · OFFICIAL · 2026</div>
+
                 <div class="report-top-bar">
-                    <div class="dot-secret">TOP SECRET // CLASS-2026</div>
+                    <div class="dot-secret"><span class="punch-holes"><span></span><span></span><span></span></span>TOP SECRET // CLASS-2026</div>
                     <div>DOC-ID: ${finalResult.meta.code}</div>
                 </div>
                 
@@ -1590,6 +1709,7 @@
                         CLASSIFIED BY: 2026 CKHS GRADUATION COMMITTEE<br>
                         DATE OF ISSUED: 2026.06 // AUTHORIZED UNDER STATUTE 63
                     </div>
+                    <div class="qr-deco">${qrPattern}</div>
                     <div class="stamp-red-seal">
                         建功高中<br>畢聯會<br><span style="font-family:'SF Mono',monospace; font-size:7px; margin-top:2px;">2026</span>
                     </div>
@@ -1621,9 +1741,11 @@
             const card = document.getElementById('profile-card-box');
             if(!card) return;
 
-            // 重置 scale 以取得原始尺寸
+            // 重置以取得原始尺寸
             card.style.transform = 'none';
+            card.style.width = '';
             const naturalH = card.offsetHeight;
+            const naturalW = card.offsetWidth;
 
             // 預留空間：偵測小標 ~30 + 兩顆按鈕 ~140 + footer ~70 + padding 60
             const reservedH = 300;
@@ -1631,12 +1753,20 @@
 
             if (naturalH > availableH && availableH > 0) {
                 const ratio = availableH / naturalH;
-                // 設下限避免縮到看不清
-                const scale = Math.max(0.6, ratio);
-                card.style.transform = `scale(${scale})`;
-                card.style.transformOrigin = 'top center';
-                // scale 後實際佔的高度會變小，但 DOM 仍佔原本高度 → 用負 margin 補
-                card.style.marginBottom = `${-(naturalH * (1 - scale)) + 12}px`;
+                const scale = Math.max(0.6, Math.min(1, ratio));
+
+                if (scale < 1) {
+                    // 寬度補償：放大成 (1/scale) 倍，scale 後視覺剛好填滿原本寬度
+                    card.style.width = `${100 / scale}%`;
+                    card.style.transformOrigin = 'top left';
+                    card.style.transform = `scale(${scale})`;
+                    // scale 後實際佔的高度會變小，用負 margin 補
+                    const visualH = naturalH * scale;
+                    card.style.marginBottom = `${-(naturalH - visualH) + 12}px`;
+                } else {
+                    card.style.transform = 'none';
+                    card.style.marginBottom = '12px';
+                }
             } else {
                 card.style.transform = 'none';
                 card.style.marginBottom = '12px';
@@ -1664,11 +1794,13 @@
                 `;
             }
 
-            // 🔧 暫時取消 scale 縮放，讓 html2canvas 截到完整卡片
+            // 🔧 暫時取消 scale/width 縮放，讓 html2canvas 截到完整卡片
             const oldTransform = targetNode.style.transform;
             const oldMarginBottom = targetNode.style.marginBottom;
+            const oldWidth = targetNode.style.width;
             targetNode.style.transform = 'none';
             targetNode.style.marginBottom = '0';
+            targetNode.style.width = '';
 
             targetNode.classList.add('exporting', 'ig-story');
 
@@ -1685,6 +1817,9 @@
             }));
 
             try {
+                // 先量測實際內容高度，動態決定 height（至少 1920，不會被裁）
+                const naturalH = Math.max(1920, targetNode.scrollHeight, targetNode.offsetHeight);
+
                 const canvas = await html2canvas(targetNode, {
                     scale: 1,
                     backgroundColor: '#FFFFFF',
@@ -1693,9 +1828,9 @@
                     logging: false,
                     imageTimeout: 5000,
                     width: 1080,
-                    height: 1920,
+                    height: naturalH,
                     windowWidth: 1080,
-                    windowHeight: 1920,
+                    windowHeight: naturalH,
                     onclone: (clonedDoc) => {
                         const card = clonedDoc.getElementById('profile-card-box');
                         if(card) {
@@ -1732,6 +1867,7 @@
                 // 還原 scale
                 targetNode.style.transform = oldTransform;
                 targetNode.style.marginBottom = oldMarginBottom;
+                targetNode.style.width = oldWidth;
                 btn.disabled = false;
                 btn.innerHTML = oldHtml;
             }
