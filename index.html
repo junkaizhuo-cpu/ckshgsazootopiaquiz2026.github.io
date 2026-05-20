@@ -52,14 +52,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100dvh;
+            min-height: 100vh;
             line-height: 1.47;
             letter-spacing: -0.01em;
         }
 
         #quiz-container {
             width: 100vw;
-            min-height: 100dvh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -360,7 +360,6 @@
 
         .options-container { display: flex; flex-direction: column; gap: 11px; }
 
-        /* 🔧 FIX1: 選項按鈕改用 flex 排版，圓圈不再絕對定位疊在文字上 */
         .option-btn {
             background: rgba(255, 255, 255, 0.78);
             border: 1px solid rgba(60, 60, 67, 0.10);
@@ -384,7 +383,7 @@
         }
         .option-btn::before {
             content: "";
-            flex-shrink: 0;          /* 圓圈不縮 */
+            flex-shrink: 0;
             width: 18px;
             height: 18px;
             border-radius: 50%;
@@ -454,6 +453,14 @@
             100% { opacity: 0; transform: translateY(110vh) rotate(720deg); }
         }
 
+        /* 🔧 FIX: 新增安全外層，確保 iOS 不會排版暴走 */
+        .card-scale-wrapper {
+            width: 100%;
+            position: relative;
+            margin-top: 12px;
+            overflow: visible;
+        }
+
         /* =========================================================
            📁 機密檔案風格結算卡（情報局特務風）
            ========================================================= */
@@ -462,13 +469,11 @@
             border: 2px solid #000000;
             border-radius: 0px;
             padding: 20px 16px;
-            margin-top: 12px;
             text-align: left;
             position: relative;
             box-shadow: 0 12px 32px rgba(0,0,0,0.15);
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang TC", "Microsoft JhengHei", sans-serif;
             animation: cardPop 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            /* 🔧 FIX2: scale wrap 容器，方便手機一頁內顯示 */
             transform-origin: top center;
         }
         @keyframes cardPop {
@@ -476,7 +481,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 頂部黑底機密條 */
         .report-top-bar {
             background: #000000;
             color: #ffffff;
@@ -490,7 +494,6 @@
             margin-bottom: 16px;
             position: relative;
         }
-        /* 頂部黑條左邊三個打孔（活頁夾風） */
         .report-top-bar .punch-holes {
             display: inline-flex;
             gap: 4px;
@@ -509,7 +512,6 @@
             margin-right: 6px;
         }
 
-        /* QR 點陣裝飾（放在 footer 區） */
         .qr-deco {
             width: 42px;
             height: 42px;
@@ -524,7 +526,6 @@
         }
         .qr-deco span.empty { background: transparent; }
 
-        /* 紅色圖釘（左上） */
         .pin-deco {
             position: absolute;
             top: 8px;
@@ -550,7 +551,6 @@
             box-shadow: 0 0 4px rgba(255,255,255,0.6);
         }
 
-        /* 大背景浮水印「OFFICIAL」斜傾 */
         .bg-watermark {
             position: absolute;
             top: 50%;
@@ -566,7 +566,6 @@
             z-index: 0;
             user-select: none;
         }
-        /* 確保內容浮在浮水印之上 */
         .profile-card > *:not(.bg-watermark):not(.pin-deco) {
             position: relative;
             z-index: 1;
@@ -814,7 +813,6 @@
             box-shadow: inset 0 0 0 1px rgba(255, 45, 85, 0.3);
         }
 
-        /* 升級：底部條碼區 */
         .report-barcode {
             margin-top: 16px;
             padding: 10px 12px;
@@ -824,64 +822,28 @@
             flex-direction: column;
             gap: 6px;
         }
-                /* 🌟 修復 iPhone 上預覽畫面按鈕與圖片重疊的問題 */
-        .preview-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 10001;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 16px; /* 增加上下安全邊距，把空間留給按鈕 */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+        .barcode-lines {
+            height: 28px;
+            background-image: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 2px,
+                transparent 2px,
+                transparent 4px,
+                #000 4px,
+                #000 5px,
+                transparent 5px,
+                transparent 9px,
+                #000 9px,
+                #000 12px,
+                transparent 12px,
+                transparent 14px,
+                #000 14px,
+                #000 15px,
+                transparent 15px,
+                transparent 19px
+            );
         }
-        .preview-overlay.show {
-            display: flex;
-            animation: previewFade 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-        }
-        @keyframes previewFade {
-            from { opacity: 0; backdrop-filter: blur(0); }
-            to { opacity: 1; backdrop-filter: blur(12px); }
-        }
-        .preview-overlay .preview-hint {
-            color: #fff; font-size: 13.5px; font-weight: 600; margin-bottom: 14px; text-align: center; line-height: 1.5;
-            padding: 10px 18px; background: rgba(255,255,255,0.14); border-radius: 50px; backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255,255,255,0.18); flex-shrink: 0;
-            animation: hintSlideDown 0.6s 0.1s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-        }
-        @keyframes hintSlideDown {
-            from { opacity: 0; transform: translateY(-12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* 🌟 核心修復點：限制圖片最高 55vh，並允許它在小螢幕上縮小，絕不擠壓按鈕 */
-        .preview-overlay .preview-img {
-            max-width: 100%;
-            max-height: 55vh; 
-            min-height: 0; 
-            flex-shrink: 1; 
-            object-fit: contain; 
-            border-radius: 12px;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 24px 64px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4);
-            -webkit-touch-callout: default;
-            user-select: auto;
-            animation: previewImgPop 0.55s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
-        }
-        @keyframes previewImgPop {
-            from { opacity: 0; transform: scale(0.85) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        /* 🌟 強制按鈕塊維持原本高度，不准被圖片壓縮 */
-        .preview-overlay .preview-actions {
-            flex-shrink: 0; 
-            display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 380px;
-            animation: hintSlideDown 0.5s 0.3s cubic-bezier(0.32, 0.72, 0, 1) backwards;
-        }
-
         .barcode-meta {
             display: flex;
             justify-content: space-between;
@@ -905,13 +867,10 @@
             min-height: 1920px;
             border: 6px solid #000000;
             padding: 48px 52px 38px;
-            /* 匯出時取消縮放 */
             transform: none !important;
             box-sizing: border-box;
             position: relative;
-            /* 升級設計：牛皮紙底紋 + 微噪點感 */
             background:
-                /* 紙張纖維紋理 */
                 repeating-linear-gradient(
                     0deg,
                     rgba(0,0,0,0.012),
@@ -919,12 +878,10 @@
                     transparent 1px,
                     transparent 3px
                 ),
-                /* 主底 */
                 radial-gradient(circle at 20% 10%, #ffffff 0%, #faf8f3 70%, #f5f1e8 100%);
             box-shadow: none;
             overflow: visible;
         }
-        /* IG 模式：四角的「機密」裝飾 */
         .profile-card.ig-story::before {
             content: "CONFIDENTIAL · CONFIDENTIAL · CONFIDENTIAL · CONFIDENTIAL · CONFIDENTIAL · ";
             position: absolute;
@@ -1118,18 +1075,6 @@
             font-size: 17px;
         }
 
-                /* 🌟 讓匯出瞬間的卡片絕對定位，擺脫手機容器限制，避免截圖被按鈕或邊界切到 */
-        .profile-card.exporting.ig-story {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 1080px !important;
-            transform: none !important; /* 強制覆蓋 iPhone 上的縮放狀態 */
-            margin-bottom: 0 !important; /* 消除縮放高度差帶來的負 Margin 干擾 */
-            z-index: 9999 !important;
-        }
-
-        /* 匯出浮水印（平常隱藏） */
         .export-only { display: none; }
         .profile-card.exporting .export-only { display: block; }
 
@@ -1258,7 +1203,6 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
-        /* 🔧 FIX3: 預覽 modal — 匯出後直接顯示成像在這裡，使用者可長按整張 */
         .preview-overlay {
             position: fixed;
             inset: 0;
@@ -1306,7 +1250,7 @@
                 0 0 0 1px rgba(255,255,255,0.15),
                 0 24px 64px rgba(0,0,0,0.6),
                 0 4px 12px rgba(0,0,0,0.4);
-            -webkit-touch-callout: default;  /* iOS 開啟長按選單 */
+            -webkit-touch-callout: default;
             -webkit-user-select: auto;
             user-select: auto;
             animation: previewImgPop 0.55s 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
@@ -1418,7 +1362,10 @@
             <div id="result-page" class="hidden">
                 <div id="result-header-text" style="font-size: 13.5px; font-weight: 600; color: var(--label-tertiary); margin-bottom: 8px; text-align: left; letter-spacing: -0.005em;"></div>
                 
-                <div class="profile-card" id="profile-card-box"></div>
+                <!-- 🔧 FIX: 為卡片加上專屬縮放包裝容器 -->
+                <div id="card-scale-wrapper" class="card-scale-wrapper">
+                    <div class="profile-card" id="profile-card-box"></div>
+                </div>
                 
                 <div class="action-box">
                     <button id="export-btn-ig" class="action-btn export-btn" onclick="window.jgQuiz.exportToImage()">
@@ -1432,7 +1379,7 @@
 
             <footer>
                 <div class="school-line">新竹市立建功高級中學 × 2026 建功畢聯會</div>
-                <div class="en-line">Hsinchu Municipal Chien Kung Senior High School</div>
+                <div class="en-line">Hsinchu Municipal Chien Kang Senior High School</div>
             </footer>
         </div>
         
@@ -1440,7 +1387,6 @@
 
     <div id="toast" class="toast"></div>
 
-    <!-- 🔧 FIX3: 匯出後顯示完整大圖，使用者可長按整張圖 -->
     <div id="preview-overlay" class="preview-overlay">
         <div class="preview-hint">👇 長按圖片可選「儲存影像」存到相簿，或按下方按鈕下載</div>
         <img id="preview-img" class="preview-img" alt="鑑定報告預覽">
@@ -1617,7 +1563,6 @@
             q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                // 🔧 FIX1: 把文字包在 .btn-label 裡，flex 排版確保不被圓圈擋
                 btn.innerHTML = `<span class="btn-label"></span>`;
                 btn.querySelector('.btn-label').textContent = opt.text;
                 btn.style.animation = `pageSlide 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${0.1 + idx * 0.08}s backwards`;
@@ -1673,7 +1618,6 @@
             const lightThemeBg = `${finalResult.bg}50`;
             const tableLeftBg = `${finalResult.bg}40`;
 
-            // QR 點陣（用 hash 化的角色代碼產生固定 pattern）
             const qrSeed = finalResult.meta.code;
             let qrPattern = '';
             for(let i = 0; i < 36; i++) {
@@ -1762,7 +1706,6 @@
                     </div>
                 </div>
 
-                <!-- 升級：底部條碼 + 文件編號區（讓 IG 限動底部不空，更像真檔案） -->
                 <div class="report-barcode">
                     <div class="barcode-lines"></div>
                     <div class="barcode-meta">
@@ -1775,298 +1718,160 @@
 
             cardBox.style.setProperty('--hero-bg', finalResult.bg);
 
-            //  🔧 針對 iPhone 最佳化：加入微小延遲，確保 iOS Safari 渲染定型後才量測高度
-           setTimeout(() => {
+            requestAnimationFrame(() => {
                 this.fitCardToScreen();
-           }, 60);
+            });
 
             setTimeout(fireConfetti, 200);
         },
 
-        // 🔧 FIX2: 結算卡等比縮放到一個螢幕內
+        /* 🔧 FIX: 重新整理 iOS 縮放核心邏輯，全面改用外層 Wrapper 的高度推擠 */
         fitCardToScreen: function() {
             const card = document.getElementById('profile-card-box');
-            if(!card) return;
+            const wrapper = document.getElementById('card-scale-wrapper');
+            if(!card || !wrapper) return;
 
-            // 重置以取得原始尺寸
+            // 初始化重置
             card.style.transform = 'none';
-            card.style.width = '';
+            card.style.width = '100%';
+            wrapper.style.height = 'auto';
+            
             const naturalH = card.offsetHeight;
-            const naturalW = card.offsetWidth;
-
-            // 預留空間：偵測小標 ~30 + 兩顆按鈕 ~140 + footer ~70 + padding 60
-            const reservedH = 300;
+            const reservedH = 240; // 預留給標題、按鈕、footer 的空間
             const availableH = window.innerHeight - reservedH;
 
             if (naturalH > availableH && availableH > 0) {
-                const ratio = availableH / naturalH;
-                const scale = Math.max(0.6, Math.min(1, ratio));
+                const scale = Math.max(0.65, Math.min(1, availableH / naturalH));
 
                 if (scale < 1) {
-                    // 寬度補償：放大成 (1/scale) 倍，scale 後視覺剛好填滿原本寬度
+                    // 使用 top center 作為基準點，寬度同步放大補償，完美水平居中
+                    card.style.transformOrigin = 'top center';
                     card.style.width = `${100 / scale}%`;
-                    card.style.transformOrigin = 'top left';
                     card.style.transform = `scale(${scale})`;
-                    // scale 後實際佔的高度會變小，用負 margin 補
-                    const visualH = naturalH * scale;
-                    card.style.marginBottom = `${-(naturalH - visualH) + 12}px`;
-                } else {
-                    card.style.transform = 'none';
-                    card.style.marginBottom = '12px';
-                }
-            } else {
-                card.style.transform = 'none';
-                card.style.marginBottom = '12px';
-            }
-        },
-        // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
-        exportToImage: async function() {
-            const targetNode = document.getElementById('profile-card-box');
-            const btn = document.getElementById('export-btn-ig');
-            if(!targetNode || !window.html2canvas) {
-                showToast('匯出工具尚未載入，請稍候');
-                return;
-            }
-
-            btn.disabled = true;
-            const oldHtml = btn.innerHTML;
-            btn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">正在生成...</span>';
-            showToast('📱 正在生成高畫質報告...', 4000);
-
-            const watermark = document.getElementById('export-watermark');
-            if(watermark) {
-                watermark.innerHTML = `
-                    <div style="font-weight: 600; color: rgba(60, 60, 67, 0.7); margin-bottom: 2px; text-align:center; padding-top:8px; font-size:10px;">${this.userName} 的專屬畢業鑑定報告</div>
-                `;
-            }
-
-            await new Promise(r => setTimeout(r, 50));
-            const allImgs = targetNode.querySelectorAll('img');
-            await Promise.all(Array.from(allImgs).map(img => {
-                if(img.complete && img.naturalWidth > 0) return Promise.resolve();
-                return new Promise(r => {
-                    const done = () => r();
-                    img.addEventListener('load', done, { once: true });
-                    img.addEventListener('error', done, { once: true });
-                    setTimeout(done, 2500);
-                });
-            }));
-
-            try {
-                // 🌟 MAGIC FIX: 完全不更改真實網頁上的 CSS，而是在 onclone 虛擬環境中套用 1080x1920 尺寸
-                const canvas = await html2canvas(targetNode, {
-                    scale: 1,
-                    backgroundColor: '#FFFFFF',
-                    useCORS: true,
-                    allowTaint: true,
-                    logging: false,
-                    imageTimeout: 5000,
-                    width: 1080,
-                    height: 1920,
-                    windowWidth: 1080,
-                    windowHeight: 1920,
-                    x: 0,
-                    y: 0,
-                    scrollX: 0,
-                    scrollY: 0,
-                    onclone: (clonedDoc) => {
-                        const card = clonedDoc.getElementById('profile-card-box');
-                        if(card) {
-                            // 僅在複製出來的虛擬圖層加上 IG 樣式，手機畫面絕對不會受到干擾跑版
-                            card.classList.add('exporting', 'ig-story');
-                            card.style.transform = 'none';
-                            card.style.margin = '0';
-                            card.querySelectorAll('*').forEach(el => {
-                                el.style.animation = 'none';
-                                el.style.transition = 'none';
-                            });
-                        }
-                    }
-                });
-
-                const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png', 1.0);
-                });
-                const fileName = `${this.userName}_建功畢業鑑定報告.png`;
-                const dataUrl = canvas.toDataURL('image/png', 1.0);
-
-                this._lastBlob = blob;
-                this._lastDataUrl = dataUrl;
-                this._lastFileName = fileName;
-
-                this.previewOpen(dataUrl);
-                showToast('✅ 生成完成！', 1500);
-            } catch (err) {
-                console.error('匯出失敗:', err);
-                showToast('⚠️ 匯出失敗，請再試一次', 2500);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = oldHtml;
-            }
-        },
-        // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
-        exportToImage: async function() {
-            const targetNode = document.getElementById('profile-card-box');
-            const btn = document.getElementById('export-btn-ig');
-            if(!targetNode || !window.html2canvas) {
-                showToast('匯出工具尚未載入，請稍候');
-                return;
-            }
-
-            btn.disabled = true;
-            const oldHtml = btn.innerHTML;
-            btn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">正在生成...</span>';
-            showToast('📱 正在生成高畫質報告...', 4000);
-
-            const watermark = document.getElementById('export-watermark');
-            if(watermark) {
-                watermark.innerHTML = `
-                    <div style="font-weight: 600; color: rgba(60, 60, 67, 0.7); margin-bottom: 2px; text-align:center; padding-top:8px; font-size:10px;">${this.userName} 的專屬畢業鑑定報告</div>
-                `;
-            }
-
-            await new Promise(r => setTimeout(r, 50));
-            const allImgs = targetNode.querySelectorAll('img');
-            await Promise.all(Array.from(allImgs).map(img => {
-                if(img.complete && img.naturalWidth > 0) return Promise.resolve();
-                return new Promise(r => {
-                    const done = () => r();
-                    img.addEventListener('load', done, { once: true });
-                    img.addEventListener('error', done, { once: true });
-                    setTimeout(done, 2500);
-                });
-            }));
-
-            try {
-                // 🌟 MAGIC FIX: 完全不更改真實網頁上的 CSS，而是在 onclone 虛擬環境中套用 1080x1920 尺寸
-                const canvas = await html2canvas(targetNode, {
-                    scale: 1,
-                    backgroundColor: '#FFFFFF',
-                    useCORS: true,
-                    allowTaint: true,
-                    logging: false,
-                    imageTimeout: 5000,
-                    width: 1080,
-                    height: 1920,
-                    windowWidth: 1080,
-                    windowHeight: 1920,
-                    x: 0,
-                    y: 0,
-                    scrollX: 0,
-                    scrollY: 0,
-                    onclone: (clonedDoc) => {
-                        const card = clonedDoc.getElementById('profile-card-box');
-                        if(card) {
-                            // 僅在複製出來的虛擬圖層加上 IG 樣式，手機畫面絕對不會受到干擾跑版
-                            card.classList.add('exporting', 'ig-story');
-                            card.style.transform = 'none';
-                            card.style.margin = '0';
-                            card.querySelectorAll('*').forEach(el => {
-                                el.style.animation = 'none';
-                                el.style.transition = 'none';
-                            });
-                        }
-                    }
-                });
-
-                const blob = await new Promise((resolve, reject) => {
-                    canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png', 1.0);
-                });
-                const fileName = `${this.userName}_建功畢業鑑定報告.png`;
-                const dataUrl = canvas.toDataURL('image/png', 1.0);
-
-                this._lastBlob = blob;
-                this._lastDataUrl = dataUrl;
-                this._lastFileName = fileName;
-
-                this.previewOpen(dataUrl);
-                showToast('✅ 生成完成！', 1500);
-            } catch (err) {
-                console.error('匯出失敗:', err);
-                showToast('⚠️ 匯出失敗，請再試一次', 2500);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = oldHtml;
-            }
-        },
-
-
-        // 🔧 FIX3: 預覽相關函式
-        previewOpen: function(dataUrl) {
-            const overlay = document.getElementById('preview-overlay');
-            const img = document.getElementById('preview-img');
-            img.src = dataUrl;
-            overlay.classList.add('show');
-
-            // 不再切換按鈕顯隱（合併成一顆「下載到相簿」）
-        },
-        previewClose: function() {
-            document.getElementById('preview-overlay').classList.remove('show');
-        },
-        // 智慧型下載：iOS Safari 有 Web Share API + canShare files → 跳系統分享（可選「儲存到照片」直入相簿）
-        // 其他環境 → 走傳統 <a download>
-        previewDownload: async function() {
-            if(!this._lastBlob) return;
-            const file = new File([this._lastBlob], this._lastFileName, { type: 'image/png' });
-            const canShare = navigator.canShare && navigator.canShare({ files: [file] });
-
-            if (canShare) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: '我的建功畢業鑑定報告',
-                        text: `${this.userName} 的 2026 建功畢業鑑定報告 ✨`
-                    });
-                    showToast('✅ 已開啟系統選單', 1500);
+                    
+                    // 💡 重點修正：直接用外層 Wrapper 的實體高度塞滿空間，不使用 iOS 無法預測的負 margin
+                    wrapper.style.height = `${naturalH * scale}px`;
                     return;
-                } catch (e) {
-                    if (e && e.name === 'AbortError') {
-                        // 使用者取消，靜默處理
-                        return;
-                    }
-                    console.warn('share fallback to download:', e);
-                    // 落到下方 fallback
                 }
             }
+            card.style.transform = 'none';
+            card.style.width = '100%';
+            wrapper.style.height = 'auto';
+        },
 
-            // Fallback：傳統下載
-            const url = URL.createObjectURL(this._lastBlob);
+        // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
+        exportToImage: async function() {
+            const targetNode = document.getElementById('profile-card-box');
+            const wrapper = document.getElementById('card-scale-wrapper');
+            const btn = document.getElementById('export-btn-ig');
+            if(!targetNode || !window.html2canvas) {
+                showToast('匯出工具尚未載入，請稍候');
+                return;
+            }
+
+            btn.disabled = true;
+            const oldHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">正在生成...</span>';
+            showToast('📱 正在生成高畫質報告...', 4000);
+
+            const watermark = document.getElementById('export-watermark');
+            if(watermark) {
+                watermark.innerHTML = `
+                    <div style="font-weight: 600; color: rgba(60, 60, 67, 0.7); margin-bottom: 2px; text-align:center; padding-top:8px; font-size:10px;">${this.userName} 的專屬畢業鑑定報告</div>
+                `;
+            }
+
+            // 🔧 暫時還原螢幕上的縮放狀態，讓 html2canvas 擷取到完整原始大小
+            const oldTransform = targetNode.style.transform;
+            const oldWidth = targetNode.style.width;
+            const oldWrapperH = wrapper ? wrapper.style.height : 'auto';
+
+            targetNode.style.transform = 'none';
+            targetNode.style.width = '';
+            if(wrapper) wrapper.style.height = 'auto';
+
+            targetNode.classList.add('exporting', 'ig-story');
+
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+            const allImgs = targetNode.querySelectorAll('img');
+            await Promise.all(Array.from(allImgs).map(img => {
+                if(img.complete && img.naturalWidth > 0) return Promise.resolve();
+                return new Promise(r => {
+                    const done = () => r();
+                    img.addEventListener('load', done, { once: true });
+                    img.addEventListener('error', done, { once: true });
+                    setTimeout(done, 2500);
+                });
+            }));
+
+            try {
+                // 🔧 FIX: 修復截斷的 html2canvas 參數與回傳處理
+                const canvas = await html2canvas(targetNode, {
+                    scale: 2, // 提升至雙倍清晰度
+                    backgroundColor: '#FFFFFF',
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    imageTimeout: 5000
+                });
+
+                const dataUrl = canvas.toDataURL('image/png');
+                this._lastDataUrl = dataUrl;
+                this._lastFileName = `建功動物城鑑定報告_${this.userName}.png`;
+
+                document.getElementById('preview-img').src = dataUrl;
+                document.getElementById('preview-overlay').classList.add('show');
+            } catch(e) {
+                console.error(e);
+                showToast('❌ 匯出失敗，請重試');
+            } finally {
+                // 還原網頁縮放狀態
+                targetNode.classList.remove('exporting', 'ig-story');
+                targetNode.style.transform = oldTransform;
+                targetNode.style.width = oldWidth;
+                if(wrapper) wrapper.style.height = oldWrapperH;
+                
+                btn.disabled = false;
+                btn.innerHTML = oldHtml;
+            }
+        },
+
+        previewDownload: function() {
+            if(!this._lastDataUrl) return;
             const a = document.createElement('a');
-            a.href = url;
-            a.download = this._lastFileName;
+            a.href = this._lastDataUrl;
+            a.download = this._lastFileName || 'result.png';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-            showToast('✅ 已下載！手機可長按上方圖片儲存', 2200);
+            showToast('⬇️ 已觸發下載！若無反應請長按圖片儲存');
+        },
+
+        previewClose: function() {
+            document.getElementById('preview-overlay').classList.remove('show');
         },
 
         resetQuiz: function() {
             this.currentQuestionIndex = 0;
             this.selectedScores = [];
             document.getElementById('result-page').className = 'hidden';
-            document.getElementById('quiz-page').className = 'hidden';
             document.getElementById('start-page').className = '';
-            // 還原 card 的 transform/margin
-            const card = document.getElementById('profile-card-box');
-            if(card) { card.style.transform = ''; card.style.marginBottom = ''; }
-            ImageEngine.setWelcomeImage();
+            document.getElementById('user-name-input').value = '';
+            this.refreshNameGate();
         }
     };
 
-    // 視窗大小變化時重新計算結算卡縮放
-    window.addEventListener('resize', () => {
-        if(document.getElementById('result-page') && 
-           document.getElementById('result-page').className !== 'hidden') {
-            window.jgQuiz.fitCardToScreen();
-        }
-    });
-
-    window.onload = function() {
+    window.addEventListener('DOMContentLoaded', () => {
         ImageEngine.setWelcomeImage();
-    };
+        
+        // 監聽視窗縮放，確保切換直橫向時 iOS 依然精準對齊
+        window.addEventListener('resize', () => {
+            if(!document.getElementById('result-page').classList.contains('hidden')) {
+                window.jgQuiz.fitCardToScreen();
+            }
+        });
+    });
 })();
 </script>
-
 </body>
 </html>
