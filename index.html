@@ -1728,10 +1728,10 @@
 
             cardBox.style.setProperty('--hero-bg', finalResult.bg);
 
-            // 🔧 FIX2: 結算卡渲染完後，量測高度，若超過手機螢幕就等比縮放
-            requestAnimationFrame(() => {
+            //  🔧 針對 iPhone 最佳化：加入微小延遲，確保 iOS Safari 渲染定型後才量測高度
+           setTimeout(() => {
                 this.fitCardToScreen();
-            });
+           }, 60);
 
             setTimeout(fireConfetti, 200);
         },
