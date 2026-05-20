@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>2026 建功人請回答！！畢業限定心理測驗</title>
+
+    <!-- 🌟 html2canvas：直接擷取 DOM，畫質高、字體準 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* ==============================
+           🍎 Apple HIG 設計系統
+           ============================== */
+        :root {
+            --apple-blue: #007AFF;
+            --apple-indigo: #5856D6;
+            --apple-purple: #AF52DE;
+            --apple-pink: #FF2D55;
+            --apple-green: #34C759;
+            --apple-gray-1: #8E8E93;
+            --apple-gray-5: #E5E5EA;
+            --apple-gray-6: #F2F2F7;
+            
+            --label-primary: #000000;
+            --label-secondary: rgba(60, 60, 67, 0.85);
+            --label-tertiary: rgba(60, 60, 67, 0.6);
+            --label-quaternary: rgba(60, 60, 67, 0.3);
+            
+            --card-bg: rgba(255, 255, 255, 0.82);
+            --sticker-color: #cbd5e0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'PingFang TC', 'Helvetica Neue', 'Microsoft JhengHei', sans-serif;
+            background-color: #F2F2F7;
+            background-image: url('背景.jpeg'), url('背景.jpg'), url('背景.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--label-primary);
+            margin: 0;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+            line-height: 1.47;
+            letter-spacing: -0.01em;
+        }
+
+        #quiz-container {
+            width: 100vw;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.04),
+                0 8px 24px rgba(0, 0, 0, 0.08),
+                0 24px 56px rgba(0, 0, 0, 0.06);
+            padding: 26px 22px;
+            text-align: center;
+            border: 0.5px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            position: relative;
+        }
+
+        h1 {
+            color: var(--label-primary);
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            letter-spacing: -0.028em;
+            line-height: 1.12;
+            background: linear-gradient(120deg, #1a1a1a 0%, #5856D6 50%, #AF52DE 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* 首頁頂端小標籤 */
+        .top-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--apple-indigo);
+            padding: 5px 12px;
+            background: rgba(88, 86, 214, 0.1);
+            border: 0.5px solid rgba(88, 86, 214, 0.18);
+            border-radius: 50px;
+            margin-bottom: 12px;
+        }
+        .top-eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--apple-pink);
+            box-shadow: 0 0 8px var(--apple-pink);
+            animation: dotPulse 1.8s ease-in-out infinite;
+        }
+
+        .subtitle {
+            color: var(--label-secondary);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            text-align: justify;
+            letter-spacing: -0.005em;
+        }
+
+        .hidden { display: none !important; }
+
+        #start-page, #quiz-page, #result-page {
+            animation: pageSlide 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        @keyframes pageSlide {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .name-input-box {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            background: rgba(118, 118, 128, 0.12);
+            border-radius: 12px;
+            margin-bottom: 18px;
+            text-align: center;
+            outline: none;
+            transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+            color: var(--label-primary);
+            letter-spacing: -0.01em;
+        }
+        .name-input-box::placeholder { color: var(--label-tertiary); font-weight: 400; }
+        .name-input-box:focus {
+            background: rgba(118, 118, 128, 0.18);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22);
+        }
+        .name-input-box.shake-error {
+            animation: shakeX 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+            box-shadow: 0 0 0 3px rgba(255, 45, 85, 0.32), 0 0 22px rgba(255, 45, 85, 0.25);
+            background: rgba(255, 45, 85, 0.08);
+        }
+        @keyframes shakeX {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(3px); }
+            30%, 50%, 70% { transform: translateX(-6px); }
+            40%, 60% { transform: translateX(6px); }
+        }
+        /* 姓名必填小提示（紅色脈衝點） */
+        .name-required-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--apple-pink);
+            font-weight: 600;
+            margin-left: 6px;
+            transition: opacity 0.3s;
+        }
+        .name-required-hint::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--apple-pink);
+            animation: dotPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.55; }
+        }
+        /* 貼紙按鈕：未填名字時鎖定 */
+        .sticker-btn.is-locked {
+            opacity: 0.4;
+            filter: grayscale(0.6);
+            cursor: not-allowed;
+        }
+        .sticker-btn.is-locked:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .image-box {
+            width: 100%;
+            aspect-ratio: 16 / 9;            /* 配合主視覺實際比例 */
+            border-radius: 18px;
+            margin-bottom: 18px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fce7f3, #ede9fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.04),
+                0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;               /* 填滿邊框，不留白邊 */
+            animation: imgFade 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        @keyframes imgFade {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .quiz-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--apple-blue);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+            visibility: hidden;
+            letter-spacing: -0.01em;
+        }
+        .back-btn:hover { opacity: 0.6; }
+        .back-btn:active { opacity: 0.4; }
+
+        .progress-wrap { margin-bottom: 18px; }
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .progress-meta .progress-label { color: var(--label-tertiary); }
+        .progress-meta .progress-percent {
+            color: var(--apple-blue);
+            font-variant-numeric: tabular-nums;
+            font-size: 12px;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(118, 118, 128, 0.16);
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar-fg {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--apple-blue), var(--apple-indigo), var(--apple-purple));
+            background-size: 200% 100%;
+            border-radius: 50px;
+            transition: width 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .progress-dots {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 0 1px;
+        }
+        .progress-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(118, 118, 128, 0.24);
+            transition: all 0.45s cubic-bezier(0.32, 0.72, 0, 1.4);
+        }
+        .progress-dot.done {
+            background: var(--apple-blue);
+            transform: scale(1.3);
+        }
+        .progress-dot.current {
+            background: var(--apple-indigo);
+            transform: scale(1.7);
+            box-shadow: 0 0 0 4px rgba(88, 86, 214, 0.18);
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(88, 86, 214, 0.18); }
+            50% { box-shadow: 0 0 0 8px rgba(88, 86, 214, 0.06); }
+        }
+
+        .identity-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin: 10px 0;
+            padding: 18px 14px;
+            background: rgba(118, 118, 128, 0.08);
+            border-radius: 18px;
+        }
+
+        .sticker-btn {
+            padding: 12px 22px;
+            border: 2.5px solid #ffffff;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            letter-spacing: -0.005em;
+        }
+
+        .silver { background: linear-gradient(135deg, #f1f5f9, #cbd5e1); color: #334155; transform: rotate(-2.5deg); box-shadow: 2px 3px 0px #94a3b8, 2px 6px 14px rgba(0,0,0,0.08); }
+        .gold { background: linear-gradient(135deg, #fffbeb, #fef08a); color: #713f12; transform: rotate(2deg); box-shadow: -2px 3px 0px #d97706, -2px 6px 14px rgba(0,0,0,0.08); }
+        .purple { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #5b21b6; transform: rotate(-1.5deg); box-shadow: 2px 2px 0px #7c3aed, 3px 6px 14px rgba(0,0,0,0.08); }
+
+        .sticker-btn:hover { transform: scale(1.06) rotate(0deg) translateY(-2px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); z-index: 10; }
+        .sticker-btn:active { transform: scale(0.95); }
+
+        .question-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 4px;
+            margin-bottom: 18px;
+            color: var(--label-primary);
+            line-height: 1.3;
+            text-align: left;
+            letter-spacing: -0.02em;
+        }
+
+        .options-container { display: flex; flex-direction: column; gap: 11px; }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(60, 60, 67, 0.10);
+            padding: 16px 20px 16px 44px;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--label-primary);
+            cursor: pointer;
+            transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+            position: relative;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        /* 左側小圓 indicator */
+        .option-btn::before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(60, 60, 67, 0.28);
+            background: #fff;
+            transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        .option-btn:hover { 
+            background: rgba(255, 255, 255, 0.96);
+            border-color: rgba(0, 122, 255, 0.35);
+            transform: translateY(-1.5px);
+            box-shadow: 0 10px 22px rgba(0, 122, 255, 0.10), 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .option-btn:hover::before { border-color: var(--apple-blue); }
+        .option-btn:active { transform: scale(0.985); }
+        .option-btn.selected {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.10), rgba(88, 86, 214, 0.12));
+            border-color: var(--apple-blue);
+            color: var(--label-primary);
+            box-shadow: 0 6px 22px rgba(0, 122, 255, 0.18), 0 0 0 3px rgba(0, 122, 255, 0.10);
+            animation: selectPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding-right: 62px;        /* 預留貼紙空間 */
+        }
+        .option-btn.selected::before {
+            background: var(--apple-blue);
+            border-color: var(--apple-blue);
+            box-shadow: inset 0 0 0 3px #fff;
+        }
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.025); }
+            100% { transform: scale(1); }
+        }
+
+        .option-btn.selected::after {
+            content: '✓';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--sticker-color);
+            color: var(--sticker-text, #fff);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0;
+            animation: stamp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes stamp {
+            0% { transform: translateY(-50%) scale(3) rotate(-15deg); opacity: 0; filter: blur(2px); }
+            60% { transform: translateY(-50%) scale(1.15) rotate(3deg); opacity: 1; filter: blur(0); }
+            100% { transform: translateY(-50%) scale(1) rotate(0deg); opacity: 1; filter: blur(0); }
+        }
+
+        .confetti {
+            position: fixed;
+            top: -10px;
+            width: 10px;
+            height: 14px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(110vh) rotate(720deg); }
+        }
+
+        /* =========================================================
+           🪪 證件/識別證風格的結算卡
+           - 結構：上方 id-card-row (左大頭貼 + 右資料區) → 下方 description + quote + tags
+           - 平常瀏覽 (手機)：寬 100%，整體 ~620px 高，一個螢幕內
+           - 匯出 IG：套 .ig-story，540×960 (9:16)，scale 2 → 1080×1920
+           ========================================================= */
+        .profile-card {
+            background: #f4ead7;
+            border: 2px solid #1f1f1f;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0;
+            margin-top: 12px;
+            text-align: left;
+            position: relative;
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.04),
+                0 4px 14px rgba(0, 0, 0, 0.06),
+                0 14px 36px rgba(0, 0, 0, 0.04);
+            animation: cardPop 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+        @keyframes cardPop {
+            0% { opacity: 0; transform: translateY(20px) scale(0.94); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 證件頂部色帶 (Mac Finder 風的小圓點) */
+        .id-card-strip {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, rgba(0,122,255,0.06), rgba(175,82,222,0.06));
+            border-bottom: 0.5px solid rgba(60,60,67,0.08);
+            position: relative;
+        }
+        .id-card-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .id-card-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .id-card-dots span:nth-child(1) { background: #FF5F57; }
+        .id-card-dots span:nth-child(2) { background: #FEBC2E; }
+        .id-card-dots span:nth-child(3) { background: #28C840; }
+        .id-card-filename {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--label-tertiary);
+            letter-spacing: 0.04em;
+            font-family: 'SF Mono', Menlo, monospace;
+            flex: 1;
+            text-align: center;
+            margin-right: 46px;        /* 平衡左側 dots 寬度 */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 證件主體：橫向兩欄 */
+        .id-card-row {
+            display: flex;
+            gap: 14px;
+            padding: 16px 16px 14px;
+            align-items: stretch;
+        }
+        /* 左：大頭貼框 */
+        .id-photo {
+            flex: 0 0 38%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--hero-bg, #f2f2f7);
+            aspect-ratio: 3 / 4;            /* 證件大頭照標準直立比例 */
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,0.6),
+                0 1px 3px rgba(0,0,0,0.08),
+                0 4px 12px rgba(0,0,0,0.06);
+        }
+        .id-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            animation: heroFloat 0.7s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        @keyframes heroFloat {
+            0% { opacity: 0; transform: scale(1.06); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        /* 大頭貼下角小水印 */
+        .id-photo::after {
+            content: "OFFICIAL 2026";
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            font-size: 7.5px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
+            background: rgba(0,0,0,0.45);
+            padding: 2px 6px;
+            border-radius: 50px;
+            letter-spacing: 0.08em;
+            font-family: 'SF Mono', Menlo, monospace;
+            backdrop-filter: blur(8px);
+        }
+
+        /* 右：資料欄 */
+        .id-info {
+            flex: 1;
+            min-width: 0;             /* 防 flex 撐爆 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 2px;
+        }
+        .id-badge {
+            display: inline-block;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, var(--apple-pink), var(--apple-purple));
+            padding: 4px 10px;
+            border-radius: 50px;
+            letter-spacing: 0.03em;
+            box-shadow: 0 2px 8px rgba(175,82,222,0.3);
+            align-self: flex-start;
+            white-space: nowrap;
+        }
+        .id-name {
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.18;
+            letter-spacing: -0.022em;
+            color: var(--label-primary);
+            margin: 4px 0 2px;
+        }
+        .id-name-en {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--label-tertiary);
+            letter-spacing: 0.06em;
+            font-family: 'SF Mono', Menlo, monospace;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .id-name-divider {
+            width: 32px;
+            height: 3px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--apple-pink), var(--apple-purple), var(--apple-indigo));
+            margin-bottom: 6px;
+        }
+        .id-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 10px;
+            font-size: 11.5px;
+        }
+        .id-field {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .id-field-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--label-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 1px;
+        }
+        .id-field-val {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--label-primary);
+            letter-spacing: -0.005em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 證件下方：description + quote + tags（更緊湊） */
+        .id-body {
+            padding: 0 16px 16px;
+        }
+        .id-divider {
+            height: 0.5px;
+            background: rgba(60,60,67,0.12);
+            margin: 0 0 12px;
+            position: relative;
+        }
+        .id-divider::before, .id-divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(60,60,67,0.18);
+            transform: translateY(-50%);
+        }
+        .id-divider::before { left: -3px; }
+        .id-divider::after { right: -3px; }
+
+        .id-desc {
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--label-secondary);
+            text-align: justify;
+            letter-spacing: -0.005em;
+            margin-bottom: 10px;
+        }
+        .id-quote {
+            background: linear-gradient(135deg, rgba(88,86,214,0.06), rgba(175,82,222,0.06));
+            border-left: 3px solid var(--apple-indigo);
+            padding: 9px 12px;
+            font-style: italic;
+            font-weight: 600;
+            border-radius: 0 10px 10px 0;
+            font-size: 12.5px;
+            color: var(--label-primary);
+            letter-spacing: -0.005em;
+            margin-bottom: 10px;
+        }
+
+        .id-tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .id-tag {
+            font-size: 10.5px;
+            padding: 3.5px 9px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--label-primary);
+            border: 0.5px solid rgba(60,60,67,0.1);
+            animation: tagPop 0.5s cubic-bezier(0.32, 0.72, 0, 1.4) backwards;
+            letter-spacing: -0.005em;
+        }
+        .id-tag:nth-child(1) { animation-delay: 0.1s; }
+        .id-tag:nth-child(2) { animation-delay: 0.18s; }
+        .id-tag:nth-child(3) { animation-delay: 0.26s; }
+        .id-tag:nth-child(4) { animation-delay: 0.34s; }
+        @keyframes tagPop {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 證件底部條 (學校 + 浮水印) */
+        .id-footer-strip {
+            padding: 9px 16px;
+            background: linear-gradient(135deg, rgba(0,122,255,0.05), rgba(175,82,222,0.05));
+            border-top: 0.5px dashed rgba(60,60,67,0.16);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 9.5px;
+            font-weight: 600;
+            color: var(--label-tertiary);
+            letter-spacing: 0.02em;
+        }
+        .id-footer-strip .id-stamp {
+            font-family: 'SF Mono', Menlo, monospace;
+            font-weight: 700;
+            color: var(--apple-indigo);
+            letter-spacing: 0.06em;
+        }
+
+        /* 手機（≤440px）微調，仍只在一個螢幕內 */
+        @media (max-width: 440px) {
+            .container { padding: 22px 18px; border-radius: 24px; }
+            h1 { font-size: 23px; }
+            .image-box { aspect-ratio: 16 / 9; margin-bottom: 16px; border-radius: 16px; }
+            .question-title { font-size: 18px; margin-bottom: 14px; }
+            .option-btn { padding: 13px 16px; font-size: 15px; }
+            .subtitle { font-size: 13.5px; margin-bottom: 18px; }
+            .identity-container { padding: 14px 12px; gap: 10px; }
+            .sticker-btn { padding: 10px 18px; font-size: 14px; }
+            .action-btn { padding: 13px 24px; font-size: 15px; }
+            footer { margin-top: 20px; font-size: 10.5px; }
+            body { padding: 8px; }
+            #quiz-container { padding: 8px 0; }
+
+            .id-card-row { padding: 14px 14px 12px; gap: 12px; }
+            .id-body { padding: 0 14px 14px; }
+            .id-name { font-size: 17.5px; }
+            .id-desc { font-size: 12.5px; line-height: 1.5; -webkit-line-clamp: 4; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+            .id-quote { font-size: 12px; padding: 8px 11px; }
+            .id-tag { font-size: 10px; padding: 3px 8px; }
+            .id-fields { gap: 5px 8px; }
+            .id-field-val { font-size: 11px; }
+            .id-card-strip { padding: 10px 14px; }
+            .id-card-filename { font-size: 11px; margin-right: 42px; }
+        }
+
+        /* 平常瀏覽時隱藏匯出專屬浮水印 */
+        .export-only { display: none; }
+        .profile-card.exporting .export-only { display: block; }
+
+        /* =========================================================
+           📱 IG 限動 9:16 匯出模式（540 × 960 → scale 2 → 1080 × 1920）
+           匯出時動態為 #profile-card-box 加上 .ig-story
+           ========================================================= */
+        .profile-card.ig-story {
+            width: 540px;
+            height: 960px;
+            border-radius: 0;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            position: relative;
+            box-shadow: none;
+            animation: none;
+        }
+        .profile-card.ig-story .id-card-strip {
+            padding: 20px 28px;
+        }
+        .profile-card.ig-story .id-card-dots span {
+            width: 14px; height: 14px;
+        }
+        .profile-card.ig-story .id-card-filename {
+            font-size: 15px;
+            margin-right: 64px;
+        }
+        .profile-card.ig-story .id-card-row {
+            padding: 28px 28px 22px;
+            gap: 22px;
+            flex: 0 0 auto;
+        }
+        .profile-card.ig-story .id-info {
+            justify-content: flex-start;
+            gap: 14px;
+        }
+        .profile-card.ig-story .id-photo {
+            flex: 0 0 200px;
+            aspect-ratio: 3 / 4;
+        }
+        .profile-card.ig-story .id-photo::after {
+            font-size: 10px;
+            padding: 3px 9px;
+            bottom: 10px; right: 10px;
+        }
+        .profile-card.ig-story .id-badge {
+            font-size: 14px;
+            padding: 6px 14px;
+        }
+        .profile-card.ig-story .id-name {
+            font-size: 28px;
+            margin-top: 6px;
+        }
+        .profile-card.ig-story .id-name-en {
+            font-size: 12px;
+        }
+        .profile-card.ig-story .id-name-divider {
+            width: 48px;
+            height: 4px;
+        }
+        .profile-card.ig-story .id-fields {
+            gap: 8px 14px;
+            font-size: 14px;
+        }
+        .profile-card.ig-story .id-field-label {
+            font-size: 10.5px;
+        }
+        .profile-card.ig-story .id-field-val {
+            font-size: 14px;
+        }
+        .profile-card.ig-story .id-body {
+            padding: 0 28px 22px;
+            /* 不要 flex 撐滿，讓內容自然堆疊 */
+        }
+        /* IG 限動版：底部留白處的水印裝飾大字（中央偏下） */
+        .profile-card.ig-story::after {
+            content: "BUILT TO GRADUATE · 2026";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 130px;
+            text-align: center;
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.22em;
+            color: transparent;
+            background: linear-gradient(90deg,
+                rgba(255, 45, 85, 0.22),
+                rgba(175, 82, 222, 0.28),
+                rgba(88, 86, 214, 0.22));
+            -webkit-background-clip: text;
+            background-clip: text;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .profile-card.ig-story .id-divider {
+            margin-bottom: 18px;
+        }
+        .profile-card.ig-story .id-desc {
+            font-size: 15.5px;
+            line-height: 1.62;
+            margin-bottom: 16px;
+            /* IG 不裁切，全文顯示 */
+            display: block;
+            -webkit-line-clamp: unset;
+            overflow: visible;
+        }
+        .profile-card.ig-story .id-quote {
+            font-size: 15px;
+            padding: 13px 16px;
+            margin-bottom: 16px;
+        }
+        .profile-card.ig-story .id-tag {
+            font-size: 13px;
+            padding: 5px 12px;
+        }
+        .profile-card.ig-story .id-tags-row {
+            gap: 7px;
+            margin-bottom: 14px;
+        }
+        .profile-card.ig-story .id-footer-strip {
+            padding: 14px 28px;
+            font-size: 12px;
+            margin-top: auto;
+        }
+        .profile-card.ig-story .export-only {
+            text-align: center;
+            font-size: 11px;
+            color: var(--label-tertiary);
+            padding: 8px 28px 0;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .action-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-btn {
+            border: none; 
+            padding: 15px 28px; 
+            border-radius: 16px; 
+            cursor: pointer;
+            font-size: 16px; 
+            font-weight: 600; 
+            width: 100%; 
+            transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+            letter-spacing: -0.01em;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .export-btn { 
+            /* IG 招牌橘粉紫漸層 */
+            background: linear-gradient(135deg, #FEDA77 0%, #F58529 18%, #DD2A7B 45%, #8134AF 70%, #515BD4 100%);
+            background-size: 220% 220%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 17px 22px;
+            font-size: 16.5px;
+            box-shadow: 
+                0 1px 2px rgba(221, 42, 123, 0.28),
+                0 8px 22px rgba(221, 42, 123, 0.32),
+                inset 0 1px 0 rgba(255,255,255,0.25);
+            animation: gradientShift 6s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .export-btn::before {
+            /* 滑光 shimmer */
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transform: skewX(-25deg);
+            animation: btnShimmer 3.2s ease-in-out infinite;
+        }
+        @keyframes btnShimmer {
+            0% { left: -100%; }
+            55%, 100% { left: 130%; }
+        }
+        .export-btn .btn-icon { font-size: 18px; }
+        .export-btn .btn-text { font-weight: 700; }
+        .export-btn .btn-tag {
+            font-size: 11px;
+            padding: 3px 9px;
+            background: rgba(255,255,255,0.28);
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(8px);
+        }
+        .export-btn:hover { 
+            transform: translateY(-2px); 
+            filter: brightness(1.06); 
+            box-shadow: 
+                0 2px 4px rgba(221, 42, 123, 0.32),
+                0 14px 30px rgba(221, 42, 123, 0.42),
+                inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+        .export-btn:active { transform: scale(0.98); filter: brightness(0.96); }
+        .export-btn:disabled { opacity: 0.7; cursor: wait; transform: none; animation: none; }
+        .export-btn:disabled::before { animation: none; }
+        
+        .restart-btn { 
+            background: rgba(118, 118, 128, 0.16); 
+            color: var(--label-primary); 
+            backdrop-filter: blur(8px);
+        }
+        .restart-btn:hover { background: rgba(118, 118, 128, 0.22); transform: translateY(-1px); }
+        .restart-btn:active { transform: scale(0.98); }
+
+        footer { 
+            margin-top: 28px; 
+            padding-top: 18px;
+            border-top: 0.5px solid rgba(60, 60, 67, 0.12);
+            font-size: 11px; 
+            color: var(--label-tertiary); 
+            font-weight: 500; 
+            letter-spacing: -0.005em;
+            line-height: 1.7;
+        }
+        footer .school-line {
+            font-weight: 700;
+            color: var(--label-secondary);
+            letter-spacing: 0.02em;
+        }
+        footer .en-line {
+            font-size: 10px;
+            letter-spacing: 0.04em;
+            opacity: 0.75;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(20, 20, 20, 0.92);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            letter-spacing: -0.01em;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .id-card-strip {
+            background:#111 !important;
+            color:white;
+            border-bottom:none !important;
+            border-radius:16px 16px 0 0;
+        }
+
+        .id-badge{
+            background:#111 !important;
+            color:#fff !important;
+            border-radius:8px !important;
+            box-shadow:none !important;
+        }
+
+        .id-field{
+            background:#fff8ee;
+            border:1.5px solid #111;
+            border-radius:10px;
+            padding:8px;
+        }
+
+        .id-quote{
+            background:#fff !important;
+            border:2px solid #111 !important;
+            border-radius:12px !important;
+            font-style:normal !important;
+        }
+
+        .id-tag{
+            border:1.5px solid #111 !important;
+            background:#fff !important;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="quiz-container">
+        
+        <div class="container">
+            
+            <div id="start-page">
+                <span class="top-eyebrow">2026 畢業限定 · 動物城鑑定</span>
+                <h1>2026 建功人請回答！！</h1>
+                <div class="image-box">
+                    <img id="welcome-img" src="主視覺.jpeg" alt="建功心測主視覺">
+                </div>
+                <p class="subtitle">
+                    這個測驗是畢聯會為建功人設計的，準備好迎接即將到來的畢業典禮嗎！快來看看你在建功動物城是什麼角色吧！希望大家可以透過一些小問題面對更真實的自己~~
+                </p>
+                
+                <p style="font-size: 14.5px; font-weight: 600; color: var(--label-secondary); margin-bottom: 8px; letter-spacing: -0.005em;">
+                    填入你的畢業大名 / 暱稱<span style="color: var(--apple-pink);">*</span>
+                    <span id="name-required-hint" class="name-required-hint">必填</span>
+                </p>
+                <input type="text" id="user-name-input" class="name-input-box" placeholder="例如：萬年班長小明 (限8字)" maxlength="8" oninput="window.jgQuiz.refreshNameGate()">
+
+                <p style="font-size: 14.5px; font-weight: 600; color: var(--label-secondary); margin-bottom: 5px; letter-spacing: -0.005em;">撕下一張你的專屬貼紙身分：</p>
+                <div class="identity-container">
+                    <button class="sticker-btn silver is-locked" onclick="window.jgQuiz.selectIdentity('silver')">國中生</button>
+                    <button class="sticker-btn gold is-locked" onclick="window.jgQuiz.selectIdentity('gold')">高中生</button>
+                    <button class="sticker-btn purple is-locked" onclick="window.jgQuiz.selectIdentity('purple')">家長及外賓</button>
+                </div>
+            </div>
+
+            <div id="quiz-page" class="hidden">
+                <div class="quiz-top-bar">
+                    <button id="back-btn" class="back-btn" onclick="window.jgQuiz.prevQuestion()">← 上一頁</button>
+                    <div id="progress-text" style="font-size: 11px; color: var(--label-tertiary); font-weight: 600; letter-spacing: 0.05em;"></div>
+                </div>
+
+                <div class="progress-wrap">
+                    <div class="progress-meta">
+                        <span class="progress-label" id="progress-label">作答中</span>
+                        <span class="progress-percent" id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fg" id="progress-bar"></div>
+                    </div>
+                    <div class="progress-dots" id="progress-dots"></div>
+                </div>
+
+                <div class="image-box">
+                    <img id="quiz-img" src="" alt="問題插圖">
+                </div>
+                <div class="question-title" id="question-text"></div>
+                <div class="options-container" id="options-box"></div>
+            </div>
+
+            <div id="result-page" class="hidden">
+                <div id="result-header-text" style="font-size: 13.5px; font-weight: 600; color: var(--label-tertiary); margin-bottom: 8px; text-align: left; letter-spacing: -0.005em;"></div>
+                
+                <div class="profile-card" id="profile-card-box"></div>
+                
+                <div id="share-preview-wrap" style="display:none; margin-top:14px;">
+                    <img id="share-preview-image" style="width:100%; border-radius:18px; border:2px solid #111; display:block;">
+                    <div style="font-size:12px; text-align:center; margin-top:6px; color:#666;">
+                        手機可直接長按上方整張報告下載
+                    </div>
+                </div>
+
+                <div class="action-box">
+                    <button id="export-btn-ig" class="action-btn export-btn" onclick="window.jgQuiz.exportToImage()">
+                        <span class="btn-icon">📲</span>
+                        <span class="btn-text">儲存到相簿 / 分享</span>
+                        <span class="btn-tag">9:16</span>
+                    </button>
+                    <button class="action-btn restart-btn" onclick="window.jgQuiz.resetQuiz()">↻ 再測一次</button>
+                </div>
+            </div>
+
+            <footer>
+                <div class="school-line">新竹市立建功高級中學 × 2026 建功畢聯會</div>
+                <div class="en-line">Hsinchu Municipal Chien Kang Senior High School</div>
+            </footer>
+        </div>
+        
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+<script>
+(function() {
+    const questions = [
+        { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
+        { title: "考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
+        { title: "關於上學...", options: [{ text: "#上課有認真聽", score: "C" }, { text: "#有來學校就很棒了", score: "B" }] },
+        { title: "和朋友的相處...", options: [{ text: "#高山流水遇知音", score: "A" }, { text: "#低山臭水遇噪音", score: "D" }] },
+        { title: "面對未來的困難...", options: [{ text: "#放馬過來", score: "A" }, { text: "#放我一馬", score: "D" }] }
+    ];
+
+    window.quizResultsDatabase = {
+        "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "高三衝刺K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
+        "B": { badge: "2026 活力夢想家檔案", name: "兔子茱蒂 × 體育股長", characterName: "哈茱蒂", bg: "#fef9c3", meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！", quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" },
+        "C": { badge: "2026 智商天花板檔案", name: "狐狸尼克 × 副班長", characterName: "狐狸尼克", bg: "#fae8ff", meta: { code: "NICK-VICE-99", danger: "65%", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" }, traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"], desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌，平時低調看戲、優雅省力，但大局需要時總能用高智商精準掌控，是班上的隱藏版大佬。", quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。" },
+        "D": { badge: "2026 校園守護神檔案", name: "樹懶快俠 × 普通學生", characterName: "快俠", bg: "#dcfce7", meta: { code: "FLASH-STUDENT-00", danger: "0%", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" }, traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"], desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。即使身邊的人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解，活得悠閒又療癒。", quote: "沒事沒事，平安畢業，順其自然。" }
+    };
+
+    const ImageEngine = {
+        setQuestionImage: function(index) {
+            const imgTag = document.getElementById('quiz-img');
+            if(!imgTag) return;
+            const qNum = index + 1;
+            imgTag.src = `問題${qNum}.png`;
+            imgTag.onerror = function() {
+                this.onerror = function() {
+                    this.onerror = function() { this.src = ''; };
+                    this.src = `問題${qNum}.jpg`;
+                };
+                this.src = `問題${qNum}.jpeg`;
+            };
+        },
+        setWelcomeImage: function() {
+            const imgTag = document.getElementById('welcome-img');
+            if(!imgTag) return;
+            imgTag.src = '主視覺.jpeg';
+            imgTag.onerror = function() {
+                this.onerror = function() { this.src = '主視覺.png'; };
+                this.src = '主視覺.jpg';
+            };
+        }
+    };
+
+    function fireConfetti() {
+        const colors = ['#FF2D55', '#FF9500', '#FFCC00', '#34C759', '#007AFF', '#5856D6', '#AF52DE'];
+        const total = 42;
+        for(let i = 0; i < total; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = (Math.random() * 100) + 'vw';
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
+            c.style.animationDelay = (Math.random() * 0.3) + 's';
+            c.style.transform = `rotate(${Math.random() * 360}deg)`;
+            if(Math.random() > 0.5) { c.style.borderRadius = '50%'; }
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 3500);
+        }
+    }
+
+    function showToast(msg, duration) {
+        duration = duration || 2000;
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        if(window._toastTimer) clearTimeout(window._toastTimer);
+        window._toastTimer = setTimeout(() => {
+            t.classList.remove('show');
+        }, duration);
+    }
+
+    window.jgQuiz = {
+        currentQuestionIndex: 0,
+        selectedScores: [],
+        userName: "建功人",
+
+        selectIdentity: function(type) {
+            const input = document.getElementById('user-name-input');
+            const inputName = input.value.trim();
+            if(!inputName) {
+                // 沒填名字 → 提示 + 抖動 + 紅光暈
+                showToast('🙋 請先填入你的畢業大名 / 暱稱', 2200);
+                input.classList.add('shake-error');
+                input.focus();
+                setTimeout(() => input.classList.remove('shake-error'), 600);
+                return;
+            }
+            this.userName = inputName;
+
+            const root = document.documentElement;
+            let textColor = '#fff';
+            if (type === 'silver') { root.style.setProperty('--sticker-color', '#cbd5e0'); textColor = '#4a5568'; }
+            else if (type === 'gold') { root.style.setProperty('--sticker-color', '#ecc94b'); textColor = '#744210'; }
+            else if (type === 'purple') { root.style.setProperty('--sticker-color', '#9f7aea'); textColor = '#ffffff'; }
+            root.style.setProperty('--sticker-text', textColor);
+
+            document.getElementById('start-page').className = 'hidden';
+            document.getElementById('quiz-page').className = '';
+            this.buildProgressDots();
+            this.showQuestion();
+        },
+
+        // 監聽姓名輸入，動態切換貼紙按鈕的可按狀態
+        refreshNameGate: function() {
+            const input = document.getElementById('user-name-input');
+            const hasName = !!input.value.trim();
+            document.querySelectorAll('.sticker-btn').forEach(b => {
+                b.classList.toggle('is-locked', !hasName);
+            });
+            const hint = document.getElementById('name-required-hint');
+            if(hint) hint.style.opacity = hasName ? '0' : '1';
+        },
+
+        buildProgressDots: function() {
+            const dotsBox = document.getElementById('progress-dots');
+            dotsBox.innerHTML = '';
+            for(let i = 0; i < questions.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                dotsBox.appendChild(dot);
+            }
+        },
+
+        updateProgress: function() {
+            const total = questions.length;
+            const current = this.currentQuestionIndex;
+            const percent = Math.round((current / total) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-percent').innerText = percent + '%';
+            document.getElementById('progress-text').innerText = `QUESTION ${current + 1} / ${total}`;
+            
+            const labels = ['開始作答', '繼續加油', '已過半囉', '快完成了', '最後一題'];
+            document.getElementById('progress-label').innerText = labels[Math.min(current, labels.length - 1)];
+
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((d, i) => {
+                d.classList.remove('done', 'current');
+                if(i < current) d.classList.add('done');
+                else if(i === current) d.classList.add('current');
+            });
+        },
+
+        showQuestion: function() {
+            if (this.currentQuestionIndex >= questions.length) {
+                this.showResult();
+                return;
+            }
+
+            const backBtn = document.getElementById('back-btn');
+            if(this.currentQuestionIndex > 0) {
+                backBtn.style.visibility = 'visible';
+            } else {
+                backBtn.style.visibility = 'hidden';
+            }
+
+            const q = questions[this.currentQuestionIndex];
+            this.updateProgress();
+            document.getElementById('question-text').innerText = q.title;
+            
+            ImageEngine.setQuestionImage(this.currentQuestionIndex);
+
+            const optionsBox = document.getElementById('options-box');
+            optionsBox.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.text;
+                btn.style.animation = `pageSlide 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${0.1 + idx * 0.08}s backwards`;
+                btn.onclick = () => this.selectOption(btn, opt.score);
+                optionsBox.appendChild(btn);
+            });
+        },
+
+        selectOption: function(element, score) {
+            element.classList.add('selected');
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.style.pointerEvents = 'none');
+
+            this.selectedScores.push(score);
+            this.currentQuestionIndex++;
+
+            const percent = Math.round((this.currentQuestionIndex / questions.length) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-percent').innerText = percent + '%';
+
+            setTimeout(() => {
+                this.showQuestion();
+            }, 480); 
+        },
+
+        prevQuestion: function() {
+            if(this.currentQuestionIndex > 0) {
+                this.currentQuestionIndex--;
+                this.selectedScores.pop(); 
+                this.showQuestion();
+            }
+        },
+
+        showResult: function() {
+            document.getElementById('quiz-page').className = 'hidden';
+            document.getElementById('result-page').className = '';
+
+            const counts = {};
+            let maxScore = "B";
+            let maxCount = 0;
+
+            this.selectedScores.forEach(score => {
+                counts[score] = (counts[score] || 0) + 1;
+                if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
+            });
+
+            const finalResult = window.quizResultsDatabase[maxScore];
+            
+            document.getElementById('result-header-text').innerText = `▸ 偵測 [${this.userName}] 的大數據精密 analysis：`;
+
+            const cardBox = document.getElementById('profile-card-box');
+
+            cardBox.innerHTML = `
+                <div class="id-card-strip">
+                    <div class="id-card-dots"><span></span><span></span><span></span></div>
+                    <div class="id-card-filename">${this.userName}_鑑定報告.id</div>
+                </div>
+                <div class="id-card-row">
+                    <div class="id-photo" style="--hero-bg:${finalResult.bg}; background:${finalResult.bg};">
+                        <img src="${finalResult.characterName}.jpeg" onerror="this.onerror=null; this.src='${finalResult.characterName}.jpg'; this.onerror=function(){ this.onerror=null; this.src='${finalResult.characterName}.png'; this.onerror=function(){ this.style.display='none'; }; };" alt="${finalResult.name}">
+                    </div>
+                    <div class="id-info">
+                        <div>
+                            <span class="id-badge">${finalResult.badge}</span>
+                            <h2 class="id-name">${finalResult.name}</h2>
+                            <div class="id-name-en">${finalResult.meta.code}</div>
+                            <div class="id-name-divider"></div>
+                        </div>
+                        <div class="id-fields">
+                            <div class="id-field">
+                                <span class="id-field-label">類型</span>
+                                <span class="id-field-val">${finalResult.meta.type}</span>
+                            </div>
+                            <div class="id-field">
+                                <span class="id-field-label">危險</span>
+                                <span class="id-field-val">${finalResult.meta.danger}</span>
+                            </div>
+                            <div class="id-field" style="grid-column: 1 / -1;">
+                                <span class="id-field-label">主要出沒</span>
+                                <span class="id-field-val">${finalResult.meta.place}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="id-body">
+                    <div class="id-divider"></div>
+                    <div class="id-desc">${finalResult.desc}</div>
+                    <div class="id-quote">「${finalResult.quote}」</div>
+                    <div class="id-tags-row">
+                        ${finalResult.traits.map(t => `<span class="id-tag" style="background:${finalResult.bg}">${t}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="id-footer-strip">
+                    <span>新竹市立建功高級中學 × 2026 畢聯會</span>
+                    <span class="id-stamp">2026</span>
+                </div>
+                <div class="export-only" id="export-watermark"></div>
+            `;
+
+            // 把卡片底色變數設給卡片本體，供 IG 模式背景使用
+            cardBox.style.setProperty('--hero-bg', finalResult.bg);
+
+            setTimeout(fireConfetti, 200);
+        },
+
+        // 🌟 匯出為 IG 限動 9:16 高畫質 PNG (1080×1920)
+        // 流程：html2canvas → toBlob → 試 Web Share API (iOS 會跳「儲存影像」) → 失敗就下載 PNG
+        exportToImage: async function() {
+            const targetNode = document.getElementById('profile-card-box');
+            const btn = document.getElementById('export-btn-ig');
+            if(!targetNode || !window.html2canvas) {
+                showToast('匯出工具尚未載入，請稍候');
+                return;
+            }
+
+            btn.disabled = true;
+            const oldHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">正在生成...</span>';
+            showToast('📱 正在生成高畫質報告...', 4000);
+
+            // 加上匯出時專屬浮水印
+            const watermark = document.getElementById('export-watermark');
+            if(watermark) {
+                watermark.innerHTML = `
+                    <div style="font-weight: 600; color: rgba(60, 60, 67, 0.7); margin-bottom: 2px;">${this.userName} 的專屬畢業鑑定報告</div>
+                `;
+            }
+
+            targetNode.classList.add('exporting', 'ig-story');
+
+            // 等動畫穩定 + 所有圖片載入完
+            await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+            const allImgs = targetNode.querySelectorAll('img');
+            await Promise.all(Array.from(allImgs).map(img => {
+                if(img.complete && img.naturalWidth > 0) return Promise.resolve();
+                return new Promise(r => {
+                    const done = () => r();
+                    img.addEventListener('load', done, { once: true });
+                    img.addEventListener('error', done, { once: true });
+                    setTimeout(done, 2500);
+                });
+            }));
+
+            try {
+                const canvas = await html2canvas(targetNode, {
+                    scale: 2,                              // 540×2 = 1080（IG 限動標準）
+                    backgroundColor: '#FFFFFF',
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    imageTimeout: 5000,
+                    width: 540,
+                    height: 960,
+                    windowWidth: 540,
+                    windowHeight: 960,
+                    onclone: (clonedDoc) => {
+                        const card = clonedDoc.getElementById('profile-card-box');
+                        if(card) {
+                            card.style.animation = 'none';
+                            card.style.transform = 'none';
+                            card.style.boxShadow = 'none';
+                            card.style.margin = '0';
+                            card.querySelectorAll('*').forEach(el => {
+                                el.style.animation = 'none';
+                                el.style.transition = 'none';
+                            });
+                        }
+                    }
+                });
+
+                // 先轉成 Blob 以便走 Web Share API
+                const blob = await new Promise((resolve, reject) => {
+                    canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png', 1.0);
+                });
+                const fileName = `${this.userName}_建功畢業鑑定報告.png`;
+                const file = new File([blob], fileName, { type: 'image/png' });
+
+                // 嘗試 Web Share API（行動裝置原生分享：iOS 可選「儲存影像」直入相簿）
+                let shared = false;
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: '我的建功畢業鑑定報告',
+                            text: `${this.userName} 的 2026 建功畢業鑑定報告 ✨`
+                        });
+                        shared = true;
+                        showToast('✅ 分享完成！', 2000);
+                    } catch (shareErr) {
+                        // 使用者按取消也會丟錯，這時不 fallback（避免又下載一次）
+                        if (shareErr && shareErr.name === 'AbortError') {
+                            shared = true;     // 視為已處理
+                            showToast('已取消', 1500);
+                        } else {
+                            console.warn('Web Share 失敗，fallback 到下載:', shareErr);
+                        }
+                    }
+                }
+
+                // Fallback：下載 PNG（手機 Safari 長按可儲存至相簿，桌面則直接下載）
+                if (!shared) {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    // 建立可長按整張卡片的預覽圖
+                    const preview = document.getElementById('share-preview-image');
+                    const wrap = document.getElementById('share-preview-wrap');
+                    if(preview && wrap){
+                        preview.src = url;
+                        wrap.style.display = 'block';
+                    }
+
+                    showToast('✅ 已生成完整報告！可直接長按整張圖下載', 3500);
+                }
+            } catch (err) {
+                console.error('匯出失敗:', err);
+                showToast('⚠️ 匯出失敗，請再試一次', 2500);
+            } finally {
+                targetNode.classList.remove('exporting', 'ig-story');
+                btn.disabled = false;
+                btn.innerHTML = oldHtml;
+            }
+        },
+
+        resetQuiz: function() {
+            this.currentQuestionIndex = 0;
+            this.selectedScores = [];
+            document.getElementById('result-page').className = 'hidden';
+            document.getElementById('quiz-page').className = 'hidden';
+            document.getElementById('start-page').className = '';
+            ImageEngine.setWelcomeImage();
+        }
+    };
+
+    window.onload = function() {
+        ImageEngine.setWelcomeImage();
+    };
+})();
+</script>
+
+</body>
+</html>
