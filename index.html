@@ -1082,6 +1082,17 @@
             font-size: 17px;
         }
 
+                /* 🌟 讓匯出瞬間的卡片絕對定位，擺脫手機容器限制，避免截圖被按鈕或邊界切到 */
+        .profile-card.exporting.ig-story {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 1080px !important;
+            transform: none !important; /* 強制覆蓋 iPhone 上的縮放狀態 */
+            margin-bottom: 0 !important; /* 消除縮放高度差帶來的負 Margin 干擾 */
+            z-index: 9999 !important;
+        }
+
         /* 匯出浮水印（平常隱藏） */
         .export-only { display: none; }
         .profile-card.exporting .export-only { display: block; }
