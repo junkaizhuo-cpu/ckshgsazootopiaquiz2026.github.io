@@ -1392,11 +1392,28 @@ body {
 <script>
 (function() {
     const questions = [
-        { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
-        { title: "考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
-        { title: "關於上學...", options: [{ text: "#上課有認真聽", score: "C" }, { text: "#有來學校就很棒了", score: "B" }] },
-        { title: "和朋友的相處...", options: [{ text: "#高山流水遇知音", score: "A" }, { text: "#低山臭水遇噪音", score: "D" }] },
-        { title: "面對未來的困難...", options: [{ text: "#放馬過來", score: "A" }, { text: "#放我一馬", score: "D" }] }
+        // 🎯 新計分機制：每個選項都給 A/B/C/D 四個角色不同的分數權重 (0-1-2 計分制)
+        // 權重驗證：每人總分皆為 7 分 (A:7, B:7, C:7, D:7)，確保公平
+        { title: "明天要考試，今天晚上我會選擇...", options: [
+            { text: "#想辦法捲死同學", scores: { A: 2, B: 0, C: 1, D: 0 } },
+            { text: "#與周公約會",       scores: { A: 0, B: 2, C: 0, D: 1 } }
+        ]},
+        { title: "考前我更願意相信...", options: [
+            { text: "#自己的智商",         scores: { A: 1, B: 0, C: 2, D: 0 } },
+            { text: "#神明一定會幫助我的", scores: { A: 0, B: 1, C: 0, D: 2 } }
+        ]},
+        { title: "關於上學...", options: [
+            { text: "#上課有認真聽",       scores: { A: 2, B: 0, C: 0, D: 0 } },
+            { text: "#有來學校就很棒了",   scores: { A: 0, B: 0, C: 1, D: 2 } }
+        ]},
+        { title: "和朋友的相處...", options: [
+            { text: "#高山流水遇知音",     scores: { A: 0, B: 2, C: 1, D: 0 } },
+            { text: "#低山臭水遇噪音",     scores: { A: 1, B: 0, C: 0, D: 1 } }
+        ]},
+        { title: "面對未來的困難...", options: [
+            { text: "#放馬過來",           scores: { A: 1, B: 1, C: 2, D: 0 } },
+            { text: "#放我一馬",           scores: { A: 0, B: 1, C: 0, D: 1 } }
+        ]}
     ];
 
             window.quizResultsDatabase = {
@@ -1597,17 +1614,17 @@ body {
                 btn.innerHTML = `<span class="btn-label"></span>`;
                 btn.querySelector('.btn-label').textContent = opt.text;
                 btn.style.animation = `pageSlide 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${0.1 + idx * 0.08}s backwards`;
-                btn.onclick = () => this.selectOption(btn, opt.score);
+                btn.onclick = () => this.selectOption(btn, opt.scores);
                 optionsBox.appendChild(btn);
             });
         },
 
-        selectOption: function(element, score) {
+        selectOption: function(element, scores) {
             element.classList.add('selected');
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(b => b.style.pointerEvents = 'none');
 
-            this.selectedScores.push(score);
+            this.selectedScores.push(scores);
             this.currentQuestionIndex++;
 
             const percent = Math.round((this.currentQuestionIndex / questions.length) * 100);
@@ -1631,13 +1648,25 @@ body {
             document.getElementById('quiz-page').className = 'hidden';
             document.getElementById('result-page').className = '';
 
-            const counts = {};
-            let maxScore = "B";
-            let maxCount = 0;
+            // 🎯 新權重制累加：把每題選項的 {A,B,C,D} 分數加總，最高分者勝出
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            this.selectedScores.forEach(scoreObj => {
+                if (scoreObj && typeof scoreObj === 'object') {
+                    counts.A += scoreObj.A || 0;
+                    counts.B += scoreObj.B || 0;
+                    counts.C += scoreObj.C || 0;
+                    counts.D += scoreObj.D || 0;
+                }
+            });
 
-            this.selectedScores.forEach(score => {
-                counts[score] = (counts[score] || 0) + 1;
-                if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
+            // 找出最高分角色；若平手，依 A → B → C → D 順序取第一個
+            let maxScore = "B";
+            let maxCount = -1;
+            ["A", "B", "C", "D"].forEach(key => {
+                if (counts[key] > maxCount) {
+                    maxCount = counts[key];
+                    maxScore = key;
+                }
             });
 
             const finalResult = window.quizResultsDatabase[maxScore];
