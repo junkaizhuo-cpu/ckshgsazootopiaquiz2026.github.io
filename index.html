@@ -627,14 +627,19 @@ body {
             padding: 8px 10px;
             vertical-align: middle;
         }
-        .report-table td:first-child {
-            width: 90px;
-            white-space: nowrap;
-            background: #f5f5f7;
-            font-weight: 700;
-            color: #333333;
-            text-align: center;
-        }
+        /* 修改此處，確保字型大小與權重一致 */
+.report-table td:first-child {
+    width: 90px;
+    white-space: nowrap;
+    background: #f5f5f7;
+    font-weight: 700;
+    color: #333333;
+    text-align: center;
+    /* 新增以下兩行 */
+    font-size: 12.5px !important; 
+    line-height: 1.2;
+}
+
         .report-table .td-val {
             font-weight: 700;
             color: #000000;
@@ -959,10 +964,14 @@ body {
             padding: 18px 20px;
             border-width: 2px;
         }
-        .profile-card.ig-story .report-table td:first-child {
-            width: 200px !important;
-            font-size: 23px;
-        }
+        /* 找到 .profile-card.ig-story .report-table td:first-child */
+.profile-card.ig-story .report-table td:first-child {
+    width: 200px !important;
+    /* 這裡原本可能是 23px，如果您希望它變小，請調整此數值 */
+    font-size: 22px !important; 
+    font-weight: 700 !important;
+}
+
         .profile-card.ig-story .td-mono {
             font-size: 21px;
         }
@@ -1671,7 +1680,7 @@ body {
 
             const finalResult = window.quizResultsDatabase[maxScore];
             
-            document.getElementById('result-header-text').innerText = `▸ 偵測 ${this.userName}的大數據精密分析：`;
+            document.getElementById('result-header-text').innerText = `▸ ${this.userName}的建功動物城物種分析：`;
 
             const cardBox = document.getElementById('profile-card-box');
 
@@ -1726,7 +1735,7 @@ const barcodeLines = generateBarcodeSet(300);
                     
                     <table class="report-table">
                         <tr>
-                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">觀測代號</td>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">物種編號</td>
                             <td class="td-val td-mono">${finalResult.meta.code}</td>
                         </tr>
                         <tr>
@@ -1741,15 +1750,15 @@ const barcodeLines = generateBarcodeSet(300);
                             </td>
                         </tr>
                         <tr>
-                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">核心屬性</td>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">屬性</td>
                             <td class="td-val">${finalResult.badge}</td>
                         </tr>
                         <tr>
-                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">主型態</td>
+                            <td style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">特質</td>
                             <td class="td-val">${finalResult.meta.type}</td>
                         </tr>
                         <tr>
-                            <td class="td-place-label" style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">主要出沒地</td>
+                            <td class="td-place-label" style="background-color: ${tableLeftBg} !important; font-weight: bold; color: #222;">出沒地</td>
                             <td class="td-val td-place">${finalResult.meta.place}</td>
                         </tr>
                     </table>
