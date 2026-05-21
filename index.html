@@ -99,28 +99,22 @@ body {
             -webkit-text-fill-color: transparent;
         }
         .top-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--apple-indigo);
-            padding: 5px 12px;
-            background: rgba(88, 86, 214, 0.1);
-            border: 0.5px solid rgba(88, 86, 214, 0.18);
-            border-radius: 50px;
-            margin-bottom: 12px;
-        }
-        .top-eyebrow::before {
-            content: "";
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--apple-pink);
-            box-shadow: 0 0 8px var(--apple-pink);
-            animation: dotPulse 1.8s ease-in-out infinite;
-        }
+    display: flex;         /* 改為 flex */
+    justify-content: center; /* 水平置中 */
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--apple-indigo);
+    padding: 5px 12px;
+    background: rgba(88, 86, 214, 0.1);
+    border: 0.5px solid rgba(88, 86, 214, 0.18);
+    border-radius: 50px;
+    margin: 0 auto 12px auto; /* 左右自動推移達到置中 */
+    width: fit-content;      /* 寬度隨文字長度調整 */
+}
+       
 
         .subtitle {
             color: var(--label-secondary);
@@ -363,68 +357,43 @@ body {
         .options-container { display: flex; flex-direction: column; gap: 11px; }
 
         /* 🔧 FIX1: 選項按鈕改用 flex 排版，圓圈不再絕對定位疊在文字上 */
-        .option-btn {
-            background: rgba(255, 255, 255, 0.78);
-            border: 1px solid rgba(60, 60, 67, 0.10);
-            padding: 14px 16px;
-            border-radius: 16px;
-            text-align: left;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--label-primary);
-            cursor: pointer;
-            transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
-            position: relative;
-            line-height: 1.35;
-            letter-spacing: -0.01em;
-            backdrop-filter: blur(10px);
-            font-family: inherit;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .option-btn::before {
-            content: "";
-            flex-shrink: 0;          /* 圓圈不縮 */
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(60, 60, 67, 0.28);
-            background: #fff;
-            transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
-        }
-        .option-btn .btn-label {
-            flex: 1;
-            min-width: 0;
-        }
-        .option-btn:hover { 
-            background: rgba(255, 255, 255, 0.96);
-            border-color: rgba(0, 122, 255, 0.35);
-            transform: translateY(-1.5px);
-            box-shadow: 0 10px 22px rgba(0, 122, 255, 0.10), 0 1px 2px rgba(0,0,0,0.04);
-        }
-        .option-btn:hover::before { border-color: var(--apple-blue); }
-        .option-btn:active { transform: scale(0.985); }
-        .option-btn.selected {
-            background: linear-gradient(135deg, rgba(0, 122, 255, 0.10), rgba(88, 86, 214, 0.12));
-            border-color: var(--apple-blue);
-            color: var(--label-primary);
-            box-shadow: 0 6px 22px rgba(0, 122, 255, 0.18), 0 0 0 3px rgba(0, 122, 255, 0.10);
-            animation: selectPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .option-btn.selected::before {
-            background: var(--apple-blue);
-            border-color: var(--apple-blue);
-            box-shadow: inset 0 0 0 3px #fff;
-        }
+/* 🔧 修改後：完全移除圓點，並實作身分顏色外框 */
+.option-btn {
+    background: rgba(255, 255, 255, 0.78);
+    border: 2px solid rgba(60, 60, 67, 0.10); /* 預設淡灰色邊框 */
+    padding: 16px 20px;
+    border-radius: 16px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--label-primary);
+    cursor: pointer;
+    transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 滑鼠移上去的效果 */
+.option-btn:hover { 
+    background: rgba(255, 255, 255, 0.96);
+    border-color: var(--sticker-color, rgba(0, 122, 255, 0.35)); /* 移上去會隱約透出你的身分色 */
+}
+
+/* 選中後的樣式：外框直接變成身分色 */
+.option-btn.selected {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid var(--sticker-color); /* 這就是關鍵：變成你選的身分色 */
+    box-shadow: 0 6px 22px var(--sticker-color, rgba(0, 122, 255, 0.18));
+}
+
         @keyframes selectPulse {
             0% { transform: scale(1); }
             40% { transform: scale(1.025); }
             100% { transform: scale(1); }
         }
         .option-btn.selected::after {
-            content: '✓ 已貼上';
+            content: '✓ 貼上';
             flex-shrink: 0;
             background: var(--sticker-color);
             color: var(--sticker-text, #fff);
@@ -511,20 +480,7 @@ body {
             margin-right: 6px;
         }
 
-        /* QR 點陣裝飾（放在 footer 區） */
-        .qr-deco {
-            width: 42px;
-            height: 42px;
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1px;
-            flex-shrink: 0;
-        }
-        .qr-deco span {
-            background: #000;
-            border-radius: 1px;
-        }
-        .qr-deco span.empty { background: transparent; }
+       
 
         /* 紅色圖釘（左上） */
         .pin-deco {
@@ -742,41 +698,44 @@ body {
             padding: 1px 4px;
         }
        
-        .quote-log-box {
-            background: #f8f9fa;
-            border: 1px solid #e5e5ea;
-            padding: 10px 12px;
-            margin-top: 12px;
-            font-size: 12px;
-        }
-        .quote-log-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: #8e8e93;
-            font-family: 'SF Mono', Menlo, monospace;
-            margin-bottom: 2px;
-        }
-        .quote-log-content {
-            font-size: 16px;
-            font-weight: 900;
-            line-height: 1.5;
-            font-style: italic;
-            color: #111;
-        }
+        /* =========================================================
+   🎓 優化版：人物對應底色與極粗左邊框
+   ========================================================= */
+.quote-log-box {
+    border: 1px solid #000;
+    border-left: 8px solid #000; /* JS 會覆蓋此處 */
+    padding: 16px 20px;
+    margin-top: 18px;
+    /* 移除 box-shadow: 0 4px 12px rgba(0,0,0,0.06); 截圖建議取消陰影 */
+    position: relative;
+    overflow: hidden;
+    background-color: #fff; /* 設定一個預設白色底，避免透明色偏差 */
+}
+
+.quote-log-content {
+    font-size: 16.5px; /* 統一字體大小 */
+    font-weight: 900;
+    line-height: 1.6;
+    color: #000;
+    font-style: normal;
+    text-align: left;
+}
 
         .report-tags-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
         }
-        .report-tag-item {
-            border: 1px solid #000000;
+               .report-tag-item {
+            border: 2px solid #000000; /* 設定邊框為 2px 的黑色 */
             padding: 4px 10px;
             font-size: 11.5px;
             font-weight: 700;
             color: #000000;
-            background: #ffffff;
+            background: #ffffff; /* 設定白色背景 */
+            border-radius: 4px;   /* 若想要更精緻的標籤感，可以加入圓角 */
         }
+
 
         .report-footer {
             margin-top: 24px;
@@ -826,28 +785,29 @@ body {
             flex-direction: column;
             gap: 6px;
         }
-        .barcode-lines {
-            height: 28px;
-            background-image: repeating-linear-gradient(
-                90deg,
-                #000 0px,
-                #000 2px,
-                transparent 2px,
-                transparent 4px,
-                #000 4px,
-                #000 5px,
-                transparent 5px,
-                transparent 9px,
-                #000 9px,
-                #000 12px,
-                transparent 12px,
-                transparent 14px,
-                #000 14px,
-                #000 15px,
-                transparent 15px,
-                transparent 19px
-            );
-        }
+        /* 強制條碼區塊不要模糊化 */
+.barcode-lines {
+    display: flex;
+    height: 28px;
+    width: 100%;
+    /* 確保 300 個 div 呈現銳利邊緣 */
+    image-rendering: pixelated; 
+    /* 確保白色和黑色線條對齊 */
+    align-items: stretch;
+}
+
+
+.barcode-lines div {
+    /* 讓它強制執行直角像素，不要平滑化 */
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.barcode-lines span {
+    background: #000;
+    flex: 1; /* 讓寬度平均分配 */
+}
+
         .barcode-meta {
             display: flex;
             justify-content: space-between;
@@ -935,11 +895,7 @@ body {
         .profile-card.ig-story .report-top-bar .punch-holes span {
             width: 10px; height: 10px;
         }
-        .profile-card.ig-story .qr-deco {
-            width: 96px;
-            height: 96px;
-            gap: 2px;
-        }
+      
         .profile-card.ig-story .pin-deco {
             top: 16px;
             left: 50px;
@@ -1038,20 +994,22 @@ body {
             padding: 2px 8px;
         }
         .profile-card.ig-story .quote-log-box {
-            padding: 24px 28px;
-            margin-top: 28px;
-            border-width: 2px;
-            border-left: 6px solid #000;
-        }
-        .profile-card.ig-story .quote-log-content {
-            font-size: 30px;
-            line-height: 1.45;
-        }
-        .profile-card.ig-story .report-tag-item {
-            font-size: 23px;
-            padding: 10px 22px;
-            border-width: 2px;
-        }
+    /* 因為 IG 模式整個比例被放大，粗邊框也要放大 */
+    border-left: 22px solid #000 !important; /* 強制把左邊粗邊框放大到 22px */
+    padding: 36px 42px !important;
+}
+
+.profile-card.ig-story .quote-log-content {
+    font-size: 32px !important; /* 確保 IG 模式字體放大且有重要性 */
+}
+
+
+       .profile-card.ig-story .report-tag-item {
+    font-size: 32px !important;    /* 強制放大 */
+    padding: 14px 28px !important; /* 強制增加間距 */
+    border-width: 3px !important;  /* 強制加粗邊框 */
+}
+
         .profile-card.ig-story .report-tags-grid { gap: 14px; }
         .profile-card.ig-story .report-footer {
             margin-top: 44px;
@@ -1067,6 +1025,8 @@ body {
             height: 124px;
             font-size: 18px;
             border-width: 3px;
+            background: transparent; /* 這裡也要設為透明 */
+            box-shadow: none;        /* 確保匯出圖不會有白底陰影 */
         }
         .profile-card.ig-story .stamp-red-seal span {
             font-size: 13px !important;
@@ -1186,15 +1146,21 @@ body {
         .restart-btn:active { transform: scale(0.98); }
 
         footer { 
-            margin-top: 28px; 
-            padding-top: 18px;
-            border-top: 0.5px solid rgba(60, 60, 67, 0.12);
-            font-size: 11px; 
-            color: var(--label-tertiary); 
-            font-weight: 500; 
-            letter-spacing: -0.005em;
-            line-height: 1.7;
-        }
+    margin-top: 28px; 
+    padding-top: 18px;
+    border-top: 0.5px solid rgba(60, 60, 67, 0.12);
+    font-size: 11px; 
+    color: var(--label-tertiary); 
+    font-weight: 500; 
+    letter-spacing: -0.005em;
+    line-height: 1.7;
+    /* 新增以下三行即可置中 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* 確保文字本身也置中 */
+}
+
         footer .school-line {
             font-weight: 700;
             color: var(--label-secondary);
@@ -1338,8 +1304,8 @@ body {
             
             <div id="start-page">
 
-                <span class="top-eyebrow">2026 畢業限定 · 動物城鑑定</span>
-                <h1>2026 建功人請回答！！</h1>
+                <span class="top-eyebrow">2026 畢業限定 · 建功動物城鑑定</span>
+                
                 <div class="image-box">
                     <img id="welcome-img" src="主視覺.jpeg" alt="建功心測主視覺">
                 </div>
@@ -1397,7 +1363,7 @@ body {
                     <button id="export-btn-ig" class="action-btn export-btn" onclick="window.jgQuiz.exportToImage()">
                         <span class="btn-icon">📲</span>
                         <span class="btn-text">儲存到相簿 / 分享</span>
-                        <span class="btn-tag">9:16</span>
+                        
                     </button>
                     <button class="action-btn restart-btn" onclick="window.jgQuiz.resetQuiz()">↻ 再測一次</button>
                 </div>
@@ -1425,52 +1391,57 @@ body {
 
 <script>
 (function() {
-    // 0-1-2 計分制：每個選項對各角色給予不同分數，總分最高者獲勝
-    // scores: { A:蠻牛, B:茱蒂, C:尼克, D:快俠 }
     const questions = [
-        {
-            title: "明天要考試，今天晚上我會選擇...",
-            options: [
-                { text: "#想辦法捲死同學", scores: { A: 2, B: 0, C: 1, D: 0 } },
-                { text: "#與周公約會",     scores: { A: 0, B: 2, C: 0, D: 1 } }
-            ]
-        },
-        {
-            title: "考前我更願意相信...",
-            options: [
-                { text: "#自己的智商",         scores: { A: 1, B: 0, C: 2, D: 0 } },
-                { text: "#神明一定會幫助我的", scores: { A: 0, B: 1, C: 0, D: 2 } }
-            ]
-        },
-        {
-            title: "關於上學...",
-            options: [
-                { text: "#上課有認真聽",   scores: { A: 2, B: 1, C: 0, D: 0 } },
-                { text: "#有來學校就很棒了", scores: { A: 0, B: 0, C: 1, D: 2 } }
-            ]
-        },
-        {
-            title: "和朋友的相處...",
-            options: [
-                { text: "#高山流水遇知音", scores: { A: 0, B: 2, C: 1, D: 0 } },
-                { text: "#低山臭水遇噪音", scores: { A: 1, B: 0, C: 0, D: 1 } }
-            ]
-        },
-        {
-            title: "面對未來的困難...",
-            options: [
-                { text: "#放馬過來", scores: { A: 1, B: 1, C: 2, D: 0 } },
-                { text: "#放我一馬", scores: { A: 0, B: 1, C: 0, D: 1 } }
-            ]
-        }
+        { title: "明天要考試，今天晚上我會選擇...", options: [{ text: "#想辦法捲死同學", score: "A" }, { text: "#與周公約會", score: "B" }] },
+        { title: "考前我更願意相信...", options: [{ text: "#自己的智商", score: "C" }, { text: "#神明一定會幫助我的", score: "D" }] },
+        { title: "關於上學...", options: [{ text: "#上課有認真聽", score: "C" }, { text: "#有來學校就很棒了", score: "B" }] },
+        { title: "和朋友的相處...", options: [{ text: "#高山流水遇知音", score: "A" }, { text: "#低山臭水遇噪音", score: "D" }] },
+        { title: "面對未來的困難...", options: [{ text: "#放馬過來", score: "A" }, { text: "#放我一馬", score: "D" }] }
     ];
 
-    window.quizResultsDatabase = {
-        "A": { badge: "2026 頂峰執行者檔案", name: "蠻牛局長 × 風紀股長", characterName: "蠻牛局長", bg: "#fee2e2", meta: { code: "BOGO-BOSS-01", danger: "98%", place: "K書中心 / 糾察哨口", type: "鐵血行動派" }, traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿滿的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。畢業後絕對是社會上打破常規、開疆闢土的開路先鋒！", quote: "別擋路，我的目標只有頂峰。" },
-        "B": { badge: "2026 活力夢想家檔案", name: "兔子茱蒂 × 體育股長", characterName: "哈茱蒂", bg: "#fef9c3", meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。只要運動會或活動號角響起，你就是全班的動能核心！", quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" },
-        "C": { badge: "2026 智商天花板檔案", name: "狐狸尼克 × 副班長", characterName: "狐狸尼克", bg: "#fae8ff", meta: { code: "NICK-VICE-99", danger: "65%", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" }, traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"], desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌，平時低調看戲、優雅省力，但大局需要時總能用高智商精準掌控，是班上的隱藏版大佬。", quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。" },
-        "D": { badge: "2026 校園守護神檔案", name: "樹懶快俠 × 普通學生", characterName: "快俠", bg: "#dcfce7", meta: { code: "FLASH-STUDENT-00", danger: "0%", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" }, traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"], desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。即使身邊的人際關係像噪音一樣煩人，你也總能用強大的冷幽默和獨特的慢節奏將其化解，活得悠閒又療癒。", quote: "沒事沒事，平安畢業，順其自然。" }
+            window.quizResultsDatabase = {
+        "A": { 
+            badge: "2026 頂峰執行者檔案", 
+            name: "蠻牛局長 × 風紀股長", 
+            characterName: "蠻牛", 
+            bg: "#FFB6C1", // 調整為更明顯的粉色
+            meta: { code: "BOGO-BOSS-01", danger: "98%", place: "K書中心 / 糾察哨口", type: "鐵血行動派" }, 
+            traits: ["#放馬過來", "#想辦法捲死同學", "#氣場兩米八", "#高山流水遇知音"], 
+            desc: "你就是那個面對未知挑戰敢正面大喊「放馬過來」的絕對強者！在學校裡遇到競爭會瞬間激發滿標的戰鬥力，實力上演捲死同學的戲碼。你目標明確、效率極高，擁有不可動搖的霸氣。", 
+            quote: "別擋路，我的目標只有頂峰。" 
+        },
+        "B": { 
+            badge: "2026 活力夢想家檔案", 
+            name: "兔子茱蒂 × 體育股長", 
+            characterName: "茱蒂", 
+            bg: "#9370DB", // 改為鮮明的寶石紫 (Medium Purple)
+            meta: { code: "JUDY-SPORTS-26", danger: "15%", place: "操場跑道 / 體育器材室", type: "佛系熱血派" }, 
+            traits: ["#有來學校就很棒了", "#與周公約會", "#熱血滿點", "#元氣輸出"], 
+            desc: "你抱持著「有來學校就很棒了」的樂活達人態度，雖然昨晚可能還在跟周公進行深度約會，但點燃熱情的速度比誰都快！看似無害其實內心生命力爆棚。", 
+            quote: "生活要懂得放鬆，但好玩的事情我絕不缺席！" 
+        },
+        "C": { 
+            badge: "2026 智商天花板檔案", 
+            name: "狐狸尼克 × 副班長", 
+            characterName: "尼克", 
+            bg: "#8FBC8F", // 調整為較深邃的綠色 (Dark Sea Green)
+            meta: { code: "NICK-VICE-99", danger: "65%", place: "後排靠窗座位 / 考前被包圍的課桌", type: "從容智謀派" }, 
+            traits: ["#自己的智商", "#上課有認真聽", "#智商擔當", "#優雅省力"], 
+            desc: "考前你絕對敢大膽貼上「相信自己智商」的標籤，因為你上課其實都有默默抓到核心重點，骨子裡自帶一種看透局勢的淡定。聰明、帶點讓人又愛又恨的小傲嬌。", 
+            quote: "實力擺在那裡，穩紮穩打才是最高級的優雅。" 
+        },
+        "D": { 
+            badge: "2026 校園守護神檔案", 
+            name: "樹懶快俠 × 普通學生", 
+            characterName: "快俠", 
+            bg: "#FFD700", // 調整為鮮亮的金黃色 (Gold)
+            meta: { code: "FLASH-STUDENT-00", danger: "0%", place: "教室最後一排 / 合作社榕樹下", type: "療癒避風港" }, 
+            traits: ["#放我一馬", "#神明一定會幫助我的", "#低山臭水遇噪音", "#慢條斯理"], 
+            desc: "面對壓力重重的日常，你只想高喊「放我一馬」，考前默默祈禱神明加持。你不追求職位的虛名，只想當個與世無爭、置身事外的普通學生。", 
+            quote: "沒事沒事，平安畢業，順其自然。" 
+        }
     };
+
 
     const ImageEngine = {
         setQuestionImage: function(index) {
@@ -1626,17 +1597,17 @@ body {
                 btn.innerHTML = `<span class="btn-label"></span>`;
                 btn.querySelector('.btn-label').textContent = opt.text;
                 btn.style.animation = `pageSlide 0.4s cubic-bezier(0.32, 0.72, 0, 1) ${0.1 + idx * 0.08}s backwards`;
-                btn.onclick = () => this.selectOption(btn, opt.scores);
+                btn.onclick = () => this.selectOption(btn, opt.score);
                 optionsBox.appendChild(btn);
             });
         },
 
-        selectOption: function(element, scores) {
+        selectOption: function(element, score) {
             element.classList.add('selected');
             const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach(b => b.style.pointerEvents = 'none');
 
-            this.selectedScores.push(scores);
+            this.selectedScores.push(score);
             this.currentQuestionIndex++;
 
             const percent = Math.round((this.currentQuestionIndex / questions.length) * 100);
@@ -1660,18 +1631,13 @@ body {
             document.getElementById('quiz-page').className = 'hidden';
             document.getElementById('result-page').className = '';
 
-            // 0-1-2 加總計分：累加每題各角色的分數，最高者獲勝
-            const totals = { A: 0, B: 0, C: 0, D: 0 };
-            this.selectedScores.forEach(scores => {
-                Object.keys(scores).forEach(key => {
-                    totals[key] = (totals[key] || 0) + scores[key];
-                });
-            });
+            const counts = {};
+            let maxScore = "B";
+            let maxCount = 0;
 
-            let maxScore = "A";
-            let maxCount = -1;
-            Object.keys(totals).forEach(key => {
-                if (totals[key] > maxCount) { maxCount = totals[key]; maxScore = key; }
+            this.selectedScores.forEach(score => {
+                counts[score] = (counts[score] || 0) + 1;
+                if (counts[score] > maxCount) { maxCount = counts[score]; maxScore = score; }
             });
 
             const finalResult = window.quizResultsDatabase[maxScore];
@@ -1683,14 +1649,27 @@ body {
             const lightThemeBg = `${finalResult.bg}50`;
             const tableLeftBg = `${finalResult.bg}40`;
 
-            // QR 點陣（用 hash 化的角色代碼產生固定 pattern）
-            const qrSeed = finalResult.meta.code;
-            let qrPattern = '';
-            for(let i = 0; i < 36; i++) {
-                const ch = qrSeed.charCodeAt(i % qrSeed.length);
-                const filled = ((ch + i * 7) % 3) !== 0;
-                qrPattern += filled ? '<span></span>' : '<span class="empty"></span>';
-            }
+           
+const generateBarcodeSet = (count) => {
+    let lines = '';
+    for (let i = 0; i < count; i++) {
+        const isBlack = Math.random() > 0.45;
+        // 將原本的 flex: 1~2 改成 flex: 1~5，讓它有更多機會「長得很寬」
+        const flexWeight = Math.floor(Math.random() * 5) + 1; 
+        const color = isBlack ? '#000' : '#fff';
+
+        // 加上 flex-grow: 1 確保它永遠會填滿所有可用空間
+        lines += `<div style="flex-grow: ${flexWeight}; height: 100%; background: ${color};"></div>`;
+    }
+    return lines;
+};
+
+
+// 產生更多組，確保條碼長度足夠
+const barcodeLines = generateBarcodeSet(300);
+
+
+
 
             cardBox.innerHTML = `
                 <div class="bg-watermark">OFFICIAL · 2026 · OFFICIAL · 2026</div>
@@ -1703,7 +1682,7 @@ body {
                 <div class="report-header">
                     <div class="report-subtitle">HSINCHU CHIEN-KUNG INTELLIGENCE</div>
                     <h2 class="report-title"><span>${finalResult.name}</span></h2>
-                    <div class="stamp-top-secret">極機密</div>
+                    <div class="stamp-top-secret">機密</div>
                 </div>
 
                 <div class="report-meta-row">
@@ -1751,14 +1730,27 @@ body {
                 <div class="report-text-block">
                     經過 2026 建功大數據與行為軌跡追蹤，對象個體 <span class="highlight-name">${this.userName}</span> 在校園生態系中展現出極為顯著的 <span class="highlight-name">${finalResult.name}</span> 特徵。${finalResult.desc}
                     
-                    <div class="quote-log-box">
-                        <div class="quote-log-content">「${finalResult.quote}」</div>
-                    </div>
-                </div>
+                   ...
+     <div class="quote-log-box" 
+         style="--slogan-bg: ${lightThemeBg}; --slogan-border: ${finalResult.bg}; background-color: ${lightThemeBg} !important;">
+        <div class="quote-log-content">「${finalResult.quote}」</div>
+    </div>
 
                 <div class="section-divider">SECTION 02 // SUB-TRAITS</div>
                 <div class="report-tags-grid">
-                    ${finalResult.traits.map(t => `<span class="report-tag-item" style="background-color: ${lightThemeBg}; border-color: ${finalResult.bg}; color: #111; font-weight: 600;">${t}</span>`).join('')}
+                    ${finalResult.traits.map(t => `
+    <span class="report-tag-item" 
+          style="background-color: ${lightThemeBg}; 
+                 border-color: ${finalResult.bg}; /* <--- 這裡會動態覆蓋掉 CSS 的黑色設定 */
+                 color: #111; 
+                 border: 2px solid #000000; /* <--- 請在這裡手動加上這行 */
+                 font-weight: 700; 
+                 font-size: 16px; 
+                 padding: 8px 16px;">
+        ${t}
+    </span>
+`).join('')}
+
                 </div>
 
                 <div class="report-footer">
@@ -1766,7 +1758,7 @@ body {
                         CLASSIFIED BY: 2026 CKHS GRADUATION COMMITTEE<br>
                         DATE OF ISSUED: 2026.06 // AUTHORIZED UNDER STATUTE 63
                     </div>
-                    <div class="qr-deco">${qrPattern}</div>
+                    
                     <div class="stamp-red-seal">
                         建功高中<br>畢聯會<br><span style="font-family:'SF Mono',monospace; font-size:7px; margin-top:2px;">2026</span>
                     </div>
@@ -1774,14 +1766,16 @@ body {
 
                 <!-- 升級：底部條碼 + 文件編號區（讓 IG 限動底部不空，更像真檔案） -->
                 <div class="report-barcode">
-                    <div class="barcode-lines"></div>
-                    <div class="barcode-meta">
-                        <span class="barcode-num">CK·2026·${finalResult.meta.code}</span>
-                        <span class="barcode-stamp">⬢ VERIFIED</span>
-                    </div>
-                </div>
-                <div class="export-only" id="export-watermark"></div>
-            `;
+        <div class="barcode-lines" style="display: flex; height: 28px; align-items: center;">
+            ${barcodeLines}
+        </div>
+        <div class="barcode-meta">
+            <span class="barcode-num">CK·2026·${finalResult.meta.code}</span>
+            <span class="barcode-stamp">⬢ VERIFIED</span>
+        </div>
+    </div>
+    <div class="export-only" id="export-watermark"></div>
+`;
 
             cardBox.style.setProperty('--hero-bg', finalResult.bg);
 
@@ -1902,6 +1896,16 @@ body {
                     windowWidth: 1080,
                     windowHeight: naturalH,
                     onclone: (clonedDoc) => {
+                    const originalBarcode = document.querySelector('.barcode-lines');
+        const clonedBarcode = clonedDoc.querySelector('.barcode-lines');
+        
+        if (originalBarcode && clonedBarcode) {
+            // 1. 強制把原本的寬度寫入複製的檔案裡
+            const w = originalBarcode.offsetWidth;
+            clonedBarcode.style.width = w + 'px';
+            clonedBarcode.style.flex = 'none'; // 鎖住，不讓它伸縮
+            clonedBarcode.style.minWidth = w + 'px'; // 確保不會被擠壓
+        }
                         const card = clonedDoc.getElementById('profile-card-box');
                         if(card) {
                             card.style.animation = 'none';
@@ -1913,8 +1917,21 @@ body {
                                 el.style.transition = 'none';
                             });
                         }
+                        const logBox = clonedDoc.querySelector('.quote-log-box');
+    const originalLogBox = document.querySelector('.quote-log-box'); // 從原始頁面讀取
+
+    if (logBox && originalLogBox) {
+        // 1. 直接讀取原本元素當前的背景顏色（這會拿到計算後的最終色值）
+        const computedStyle = window.getComputedStyle(originalLogBox);
+        logBox.style.backgroundColor = computedStyle.backgroundColor;
+        
+        // 2. 同步 border-left 的顏色與寬度
+        logBox.style.borderLeft = computedStyle.borderLeft;
+    }
                     }
+                    
                 });
+                
 
                 const blob = await new Promise((resolve, reject) => {
                     canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png', 1.0);
