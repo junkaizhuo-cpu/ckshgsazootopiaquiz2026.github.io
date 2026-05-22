@@ -1475,18 +1475,31 @@ body {
 
     const ImageEngine = {
         setQuestionImage: function(index) {
-            const imgTag = document.getElementById('quiz-img');
-            if(!imgTag) return;
-            const qNum = index + 1;
-            imgTag.src = `問題${qNum}.png`;
-            imgTag.onerror = function() {
-                this.onerror = function() {
-                    this.onerror = function() { this.src = ''; };
-                    this.src = `問題${qNum}.jpg`;
-                };
-                this.src = `問題${qNum}.jpeg`;
-            };
-        },
+    const imgTag = document.getElementById('quiz-img');
+    if(!imgTag) return;
+    
+    // 先清空，避免顯示上一題的圖
+    imgTag.src = '';
+    imgTag.style.opacity = '0';
+    
+    const qNum = index + 1;
+    const tryLoad = (src) => {
+        imgTag.src = src;
+    };
+    
+    imgTag.onload = () => {
+        imgTag.style.transition = 'opacity 0.3s ease';
+        imgTag.style.opacity = '1';
+    };
+    imgTag.onerror = function() {
+        const ext = this.src.match(/\.(\w+)$/)?.[1];
+        if (ext === 'png') tryLoad(`問題${qNum}.jpeg`);
+        else if (ext === 'jpeg') tryLoad(`問題${qNum}.jpg`);
+        else this.style.opacity = '0';
+    };
+    
+    tryLoad(`問題${qNum}.png`);
+},
         setWelcomeImage: function() {
             const imgTag = document.getElementById('welcome-img');
             if(!imgTag) return;
