@@ -1508,10 +1508,17 @@ body {
     };
     newImg.onerror = () => {
         tryNext();
+        
     };
 
     tryNext();
+    setTimeout(() => {
+        if (newImg.complete && newImg.naturalWidth > 0) {
+            newImg.style.opacity = '1';
+        }
+    }, 50);
 },
+
         setWelcomeImage: function() {
             const imgTag = document.getElementById('welcome-img');
             if(!imgTag) return;
@@ -1698,14 +1705,20 @@ body {
             });
 
             // 找出最高分角色；若平手，依 A → B → C → D 順序取第一個
-            let maxScore = "B";
-            let maxCount = -1;
-            ["A", "B", "C", "D"].forEach(key => {
-                if (counts[key] > maxCount) {
-                    maxCount = counts[key];
-                    maxScore = key;
-                }
-            });
+            const maxCount = Math.max(counts.A, counts.B, counts.C, counts.D);
+const tied = ["A","B","C","D"].filter(k => counts[k] === maxCount);
+
+let maxScore = tied[0];
+if (tied.length > 1) {
+    const tieBreakOrder = [3, 4, 2, 1, 0];
+    for (const i of tieBreakOrder) {
+        const scoreObj = this.selectedScores[i];
+        if (!scoreObj) continue;
+        const maxInThis = Math.max(...tied.map(k => scoreObj[k] || 0));
+        const winner = tied.find(k => (scoreObj[k] || 0) === maxInThis);
+        if (winner) { maxScore = winner; break; }
+    }
+}
 
             const finalResult = window.quizResultsDatabase[maxScore];
             
@@ -1796,6 +1809,7 @@ const barcodeLines = generateBarcodeSet(300);
                 <div class="section-divider">SECTION 01 // BEHAVIORAL DIAGNOSIS </div>
                 <div class="report-text-block">
                     經過 2026 建功大數據與行為軌跡追蹤，對象個體 <span class="highlight-name">${this.userName}</span> 在校園生態系中展現出極為顯著的 <span class="highlight-name">${finalResult.name}</span> 特徵。${finalResult.desc}
+                </div>
                     
      <div class="quote-log-box" 
          style="--slogan-bg: ${lightThemeBg}; --slogan-border: ${finalResult.bg}; background-color: ${lightThemeBg} !important;">
@@ -1847,8 +1861,10 @@ const barcodeLines = generateBarcodeSet(300);
 
             // 🔧 FIX2: 結算卡渲染完後，量測高度，若超過手機螢幕就等比縮放
             requestAnimationFrame(() => {
-                this.fitCardToScreen();
-            });
+    requestAnimationFrame(() => {
+        this.fitCardToScreen();
+    });
+});
 
             setTimeout(fireConfetti, 200);
         },
